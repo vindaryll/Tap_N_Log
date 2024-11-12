@@ -43,9 +43,46 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <!-- Nav Bar -->
     <?php require_once $_SESSION['directory'] . '\Starting_Folder\Main_Admin\Dashboard\navbar.php'; ?>
 
+    <!-- START OF CONTAINER -->
+    <div class="d-flex justify-content-center">
+
+        <div class="container row col-sm-12">
+
+            <div class="container col-sm-12 mb-3">
+                <button type="button" class="btn btn-primary" id="backbtn">Back</button>
+            </div>
+
+            <div class="container-fluid">
+                <div class="row d-flex justify-content-center align-items-center mt-3">
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
+                        <a href="Pendings/main_page.php" class="btn btn-primary w-100 p-3">PENDINGS</a>
+                    </div>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
+                        <a href="" class="btn btn-primary w-100 p-3">CASH FOR WORK STAFF</a>
+                    </div>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
+                        <a href="" class="btn btn-primary w-100 p-3">ON THE JOB TRAINEES</a>
+                    </div>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
+                        <a href="" class="btn btn-primary w-100 p-3">EMPLOYEES</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $('#backbtn').on('click', function() {
+                window.location.href = '../dashboard_home.php';
+            });
+        });
+    </script>
 </body>
 
 </html>

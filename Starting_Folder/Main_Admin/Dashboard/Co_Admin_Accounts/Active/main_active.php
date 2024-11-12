@@ -76,7 +76,7 @@ $stationsResult = $conn->query($stationsSql);
                                 <th>Guard Name</th>
                                 <th class="text-center d-flex justify-content-center">
                                     <!-- Dropdown for station selection inside the table header -->
-                                    <select id="stationSelect" class="form-select form-select-sm ms-0" style="margin-left: 10px;">
+                                    <select id="stationSelect" class="form-select form-select-sm">
                                         <option value="">ALL STATIONS</option>
                                         <?php
                                         // Fetching stations to populate the dropdown

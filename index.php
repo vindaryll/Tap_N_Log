@@ -43,6 +43,10 @@ function getUserIpAddress() {
 $_SESSION['directory'] = __DIR__;
 $_SESSION['ip_address'] = getLocalIpAddress();
 
+// echo $_SESSION['directory']; = \
+// echo $_SERVER['DOCUMENT_ROOT']; = /
+// exit();
+
 
 // For example
 // echo 'Access our website using this link: http://' . $_SESSION['ip_address'] . '/TAPNLOG';
