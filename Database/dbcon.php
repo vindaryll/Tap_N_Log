@@ -3,7 +3,7 @@
 $server = "localhost"; 
 $username = "root";     
 $password = "";         
-$database = "patnilog_try";  
+$database = "main_tapnlog";  
 
 // Create a connection
 $conn = mysqli_connect($server, $username, $password, $database);

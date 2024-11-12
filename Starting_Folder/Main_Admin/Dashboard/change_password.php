@@ -1,6 +1,8 @@
 <?php
 session_start();
-require '../../../Database/dbcon.php'; // Database connection
+
+// Include database connection
+require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
 function sanitizeInput($data) {
     return htmlspecialchars(stripslashes(trim($data)));

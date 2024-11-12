@@ -5,7 +5,7 @@
 session_start();
 
 // Include database connection
-require_once 'C:\xampp\htdocs\TAPNLOG\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
 // Kapag hindi pa sila nakakalogin
 if(!isset($_SESSION['admin_logged'])){

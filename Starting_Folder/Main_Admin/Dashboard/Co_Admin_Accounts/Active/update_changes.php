@@ -3,7 +3,7 @@
 session_start();
 
 // Include database connection
-require_once 'C:\xampp\htdocs\TAPNLOG\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
 function sanitizeInput($data) {
     return htmlspecialchars(stripslashes(trim($data)));

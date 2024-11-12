@@ -4,7 +4,7 @@
 session_start();
 
 // Include database connection
-require_once 'C:\xampp\htdocs\TAPNLOG\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
 
 if (isset($_POST['value']) && isset($_POST['type']) && isset($_POST['guard_id'])) {

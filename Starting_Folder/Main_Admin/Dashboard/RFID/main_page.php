@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+// Include database connection
+require_once $_SESSION['directory'] . '\Database\dbcon.php';
+
 // Kapag hindi pa sila nakakalogin
 if (!isset($_SESSION['admin_logged'])) {
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
@@ -38,9 +41,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 <body>
 
     <!-- Nav Bar -->
-    <?php require_once 'C:\xampp\htdocs\TAPNLOG\Starting_Folder\Main_Admin\Dashboard\navbar.php'; ?>
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Main_Admin\Dashboard\navbar.php'; ?>
 
-    
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>

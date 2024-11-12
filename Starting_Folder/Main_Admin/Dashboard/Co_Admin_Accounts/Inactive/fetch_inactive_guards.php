@@ -5,7 +5,7 @@ session_start();
 // BACK-END || dedesignan ang table and same na sila ni search_inactive_guards
 
 // Including our database
-require_once 'C:\xampp\htdocs\TAPNLOG\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
 
 $stationId = isset($_GET['station_id']) ? $conn->real_escape_string($_GET['station_id']) : '';

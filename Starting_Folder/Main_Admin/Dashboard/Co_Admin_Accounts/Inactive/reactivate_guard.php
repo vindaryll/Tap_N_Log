@@ -2,7 +2,7 @@
 session_start();
 header('Content-Type: application/json'); // Set header for JSON response
 
-require_once 'C:\xampp\htdocs\TAPNLOG\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
 if (!isset($_POST['guard_id'])) {
     echo json_encode(['success' => false, 'message' => 'Invalid request! Please try again.']);

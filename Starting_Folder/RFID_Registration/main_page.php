@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])) {
+    header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
+    exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -2,7 +2,6 @@
 
 session_start();
 
-
 // Function to get the local machine's IP address (for the server running this code)
 function getLocalIpAddress() {
 

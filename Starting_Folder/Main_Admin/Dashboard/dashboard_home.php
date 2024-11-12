@@ -2,6 +2,9 @@
 
 session_start();
 
+// Include database connection
+require_once $_SESSION['directory'] . '\Database\dbcon.php';
+
 // If they haven't logged in yet
 if(!isset($_SESSION['admin_logged'])){
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");

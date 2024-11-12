@@ -2,6 +2,9 @@
 // Start session
 session_start();
 
+// Include database connection
+require_once $_SESSION['directory'] . '\Database\dbcon.php';
+
 $response = ['success' => false, 'message' => ''];
 
 function sanitizeInput($data) {

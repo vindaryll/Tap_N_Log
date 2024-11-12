@@ -1,6 +1,9 @@
 <?php
+
+session_start();
 // Include database connection
-require '../../Database/dbcon.php'; // Make sure the path is correct based on your folder structure
+
+require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
 $response = ['success' => false, 'message' => ''];
 

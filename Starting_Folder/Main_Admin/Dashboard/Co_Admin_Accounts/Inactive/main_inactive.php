@@ -3,7 +3,7 @@
 // FROND-END for MAIN PAGE of Co-admin Active Account
 session_start();
 
-require_once 'C:\xampp\htdocs\TAPNLOG\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
 // Kapag hindi pa sila nakakalogin
 if (!isset($_SESSION['admin_logged'])) {

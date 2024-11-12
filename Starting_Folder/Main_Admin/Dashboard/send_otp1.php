@@ -3,12 +3,12 @@
 session_start();
 
 // Include database connection
-require_once 'C:\xampp\htdocs\TAPNLOG\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
 // Access PHPMailer
-require 'C:\xampp\htdocs\TAPNLOG\PHPMailer\src\Exception.php';
-require 'C:\xampp\htdocs\TAPNLOG\PHPMailer\src\PHPMailer.php';
-require 'C:\xampp\htdocs\TAPNLOG\PHPMailer\src\SMTP.php';
+require $_SESSION['directory'] . '\PHPMailer\src\Exception.php';
+require $_SESSION['directory'] . '\PHPMailer\src\PHPMailer.php';
+require $_SESSION['directory'] . '\PHPMailer\src\SMTP.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
