@@ -174,7 +174,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         <div class="col-lg-6">
                             <form id="profileForm">
 
+                                <!-- hidden Id -->
                                 <input type="hidden" id="modal_1_profileId">
+
                                 <!-- Type of profile -->
                                 <div class="mb-3">
                                     <label for="modal_1_profileType" class="form-label">Type of Profile</label>
@@ -185,17 +187,25 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                     </select>
                                 </div>
 
+                                <!-- First name -->
                                 <div class="mb-3">
                                     <label for="modal_1_firstName" class="form-label">First Name</label>
                                     <input type="text" class="form-control" id="modal_1_firstName" name="firstName" disabled>
+                                    <div id="firstName-feedback" class="invalid-feedback"></div>
                                 </div>
+
+                                <!-- Last name -->
                                 <div class="mb-3">
                                     <label for="modal_1_lastName" class="form-label">Last Name</label>
                                     <input type="text" class="form-control" id="modal_1_lastName" name="lastName" disabled>
+                                    <div id="lastName-feedback" class="invalid-feedback"></div>
                                 </div>
+
+                                <!-- RFID number -->
                                 <div class="mb-3">
-                                    <label for="rfid" class="form-label">RFID Number</label>
-                                    <input type="text" class="form-control" id="rfid" name="rfid">
+                                    <label for="modal_1_rfid" class="form-label">RFID Number</label>
+                                    <input type="text" class="form-control" id="modal_1_rfid" name="rfid">
+                                    <div id="rfid-feedback" class="invalid-feedback"></div>
                                 </div>
                             </form>
 
@@ -440,6 +450,10 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             }
 
             // PROFILE DETAILS MODAL 1
+
+            let originalData = {}; // Object to store original modal values
+
+            // View Details Function
             window.viewDetails = function(profileId) {
                 $.ajax({
                     url: 'get_profile_details.php',
@@ -448,17 +462,123 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         profile_id: profileId
                     },
                     success: function(response) {
-                        var profile = JSON.parse(response);
-                        $('#modal_1_profileId').val(profile.profile_id);
-                        $('#modal_1_firstName').val(profile.first_name);
-                        $('#modal_1_lastName').val(profile.last_name);
-                        $('#modal_1_profileType').val(profile.type_of_profile);
-                        $('#modal_1_profileImg').attr('src', '/TAPNLOG/Image/Pending/' + profile.profile_img);
-                        $('#profileDetailsModal').modal('show');
-                    }
-                });
-            }
+                        const profile = JSON.parse(response);
 
+                        // Store original values for reverting later
+                        originalData = {
+                            profileId: profile.profile_id,
+                            firstName: profile.first_name,
+                            lastName: profile.last_name,
+                            profileType: profile.type_of_profile,
+                            imgSrc: '/TAPNLOG/Image/Pending/' + profile.profile_img,
+                        };
+
+                        // Populate modal fields with fetched data
+                        $('#modal_1_profileId').val(originalData.profileId);
+                        $('#modal_1_firstName').val(originalData.firstName);
+                        $('#modal_1_lastName').val(originalData.lastName);
+                        $('#modal_1_profileType').val(originalData.profileType);
+                        $('#modal_1_profileImg').attr('src', originalData.imgSrc);
+
+                        // Open modal
+                        $('#profileDetailsModal').modal('show');
+                    },
+                });
+            };
+
+            // Edit Button Click Handler
+            $('#editBtn').click(function() {
+                // Hide buttons
+                $('#discardBtn_cont, #editBtn_cont, #approveBtn_cont').hide();
+                $('#cancelEditBtn_cont, #saveEditBtn_cont').show();
+
+                // Enable fields for editing
+                $('#modal_1_firstName, #modal_1_lastName, #modal_1_profileType').prop('disabled', false);
+                $('#modal_1_rfid').prop('disabled', true);
+            });
+
+            // Cancel Edit Button Click Handler
+            $('#cancelEditBtn').click(function() {
+                // Revert fields to original values
+                $('#modal_1_firstName').val(originalData.firstName);
+                $('#modal_1_lastName').val(originalData.lastName);
+                $('#modal_1_profileType').val(originalData.profileType);
+
+                // Reset image in case it was modified
+                $('#modal_1_profileImg').attr('src', originalData.imgSrc);
+
+                // Hide edit buttons and show action buttons
+                $('#cancelEditBtn_cont, #saveEditBtn_cont').hide();
+                $('#discardBtn_cont, #editBtn_cont, #approveBtn_cont').show();
+
+                // Disable editing
+                $('#modal_1_firstName, #modal_1_lastName, #modal_1_profileType').prop('disabled', true);
+                $('#modal_1_rfid').prop('disabled', false);
+            });
+
+            $('#saveEditBtn').click(function() {
+                // Validate fields before submission
+                validateFirstName();
+                validateLastName();
+
+                // If validation fails, display an alert
+                if (checksaveEditBtn()) {
+                    if (confirm("Are you sure u want to save changes?")) {
+                        // Gather the data for submission
+                        const profileData = {
+                            profile_id: $('#modal_1_profileId').val(),
+                            first_name: $('#modal_1_firstName').val().trim(),
+                            last_name: $('#modal_1_lastName').val().trim(),
+                            type_of_profile: $('#modal_1_profileType').val()
+                        };
+
+                        // Send the AJAX request to update the profile
+                        $.ajax({
+                            url: 'save_profile_changes.php', // Endpoint for saving changes
+                            type: 'POST',
+                            data: profileData,
+                            dataType: 'json',
+                            success: function(response) {
+                                if (response.success) {
+                                    alert(response.message); // Display success message
+
+                                    fetchProfiles();
+
+                                    // Update the `originalData` object with the new values
+                                    originalData.firstName = profileData.first_name;
+                                    originalData.lastName = profileData.last_name;
+                                    originalData.profileType = profileData.type_of_profile;
+
+                                    // Update modal fields with the new values
+                                    $('#modal_1_firstName').val(originalData.firstName);
+                                    $('#modal_1_lastName').val(originalData.lastName);
+                                    $('#modal_1_profileType').val(originalData.profileType);
+
+                                    // Hide edit buttons and show action buttons
+                                    $('#cancelEditBtn_cont, #saveEditBtn_cont').hide();
+                                    $('#discardBtn_cont, #editBtn_cont, #approveBtn_cont').show();
+
+                                    // Disable editing
+                                    $('#modal_1_firstName, #modal_1_lastName, #modal_1_profileType').prop('disabled', true);
+                                    $('#modal_1_rfid').prop('disabled', false);
+
+
+                                } else {
+                                    alert('Error: ' + response.message); // Display error message from server
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error details:', status, error); // Log the error for debugging
+                                alert('An error occurred while saving changes. Please try again.');
+                            }
+                        });
+                    }
+                }
+
+
+            });
+
+            // View details: discard button
             $('#discardBtn').on('click', function() {
                 const profileId = $('#modal_1_profileId').val(); // Get profile ID from the hidden input in the modal
 
@@ -488,6 +608,79 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 }
             });
 
+
+
+            // FUNCTIONS FOR FEEDBACK MESSAGES OF MODAL 1
+
+            // Add input event listeners
+            $('#modal_1_firstName').on('input', validateFirstName);
+            $('#modal_1_lastName').on('input', validateLastName);
+            $('#modal_1_rfid').on('input', validateRFID);
+
+            // Validation for First Name
+            function validateFirstName() {
+                const firstName = $('#modal_1_firstName').val().trim();
+                const nameRegex = /^[A-Za-z.\-'\s]+$/;
+
+                $('#firstName-feedback').text('').removeClass('invalid-feedback');
+                $('#modal_1_firstName').removeClass('is-invalid');
+
+                if (firstName === '') {
+                    $('#firstName-feedback').text('First name cannot be empty.').addClass('invalid-feedback');
+                    $('#modal_1_firstName').addClass('is-invalid');
+                } else if (!nameRegex.test(firstName)) {
+                    $('#firstName-feedback').text('First name contains invalid characters.').addClass('invalid-feedback');
+                    $('#modal_1_firstName').addClass('is-invalid');
+                }
+            }
+
+            // Validation for Last Name
+            function validateLastName() {
+                const lastName = $('#modal_1_lastName').val().trim();
+                const nameRegex = /^[A-Za-z.\-'\s]+$/;
+
+                $('#lastName-feedback').text('').removeClass('invalid-feedback');
+                $('#modal_1_lastName').removeClass('is-invalid');
+
+                if (lastName === '') {
+                    $('#lastName-feedback').text('Last name cannot be empty.').addClass('invalid-feedback');
+                    $('#modal_1_lastName').addClass('is-invalid');
+                } else if (!nameRegex.test(lastName)) {
+                    $('#lastName-feedback').text('Last name contains invalid characters.').addClass('invalid-feedback');
+                    $('#modal_1_lastName').addClass('is-invalid');
+                }
+            }
+
+            // Validation for RFID
+            function validateRFID() {
+                const rfid = $('#modal_1_rfid').val().trim();
+                const rfidRegex = /^[A-Za-z0-9]*$/; // Alphanumeric, no minimum, and allows empty
+
+                // Clear previous feedback
+                $('#rfid-feedback').text('').removeClass('invalid-feedback');
+                $('#modal_1_rfid').removeClass('is-invalid');
+
+                if (!rfidRegex.test(rfid)) {
+                    // Check if it matches the required pattern
+                    $('#rfid-feedback').text('RFID must be alphanumeric.').addClass('invalid-feedback');
+                    $('#modal_1_rfid').addClass('is-invalid');
+                }
+            }
+
+            function checksaveEditBtn() {
+                const isFirstNameValid = !$('#modal_1_firstName').hasClass('is-invalid') && $('#modal_1_firstName').val().trim() !== '';
+                const isLastNameValid = !$('#modal_1_lastName').hasClass('is-invalid') && $('#modal_1_lastName').val().trim() !== '';
+
+                if (!isFirstNameValid || !isLastNameValid) {
+                    return false;
+                } else {
+                    return true;
+                }
+
+            }
+
+
+            
 
 
         });
