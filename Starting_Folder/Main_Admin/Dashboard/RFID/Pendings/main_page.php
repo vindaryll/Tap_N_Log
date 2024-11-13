@@ -493,60 +493,99 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 // Validate fields before submission
                 validateFirstName();
                 validateLastName();
+                validateRFID();
 
                 // If validation fails, display an alert
                 if (checksaveEditBtn()) {
-                    if (confirm("Are you sure u want to save changes?")) {
-                        // Gather the data for submission
-                        const profileData = {
-                            profile_id: $('#modal_1_profileId').val(),
-                            first_name: $('#modal_1_firstName').val().trim(),
-                            last_name: $('#modal_1_lastName').val().trim(),
-                            type_of_profile: $('#modal_1_profileType').val()
-                        };
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "Do you want to save the changes?",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, Save',
+                        cancelButtonText: 'No, Cancel',
+                        reverseButtons: true // Optional: Switch button positions
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Gather the data for submission
+                            const profileData = {
+                                profile_id: $('#modal_1_profileId').val(),
+                                first_name: $('#modal_1_firstName').val().trim(),
+                                last_name: $('#modal_1_lastName').val().trim(),
+                                type_of_profile: $('#modal_1_profileType').val()
+                            };
 
-                        // Send the AJAX request to update the profile
-                        $.ajax({
-                            url: 'save_profile_changes.php', // Endpoint for saving changes
-                            type: 'POST',
-                            data: profileData,
-                            dataType: 'json',
-                            success: function(response) {
-                                if (response.success) {
-                                    alert(response.message); // Display success message
+                            // Send the AJAX request to update the profile
+                            $.ajax({
+                                url: 'save_profile_changes.php', // Endpoint for saving changes
+                                type: 'POST',
+                                data: profileData,
+                                dataType: 'json',
+                                success: function(response) {
+                                    if (response.success) {
+                                        // Display success message
+                                        Swal.fire({
+                                            position: "top",
+                                            title: 'Success!',
+                                            text: response.message,
+                                            icon: 'success',
+                                            timer: 3000,
+                                            timerProgressBar: true,
+                                            showConfirmButton: false
+                                        });
 
-                                    fetchProfiles();
+                                        fetchProfiles();
 
-                                    // Update the `originalData` object with the new values
-                                    originalData.firstName = profileData.first_name;
-                                    originalData.lastName = profileData.last_name;
-                                    originalData.profileType = profileData.type_of_profile;
+                                        // Update the `originalData` object with the new values
+                                        originalData.firstName = profileData.first_name;
+                                        originalData.lastName = profileData.last_name;
+                                        originalData.profileType = profileData.type_of_profile;
 
-                                    // Update modal fields with the new values
-                                    $('#modal_1_firstName').val(originalData.firstName);
-                                    $('#modal_1_lastName').val(originalData.lastName);
-                                    $('#modal_1_profileType').val(originalData.profileType);
+                                        // Update modal fields with the new values
+                                        $('#modal_1_firstName').val(originalData.firstName);
+                                        $('#modal_1_lastName').val(originalData.lastName);
+                                        $('#modal_1_profileType').val(originalData.profileType);
 
-                                    // Hide edit buttons and show action buttons
-                                    $('#cancelEditBtn_cont, #saveEditBtn_cont').hide();
-                                    $('#discardBtn_cont, #editBtn_cont, #approveBtn_cont').show();
+                                        // Hide edit buttons and show action buttons
+                                        $('#cancelEditBtn_cont, #saveEditBtn_cont').hide();
+                                        $('#discardBtn_cont, #editBtn_cont, #approveBtn_cont').show();
 
-                                    // Disable editing
-                                    $('#modal_1_firstName, #modal_1_lastName, #modal_1_profileType').prop('disabled', true);
-                                    $('#modal_1_rfid').prop('disabled', false);
+                                        // Disable editing
+                                        $('#modal_1_firstName, #modal_1_lastName, #modal_1_profileType').prop('disabled', true);
+                                        $('#modal_1_rfid').prop('disabled', false);
 
 
-                                } else {
-                                    alert('Error: ' + response.message); // Display error message from server
+                                    } else {
+                                        // Display error message from server
+                                        Swal.fire({
+                                            position: "top",
+                                            title: 'Error!',
+                                            text: response.message,
+                                            icon: 'error',
+                                            timer: 3000,
+                                            timerProgressBar: true,
+                                            showConfirmButton: false
+                                        });
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error details:', status, error); // Log the error for debugging
+                                    Swal.fire({
+                                        position: "top",
+                                        title: 'Error!',
+                                        text: 'An error occurred while saving changes. Please try again.',
+                                        icon: 'error',
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false
+                                    });
                                 }
-                            },
-                            error: function(xhr, status, error) {
-                                console.error('Error details:', status, error); // Log the error for debugging
-                                alert('An error occurred while saving changes. Please try again.');
-                            }
-                        });
-                    }
+                            });
+                        }
+                    });
+
                 }
+
 
 
             });
@@ -555,30 +594,67 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             $('#discardBtn').on('click', function() {
                 const profileId = $('#modal_1_profileId').val(); // Get profile ID from the hidden input in the modal
 
-                if (confirm('Are you sure you want to delete this profile? This action cannot be undone.')) {
-                    $.ajax({
-                        url: 'delete_profile.php', // URL to the PHP script
-                        type: 'POST',
-                        data: {
-                            profile_id: profileId
-                        },
-                        success: function(response) {
-                            const result = JSON.parse(response);
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Do you want to delete this profile? This action cannot be undone.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Delete',
+                    cancelButtonText: 'No, Cancel',
+                    reverseButtons: true // Optional: Switch button positions
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: 'delete_profile.php', // URL to the PHP script
+                            type: 'POST',
+                            data: {
+                                profile_id: profileId
+                            },
+                            success: function(response) {
+                                const result = JSON.parse(response);
 
-                            if (result.success) {
-                                alert(result.message); // Show success message
-                                $('#profileDetailsModal').modal('hide'); // Close the modal
-                                fetchProfiles(); // Refresh the table or data
-                            } else {
-                                alert('Error: ' + result.message); // Show error message
+                                if (result.success) {
+                                    // Show success message
+                                    Swal.fire({
+                                        position: "top",
+                                        title: 'Success!',
+                                        text: result.message,
+                                        icon: 'success',
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false
+                                    });
+
+                                    $('#profileDetailsModal').modal('hide'); // Close the modal
+                                    fetchProfiles(); // Refresh the table or data
+                                } else {
+                                    // Show error message
+                                    Swal.fire({
+                                        position: "top",
+                                        title: 'Error!',
+                                        text: result.message,
+                                        icon: 'error',
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false
+                                    });
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.fire({
+                                    position: "top",
+                                    title: 'Error!',
+                                    text: 'An error occurred while deleting the profile. Please try again.',
+                                    icon: 'error',
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false
+                                });
+                                console.error('Error details:', status, error); // Log details for debugging
                             }
-                        },
-                        error: function(xhr, status, error) {
-                            alert('An error occurred while deleting the profile. Please try again.');
-                            console.error('Error details:', status, error); // Log details for debugging
-                        }
-                    });
-                }
+                        });
+                    }
+                });
             });
 
 
@@ -664,7 +740,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         }
                     },
                     error: function() {
-                        alert('An error occurred while validating RFID.');
+                        Swal.fire({
+                            position: "top",
+                            title: 'Error!',
+                            text: 'An error occurred while validating RFID.' || "An error occurred.",
+                            icon: "error",
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
                     }
                 });
             }
@@ -758,14 +842,32 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             $('#duplicateProfileModal').modal('show');
                         } else {
 
-                            if (confirm("Are you sure you want to approve this?")) {
-                                // No duplicates, approve the profile
-                                approveProfile(profileId, firstName, lastName, profileType, profileImg, rfid);
-                            }
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: "Do you want to approve this profile?",
+                                icon: 'question',
+                                showCancelButton: true,
+                                confirmButtonText: 'Yes, Approve',
+                                cancelButtonText: 'No, Cancel',
+                                reverseButtons: true // Optional: Switch button positions
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // No duplicates, approve the profile
+                                    approveProfile(profileId, firstName, lastName, profileType, profileImg, rfid);
+                                }
+                            });
                         }
                     },
                     error: function(xhr, status, error) {
-                        alert('Error occurred while checking duplicates.');
+                        Swal.fire({
+                            position: "top",
+                            title: 'Error!',
+                            text: 'Error occurred while checking duplicates.' || "An error occurred.",
+                            icon: "error",
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
                         console.error(status, error);
                     },
                 });
@@ -774,47 +876,132 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             });
 
             $('#approveSimilarBtn').on('click', function() {
-                if (confirm("Are you sure you want to save this profile?")) {
-                    const profileId = $('#modal_1_profileId').val();
-                    const firstName = $('#modal_1_firstName').val().trim();
-                    const lastName = $('#modal_1_lastName').val().trim();
-                    const profileType = $('#modal_1_profileType').val();
-                    const profileImg = $('#modal_1_profileImg').attr('src').split('/').pop();
-                    const rfid = $('#modal_1_rfid').val().trim();
+                const profileId = $('#modal_1_profileId').val();
+                const firstName = $('#modal_1_firstName').val().trim();
+                const lastName = $('#modal_1_lastName').val().trim();
+                const profileType = $('#modal_1_profileType').val();
+                const profileImg = $('#modal_1_profileImg').attr('src').split('/').pop();
 
-                    approveProfile(profileId, firstName, lastName, profileType, profileImg, rfid);
-                }
+                const rfid = $('#modal_1_rfid').val().trim();
+
+                // Prepare the RFID display value
+                const rfidDisplay = rfid ? rfid : "N/A";
+                const profileImgDisplay = `/tapnlog/Image/Pending/${profileImg}`;
+
+                // SweetAlert2 confirmation
+                Swal.fire({
+                    title: 'Do you wish to proceed with the approval confirmation?',
+                    html: `
+                            <div style="text-align: center;">
+                                <!-- Responsive image container -->
+                                <div style="width: 80%; max-width: 300px; aspect-ratio: 1; margin: 0 auto; border: 1px solid #ddd; border-radius: 50%; overflow: hidden; margin-bottom: 15px;">
+                                    <img src="${profileImgDisplay}" alt="Profile Image" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                
+                                <p><strong>Type:</strong> ${profileType}</p>
+                                <p><strong>Name:</strong> ${firstName} ${lastName}</p>
+                                <p><strong>RFID:</strong> ${rfidDisplay}</p>
+                            </div>
+                        `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Approve',
+                    cancelButtonText: 'No, Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Run the approveProfile function if confirmed
+                        approveProfile(profileId, firstName, lastName, profileType, profileImg, rfid);
+                    }
+                });
             });
 
-            // View details: discard button
+
             $('#discardSimilarBtn').on('click', function() {
                 const profileId = $('#modal_1_profileId').val(); // Get profile ID from the hidden input in the modal
+                const firstName = $('#modal_1_firstName').val().trim();
+                const lastName = $('#modal_1_lastName').val().trim();
+                const profileType = $('#modal_1_profileType').val();
+                const profileImg = $('#modal_1_profileImg').attr('src').split('/').pop();
+                const rfid = $('#modal_1_rfid').val().trim();
 
-                if (confirm('Are you sure you want to delete this profile? This action cannot be undone.')) {
-                    $.ajax({
-                        url: 'delete_profile.php', // URL to the PHP script
-                        type: 'POST',
-                        data: {
-                            profile_id: profileId
-                        },
-                        success: function(response) {
-                            const result = JSON.parse(response);
+                // Prepare the RFID display value
+                const rfidDisplay = rfid ? rfid : "N/A";
+                const profileImgDisplay = `/tapnlog/Image/Pending/${profileImg}`;
 
-                            if (result.success) {
-                                alert(result.message); // Show success message
-                                $('#profileDetailsModal, #duplicateProfileModal').modal('hide');
-                                fetchProfiles(); // Refresh the table or data
-                            } else {
-                                alert('Error: ' + result.message); // Show error message
+                // SweetAlert2 confirmation dialog with details
+                Swal.fire({
+                    title: 'Are you sure you want to delete this profile?',
+                    html: `
+                        <div style="text-align: center;">
+                            <!-- Responsive image container -->
+                            <div style="width: 80%; max-width: 300px; aspect-ratio: 1; margin: 0 auto; border: 1px solid #ddd; border-radius: 50%; overflow: hidden; margin-bottom: 15px;">
+                                <img src="${profileImgDisplay}" alt="Profile Image" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            
+                            <p><strong>Type:</strong> ${profileType}</p>
+                            <p><strong>Name:</strong> ${firstName} ${lastName}</p>
+                            <p><strong>RFID:</strong> ${rfidDisplay}</p>
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Delete',
+                    cancelButtonText: 'No, Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // AJAX request to delete the profile
+                        $.ajax({
+                            url: 'delete_profile.php', // URL to the PHP script
+                            type: 'POST',
+                            data: {
+                                profile_id: profileId
+                            },
+                            success: function(response) {
+                                const result = JSON.parse(response);
+
+                                if (result.success) {
+                                    // Show success message
+                                    Swal.fire({
+                                        position: "top",
+                                        title: 'Success!',
+                                        text: result.message,
+                                        icon: 'success',
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false
+                                    });
+
+                                    // Close the modals and refresh the table or data
+                                    $('#profileDetailsModal, #duplicateProfileModal').modal('hide');
+                                    fetchProfiles();
+                                } else {
+                                    // Show error message
+                                    Swal.fire({
+                                        position: "top",
+                                        title: 'Error!',
+                                        text: result.message,
+                                        icon: 'error',
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false
+                                    });
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                // Handle AJAX error
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'An error occurred while deleting the profile. Please try again.',
+                                    icon: 'error',
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false
+                                });
+                                console.error('Error details:', status, error); // Log details for debugging
                             }
-                        },
-                        error: function(xhr, status, error) {
-                            alert('An error occurred while deleting the profile. Please try again.');
-                            console.error('Error details:', status, error); // Log details for debugging
-                        }
-                    });
-                }
+                        });
+                    }
+                });
             });
+
 
 
             function approveProfile(profileId, firstName, lastName, profileType, profileImg, rfid) {
@@ -832,15 +1019,41 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     success: function(response) {
                         const result = JSON.parse(response);
                         if (result.success) {
-                            alert(result.message);
+
+                            Swal.fire({
+                                position: "top",
+                                title: 'Success!',
+                                text: result.message,
+                                icon: "success",
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false
+                            });
+
                             fetchProfiles(); // Refresh the table
                             $('#profileDetailsModal, #duplicateProfileModal').modal('hide');
                         } else {
-                            alert(result.message);
+                            Swal.fire({
+                                position: "top",
+                                title: 'Error!',
+                                text: result.message || "An error occurred.",
+                                icon: "error",
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false
+                            });
                         }
                     },
                     error: function(xhr, status, error) {
-                        alert('Error occurred while approving the profile.');
+                        Swal.fire({
+                            position: "top",
+                            title: 'Error!',
+                            text: "Error occurred while approving the profile.",
+                            icon: "error",
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
                         console.error(status, error);
                     },
                 });

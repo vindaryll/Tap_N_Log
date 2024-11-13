@@ -239,8 +239,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                 croppedImage = null;
 
                                 // Head to main menu to avoid double sending the request
-                                header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
-                                exit();
+                                window.location.href = '/TAPNLOG/Starting_Folder/Landing_page/index.php';
                             } else {
                                 alert(response.message); // Show error message
                             }

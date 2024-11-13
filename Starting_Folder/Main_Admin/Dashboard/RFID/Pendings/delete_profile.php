@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['profile_id'])) {
 
                     if ($deleteStmt->execute()) {
                         $response['success'] = true;
-                        $response['message'] = 'Profile and associated image deleted successfully.';
+                        $response['message'] = 'Profile deleted successfully!';
                     } else {
                         $response['message'] = 'Failed to delete profile from the database.';
                     }

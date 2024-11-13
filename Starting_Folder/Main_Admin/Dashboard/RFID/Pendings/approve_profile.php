@@ -41,7 +41,7 @@ if (file_exists($sourcePath) && rename($sourcePath, $destinationPath)) {
         $deleteStmt->bind_param('i', $profile_id);
         $deleteStmt->execute();
 
-        echo json_encode(['success' => true, 'message' => 'Profile approved successfully.']);
+        echo json_encode(['success' => true, 'message' => 'Profile approved successfully!']);
     } else {
         echo json_encode(['success' => false, 'message' => 'Failed to save profile to database.']);
     }
