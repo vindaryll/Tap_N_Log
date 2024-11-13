@@ -10,6 +10,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,15 +27,26 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 
     <style>
-        #profileImg { width: 100%; height: auto; max-width: 400px; border: 1px solid #ddd; object-fit: cover; }
-        .form-container { padding-top: 1rem; }
+        #profileImg {
+            width: 100%;
+            height: auto;
+            max-width: 400px;
+            border: 1px solid #ddd;
+            object-fit: cover;
+        }
 
-        .is-invalid-image { 
-            border: 2px solid red !important; /* Add a red border for invalid image */
+        .form-container {
+            padding-top: 1rem;
+        }
+
+        .is-invalid-image {
+            border: 2px solid red !important;
+            /* Add a red border for invalid image */
         }
     </style>
 
 </head>
+
 <body>
 
     <div class="container mt-5">
@@ -60,7 +72,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         <input type="text" class="form-control" id="firstName" name="first_name" required>
                         <div id="firstName-feedback" class="invalid-feedback" style="display: block;"></div>
                     </div>
-                    
+
                     <!-- Last Name -->
                     <div class="mb-3">
                         <label for="lastName" class="form-label">Last Name</label>
@@ -78,8 +90,8 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         </select>
                     </div>
                     <div class="d-flex flex-wrap gap-2">
-                        <button type="button" class="btn btn-secondary flex-fill" id="discardBtn">Discard</button>
-                        <button type="button" class="btn btn-success flex-fill" id="saveBtn">Save</button>
+                        <button type="button" class="btn btn-secondary flex-fill" id="discardBtn">BACK</button>
+                        <button type="button" class="btn btn-success flex-fill" id="saveBtn">SAVE</button>
                     </div>
                 </form>
             </div>
@@ -110,22 +122,21 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
     <script>
-
         $(document).ready(function() {
-            
+
             let cropper;
             let croppedImage = null;
 
             // Initialize Cropper
-            $('#fileInput').change(function () {
+            $('#fileInput').change(function() {
                 const file = this.files[0];
                 if (file) {
                     const reader = new FileReader();
-                    reader.onload = function (e) {
+                    reader.onload = function(e) {
                         $('#imageToCrop').attr('src', e.target.result).show();
                         if (cropper) cropper.destroy();
                         cropper = new Cropper(document.getElementById('imageToCrop'), {
@@ -144,9 +155,12 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 }
             });
 
-            $('#saveCrop').click(function () {
+            $('#saveCrop').click(function() {
                 if (cropper) {
-                    const canvas = cropper.getCroppedCanvas({ width: 600, height: 600 });
+                    const canvas = cropper.getCroppedCanvas({
+                        width: 600,
+                        height: 600
+                    });
                     croppedImage = canvas.toDataURL('image/png');
                     $('#profileImg').attr('src', croppedImage);
 
@@ -162,29 +176,27 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 }
             });
 
-            $('#discardBtn').click(function () {
-                // go back to landing page
-                if (confirm('Are you sure you want to discard changes?')) {
-                    window.location.href = '../Landing_page/index.php';
-                }
+            $('#discardBtn').click(function() {
+
+                window.location.href = '../Landing_page/index.php';
             });
 
-            $('#cancelCrop').click(function () {
+            $('#cancelCrop').click(function() {
 
                 $('#uploadModal').modal('hide');
 
                 // Destroy the cropper instance
-                if (cropper){
+                if (cropper) {
                     cropper.destroy();
                     cropper = null; // Set cropper to null after destroying it
                     $('#imageToCrop').attr('src', '').hide(); // Clear and hide the cropped image
                     $('#fileInput').val(''); // Clear the file input               
-                }              
+                }
             });
 
-            $('#removePicBtn').click(function () {
+            $('#removePicBtn').click(function() {
                 // go back to landing page
-                if(croppedImage){
+                if (croppedImage) {
                     if (confirm('Are you sure you want to remove the image?')) {
                         $('#profileImg').attr('src', '../../Image/logo_and_icons/default_avatar.png');
                         croppedImage = null;
@@ -193,19 +205,19 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             });
 
 
-            $('#saveBtn').click(function () {
+            $('#saveBtn').click(function() {
 
                 // Check feedback messages
                 validateFirstName();
                 validateLastName();
                 validateImageUpload();
-                if(checksaveBtn()){
+                if (checksaveBtn()) {
                     // Trigger the login form
                     $('#profileForm').submit();
                 }
             });
 
-            $('#profileForm').submit(function (e) {
+            $('#profileForm').submit(function(e) {
                 e.preventDefault(); // Prevent the default form submission
                 if (confirm('Are you sure you want to save this profile?')) {
                     $.ajax({
@@ -218,7 +230,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             profile_img: croppedImage ? croppedImage : ''
                         },
                         dataType: 'json', // Expecting a JSON response
-                        success: function (response) {
+                        success: function(response) {
                             // Check if the response indicates success
                             if (response.success) {
                                 alert(response.message); // Show success message
@@ -232,7 +244,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                 alert(response.message); // Show error message
                             }
                         },
-                        error: function () {
+                        error: function() {
                             alert("An error occurred while saving the profile."); // General error message
                         }
                     });
@@ -311,7 +323,40 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 }
             }
 
+            // Function for dynamic discard/back button
+            function checkDiscardBtn() {
+                let isImageValid = croppedImage !== null; // Check if a cropped image exists
+                let isFirstNameValid = $('#firstName').val().trim() !== "" && !$('#firstName').hasClass('is-invalid');
+                let isLastNameValid = $('#lastName').val().trim() !== "" && !$('#lastName').hasClass('is-invalid');
+
+                if (isImageValid || isFirstNameValid || isLastNameValid) {
+                    // Change the button to "DISCARD" with a confirmation message
+                    $('#discardBtn').text('DISCARD');
+                    $('#discardBtn').removeClass('btn-secondary').addClass('btn-danger');
+                    $('#discardBtn').off('click').on('click', function() {
+                        if (confirm('Are you sure you want to discard changes?')) {
+                            window.location.href = '../Landing_page/index.php';
+                        }
+                    });
+                } else {
+                    // Change the button to "BACK" without a confirmation message
+                    $('#discardBtn').text('BACK');
+                    $('#discardBtn').removeClass('btn-danger').addClass('btn-secondary');
+                    $('#discardBtn').off('click').on('click', function() {
+                        window.location.href = '../Landing_page/index.php';
+                    });
+                }
+            }
+
+
+            $('#firstName, #lastName').on('input change', checkDiscardBtn);
+            $('#removePicBtn').on('click', checkDiscardBtn);
+            $('#saveCrop').on('click', checkDiscardBtn);
+            $('#cancelCrop').on('click', checkDiscardBtn);
+
+
         });
     </script>
 </body>
+
 </html>
