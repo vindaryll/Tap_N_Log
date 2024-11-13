@@ -35,6 +35,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+    <!-- Sweet alert 2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <title>Co-Admin Account | Main Admin</title>
     <style>
         /* Profile Image with 1:1 Ratio */
@@ -251,86 +254,21 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     <h5 class="modal-title" id="duplicateProfileModalLabel">SIMILAR PROFILES</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="same_result" style="max-height: 70vh; overflow-y: auto;">
+                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
 
-                    <!-- result examples -->
-                    <div class="row d-flex justify-content-center">
-                        <!-- Example Card Structure -->
-                        <div class="col-lg-6">
-                            <div class="card mb-3">
-                                <div class="profile-image-container">
-                                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Profile Image">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-text"><strong>Date Approved:</strong> 2024-10-20</p>
-                                    <p class="card-text"><strong>Name:</strong> John Doe</p>
-                                    <p class="card-text"><strong>Type of Profile:</strong> OJT</p>
-                                    <p class="card-text"><strong>Status:</strong> Active</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="card mb-3">
-                                <div class="profile-image-container">
-                                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Profile Image">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-text"><strong>Date Approved:</strong> 2024-10-20</p>
-                                    <p class="card-text"><strong>Name:</strong> John Doe</p>
-                                    <p class="card-text"><strong>Type of Profile:</strong> OJT</p>
-                                    <p class="card-text"><strong>Status:</strong> Active</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="card mb-3">
-                                <div class="profile-image-container">
-                                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Profile Image">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-text"><strong>Date Approved:</strong> 2024-10-20</p>
-                                    <p class="card-text"><strong>Name:</strong> John Doe</p>
-                                    <p class="card-text"><strong>Type of Profile:</strong> OJT</p>
-                                    <p class="card-text"><strong>Status:</strong> Active</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="card mb-3">
-                                <div class="profile-image-container">
-                                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Profile Image">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-text"><strong>Date Approved:</strong> 2024-10-20</p>
-                                    <p class="card-text"><strong>Name:</strong> John Doe</p>
-                                    <p class="card-text"><strong>Type of Profile:</strong> OJT</p>
-                                    <p class="card-text"><strong>Status:</strong> Active</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="card mb-3">
-                                <div class="profile-image-container">
-                                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Profile Image">
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-text"><strong>Date Approved:</strong> 2024-10-20</p>
-                                    <p class="card-text"><strong>Name:</strong> John Doe</p>
-                                    <p class="card-text"><strong>Type of Profile:</strong> OJT</p>
-                                    <p class="card-text"><strong>Status:</strong> Active</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Repeat cards as needed for each similar profile -->
+                    <!-- RESULTS -->
+                    <div class="row d-flex justify-content-center" id="same_result">
+
+
                     </div>
                 </div>
                 <div class="modal-footer">
 
                     <div class="row p-0 w-100">
-                        <div id="cancelEditBtn_cont" class="col-md-6 col-sm-12 p-1">
+                        <div id="discardSimilarBtn_cont" class="col-md-6 col-sm-12 p-1">
                             <button type="button" class="btn btn-danger w-100" id="discardSimilarBtn">DISCARD</button>
                         </div>
-                        <div id="saveEditBtn_cont" class="col-md-6 col-sm-12 p-1">
+                        <div id="approveSimilarBtn_cont" class="col-md-6 col-sm-12 p-1">
                             <button type="button" class="btn btn-success w-100" id="approveSimilarBtn">APPROVE ANYWAY</button>
                         </div>
                     </div>
@@ -419,6 +357,16 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 window.location.href = '../main_page.php';
             });
 
+            // RFID TEXT DELETE BEHAVIOR:
+            $('#modal_1_rfid').on('keydown', function(e) {
+                // Check if the key pressed is either Backspace (8) or Delete (46)
+                if (e.keyCode === 8 || e.keyCode === 46) {
+                    // Clear the input field
+                    $(this).val('');
+                }
+                validateRFID();
+            });
+
 
             // START
             fetchProfiles();
@@ -480,6 +428,26 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         $('#modal_1_profileType').val(originalData.profileType);
                         $('#modal_1_profileImg').attr('src', originalData.imgSrc);
 
+                        // Remove the invalid first
+                        $('#firstName-feedback').text('').removeClass('invalid-feedback');
+                        $('#lastName-feedback').text('').removeClass('invalid-feedback');
+                        $('#modal_1_rfid').text('').removeClass('invalid-feedback');
+
+                        $('#modal_1_firstName').removeClass('is-invalid');
+                        $('#modal_1_lastName').removeClass('is-invalid');
+                        $('#modal_1_rfid').val('').removeClass('is-invalid');
+
+                        // dine
+
+                        // Hide edit buttons and show action buttons
+                        $('#cancelEditBtn_cont, #saveEditBtn_cont').hide();
+                        $('#discardBtn_cont, #editBtn_cont, #approveBtn_cont').show();
+
+                        // Disable editing
+                        $('#modal_1_firstName, #modal_1_lastName, #modal_1_profileType').prop('disabled', true);
+                        $('#modal_1_rfid').prop('disabled', false);
+
+
                         // Open modal
                         $('#profileDetailsModal').modal('show');
                     },
@@ -503,6 +471,11 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 $('#modal_1_firstName').val(originalData.firstName);
                 $('#modal_1_lastName').val(originalData.lastName);
                 $('#modal_1_profileType').val(originalData.profileType);
+
+                $('#firstName-feedback').text('').removeClass('invalid-feedback');
+                $('#lastName-feedback').text('').removeClass('invalid-feedback');
+                $('#modal_1_firstName').removeClass('is-invalid');
+                $('#modal_1_lastName').removeClass('is-invalid');
 
                 // Reset image in case it was modified
                 $('#modal_1_profileImg').attr('src', originalData.imgSrc);
@@ -651,21 +624,51 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 }
             }
 
-            // Validation for RFID
             function validateRFID() {
                 const rfid = $('#modal_1_rfid').val().trim();
-                const rfidRegex = /^[A-Za-z0-9]*$/; // Alphanumeric, no minimum, and allows empty
+                const profileType = $('#modal_1_profileType').val();
+                const rfidRegex = /^[A-Za-z0-9]*$/; // Alphanumeric, allows empty
 
                 // Clear previous feedback
                 $('#rfid-feedback').text('').removeClass('invalid-feedback');
                 $('#modal_1_rfid').removeClass('is-invalid');
 
-                if (!rfidRegex.test(rfid)) {
-                    // Check if it matches the required pattern
+                // If RFID is not empty, validate it
+                if (rfid && !rfidRegex.test(rfid)) {
                     $('#rfid-feedback').text('RFID must be alphanumeric.').addClass('invalid-feedback');
                     $('#modal_1_rfid').addClass('is-invalid');
+                    return;
                 }
+
+                // If RFID is empty, no need for uniqueness check
+                if (!rfid) {
+                    return;
+                }
+
+                // AJAX call to check if the RFID exists
+                $.ajax({
+                    url: 'check_rfid.php', // Backend script for RFID validation
+                    type: 'POST',
+                    data: {
+                        rfid: rfid,
+                        type_of_profile: profileType
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.exists) {
+                            $('#rfid-feedback').text('RFID already exists for this type of profile. Please use a different one.').addClass('invalid-feedback');
+                            $('#modal_1_rfid').addClass('is-invalid');
+                        } else {
+                            $('#rfid-feedback').text(''); // Clear feedback
+                            $('#modal_1_rfid').removeClass('is-invalid');
+                        }
+                    },
+                    error: function() {
+                        alert('An error occurred while validating RFID.');
+                    }
+                });
             }
+
 
             function checksaveEditBtn() {
                 const isFirstNameValid = !$('#modal_1_firstName').hasClass('is-invalid') && $('#modal_1_firstName').val().trim() !== '';
@@ -679,9 +682,169 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
             }
 
+            function checkapproveBtn() {
+                const isFirstNameValid = !$('#modal_1_firstName').hasClass('is-invalid') && $('#modal_1_firstName').val().trim() !== '';
+                const isLastNameValid = !$('#modal_1_lastName').hasClass('is-invalid') && $('#modal_1_lastName').val().trim() !== '';
+                const isRFIDValid = !$('#modal_1_rfid').hasClass('is-invalid');
 
-            
+                if (!isFirstNameValid || !isLastNameValid || !isRFIDValid) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
 
+
+            // APPROVE FUNCTIONS
+
+            $('#approveBtn').on('click', function() {
+
+                if (!checkapproveBtn()) {
+                    // do nothing
+                    return;
+                }
+
+
+                const profileId = $('#modal_1_profileId').val();
+                const firstName = $('#modal_1_firstName').val().trim();
+                const lastName = $('#modal_1_lastName').val().trim();
+                const profileType = $('#modal_1_profileType').val();
+                const profileImg = $('#modal_1_profileImg').attr('src').split('/').pop();
+                const rfid = $('#modal_1_rfid').val().trim();
+
+                $.ajax({
+                    url: 'check_duplicates.php', // Endpoint to check duplicates
+                    type: 'POST',
+                    data: {
+                        first_name: firstName,
+                        last_name: lastName,
+                        type_of_profile: profileType,
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.duplicates.length > 0) {
+                            // Populate the modal with duplicate profiles
+                            const modalBody = $('#same_result');
+                            modalBody.empty();
+
+                            response.duplicates.forEach((profile) => {
+                                // Ensure the image path is valid or use a default image
+                                const imgPath = profile.img && profile.img.trim() !== "" ?
+                                    `/TAPNLOG/Image/${profile.type.toUpperCase()}/${profile.img}` :
+                                    "/TAPNLOG/Image/LOGO_AND_ICONS/default_avatar.png";
+
+                                // Handle null or undefined RFID
+                                const rfidValue = profile.rfid ? profile.rfid : "N/A";
+
+                                // Create a card for each duplicate profile
+                                const card = `
+                                    <div class="col-lg-6">
+                                        <div class="card mb-3">
+                                            <div class="profile-image-container">
+                                                <img src="${imgPath}" class="card-img-top" alt="Profile Image">
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="card-text"><strong>Name:</strong> ${profile.first_name} ${profile.last_name}</p>
+                                                <p class="card-text"><strong>Type:</strong> ${profile.type}</p>
+                                                <p class="card-text"><strong>Status:</strong> ${profile.status}</p>
+                                                <p class="card-text"><strong>RFID:</strong> ${rfidValue}</p>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                                modalBody.append(card);
+                            });
+
+                            // Show the duplicate modal
+                            $('#duplicateProfileModal').modal('show');
+                        } else {
+
+                            if (confirm("Are you sure you want to approve this?")) {
+                                // No duplicates, approve the profile
+                                approveProfile(profileId, firstName, lastName, profileType, profileImg, rfid);
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error occurred while checking duplicates.');
+                        console.error(status, error);
+                    },
+                });
+
+
+            });
+
+            $('#approveSimilarBtn').on('click', function() {
+                if (confirm("Are you sure you want to save this profile?")) {
+                    const profileId = $('#modal_1_profileId').val();
+                    const firstName = $('#modal_1_firstName').val().trim();
+                    const lastName = $('#modal_1_lastName').val().trim();
+                    const profileType = $('#modal_1_profileType').val();
+                    const profileImg = $('#modal_1_profileImg').attr('src').split('/').pop();
+                    const rfid = $('#modal_1_rfid').val().trim();
+
+                    approveProfile(profileId, firstName, lastName, profileType, profileImg, rfid);
+                }
+            });
+
+            // View details: discard button
+            $('#discardSimilarBtn').on('click', function() {
+                const profileId = $('#modal_1_profileId').val(); // Get profile ID from the hidden input in the modal
+
+                if (confirm('Are you sure you want to delete this profile? This action cannot be undone.')) {
+                    $.ajax({
+                        url: 'delete_profile.php', // URL to the PHP script
+                        type: 'POST',
+                        data: {
+                            profile_id: profileId
+                        },
+                        success: function(response) {
+                            const result = JSON.parse(response);
+
+                            if (result.success) {
+                                alert(result.message); // Show success message
+                                $('#profileDetailsModal, #duplicateProfileModal').modal('hide');
+                                fetchProfiles(); // Refresh the table or data
+                            } else {
+                                alert('Error: ' + result.message); // Show error message
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert('An error occurred while deleting the profile. Please try again.');
+                            console.error('Error details:', status, error); // Log details for debugging
+                        }
+                    });
+                }
+            });
+
+
+            function approveProfile(profileId, firstName, lastName, profileType, profileImg, rfid) {
+                $.ajax({
+                    url: 'approve_profile.php', // Endpoint to approve profile
+                    type: 'POST',
+                    data: {
+                        profile_id: profileId,
+                        first_name: firstName,
+                        last_name: lastName,
+                        type_of_profile: profileType,
+                        profile_img: profileImg,
+                        rfid: rfid, // Include RFID in the request
+                    },
+                    success: function(response) {
+                        const result = JSON.parse(response);
+                        if (result.success) {
+                            alert(result.message);
+                            fetchProfiles(); // Refresh the table
+                            $('#profileDetailsModal, #duplicateProfileModal').modal('hide');
+                        } else {
+                            alert(result.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error occurred while approving the profile.');
+                        console.error(status, error);
+                    },
+                });
+            }
 
         });
     </script>

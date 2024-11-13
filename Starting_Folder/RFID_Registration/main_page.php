@@ -236,10 +236,11 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                 alert(response.message); // Show success message
                                 $('#profileForm')[0].reset(); // Reset the form fields
                                 $('#profileImg').attr('src', '../../Image/logo_and_icons/default_avatar.png'); // Reset the profile image
+                                croppedImage = null;
 
                                 // Head to main menu to avoid double sending the request
-                                // header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
-                                // exit();
+                                header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
+                                exit();
                             } else {
                                 alert(response.message); // Show error message
                             }
@@ -353,6 +354,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             $('#removePicBtn').on('click', checkDiscardBtn);
             $('#saveCrop').on('click', checkDiscardBtn);
             $('#cancelCrop').on('click', checkDiscardBtn);
+            $('#saveBtn').on('click', checkDiscardBtn);
 
 
         });
