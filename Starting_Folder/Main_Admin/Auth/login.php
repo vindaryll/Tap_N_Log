@@ -40,7 +40,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <title>Login Page</title>
+    <title>Main Admin | Login Page</title>
 
     <style>
         /* Style for password inputs */
@@ -64,6 +64,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
             min-height: 100vh;
             margin: 0;
             position: relative;
+            overflow-y: auto;
         }
 
         .back-icon {
@@ -74,10 +75,12 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
             font-size: 40px;
             cursor: pointer;
             text-decoration: none;
+            transition: transform 0.3s;
         }
 
         .back-icon:hover {
             color: #145dbf;
+            transform: scale(1.1);
         }
 
         .login-container {
@@ -90,6 +93,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
             background-color: white;
             border-radius: 10px;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
         }
 
         .logo-container {
@@ -97,6 +101,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
             flex-direction: column;
             align-items: center;
             margin-bottom: 20px;
+            animation: fadeIn 1.5s ease-in-out;
         }
 
         .logo-container img {
@@ -118,10 +123,12 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
         .btn-primary {
             background-color: #1877f2;
             border: none;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         .btn-primary:hover {
             background-color: #145dbf;
+            transform: scale(1.02);
         }
 
         .input-group-text {
@@ -129,10 +136,84 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
             border: none;
         }
 
+        .input-field {
+            animation: slideInUp 1s ease-in-out;
+        }
+
+        .invalid-feedback {
+            display: none;
+            animation: shake 0.3s ease-in-out;
+        }
+
+        .invalid-feedback.active {
+            display: block;
+            color: red;
+            animation: shake 0.3s ease-in-out;
+        }
+
+
         .forgot-password-link {
             display: block;
             margin-top: 15px;
             text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-5px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
         }
 
         /* Responsive design */
@@ -164,13 +245,13 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
         <!-- Logo Section -->
         <div class="logo-container">
             <img src="/tapnlog/image/logo_and_icons/logo_icon.png" alt="Tap-N-Log Logo">
-            <h1>Tap-N-Log</h1>
+            <h1>Main Administrator</h1>
         </div>
 
         <!-- Login Form -->
         <form class="w-100" id="loginForm" action="validate_login.php" method="post">
             <div class="mb-3">
-                <label for="usernameOrEmail" class="form-label">Admin Username or Email:</label>
+                <label for="usernameOrEmail" class="form-label">Username or Email:</label>
                 <input type="text" class="form-control" id="usernameOrEmail" name="usernameOrEmail" required>
                 <div id="usernameOrEmail-feedback" class="invalid-feedback"></div>
             </div>
@@ -208,12 +289,16 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                 </div>
                 <div class="modal-body">
 
-                    <div class="mb-3">
-                        <input type="text" id="emailOrUsername" class="form-control" placeholder="Enter Email or Username">
-                        <div id="emailOrUsername-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <input type="text" id="emailOrUsername" class="form-control" placeholder="Enter Email or Username">
+                            <div id="emailOrUsername-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
+                        </div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-end">
+                        <button id="sendCodeBtn" class="btn btn-primary mt-3">Send Code</button>
                     </div>
 
-                    <button id="sendCodeBtn" class="btn btn-primary mt-3">Send Code</button>
                 </div>
             </div>
         </div>

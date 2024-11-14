@@ -362,52 +362,6 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
  
             });
 
-            // Handle Send Code button click
-            $('#sendCodeBtn').click(function () {
-                let _emailOrUsername = $('#emailOrUsername').val();
-
-                    // Disable the button with timer to prevent spam
-                    startSendTimer(); 
-
-                    current = {
-                        emailOrUsername: _emailOrUsername
-                    };
-
-                    $.ajax({
-                        url: 'check_user.php',
-                        type: 'POST',
-                        data: { emailOrUsername: current.emailOrUsername},
-                        dataType: 'json',
-                        success: function (response) {
-                            if (response.success) {
-
-                                // Start the resend button timer initially
-                                startResendTimer();
-
-                                // Alert message
-                                alert(response.message);  
-
-                                // If OTP is sent successfully, hide this modal
-                                $('#modalForgotPassword').modal('hide');
-
-                                // Set the value empty initially
-                                $('#otpCode').val('');
-
-                                $('#modalOTP').modal('show');
-                            } else {
-                                alert(response.message); // Show error message if user not found
-
-                                clearInterval(sendTimeout);
-                                $('#sendCodeBtn').prop('disabled', false).text('Send Code');
-                            }
-                        },
-                        error: function () {
-                            alert('An error occurred while processing your request.');
-                        }
-                    });
-                
-            });
-
 
             // Handle Resend Code button click
             let resendTimeout;

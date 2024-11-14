@@ -91,7 +91,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     </div>
                     <div class="d-flex flex-wrap gap-2">
                         <button type="button" class="btn btn-secondary flex-fill" id="discardBtn">BACK</button>
-                        <button type="button" class="btn btn-success flex-fill" id="saveBtn">SAVE</button>
+                        <button type="button" class="btn btn-success flex-fill" id="saveBtn">REGISTER</button>
                     </div>
                 </form>
             </div>
@@ -145,7 +145,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             movable: true,
                             zoomable: true,
                             scalable: true,
-                            rotatable: false,
+                            rotatable: true,
                             cropBoxMovable: true,
                             cropBoxResizable: true,
 

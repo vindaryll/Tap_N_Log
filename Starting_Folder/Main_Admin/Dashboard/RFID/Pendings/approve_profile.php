@@ -2,51 +2,97 @@
 session_start();
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-$profile_id = intval($_POST['profile_id']);
-$first_name = trim($_POST['first_name']);
-$last_name = trim($_POST['last_name']);
-$profile_type = trim($_POST['type_of_profile']);
-$profile_img = trim($_POST['profile_img']);
-$rfid = trim($_POST['rfid']); // RFID field
+$response = ['success' => false, 'message' => ''];
 
-$table_mapping = [
-    'CFW' => ['table' => 'cfw_profile', 'folder' => '/TAPNLOG/Image/CFW/'],
-    'OJT' => ['table' => 'ojt_profile', 'folder' => '/TAPNLOG/Image/OJT/'],
-    'EMPLOYEE' => ['table' => 'employees_profile', 'folder' => '/TAPNLOG/Image/EMPLOYEES/'],
-];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Sanitize inputs
+    $profile_id = intval($_POST['profile_id']);
+    $first_name = htmlspecialchars(trim($_POST['first_name']));
+    $last_name = htmlspecialchars(trim($_POST['last_name']));
+    $profile_type = htmlspecialchars(trim($_POST['type_of_profile']));
+    $profile_img = htmlspecialchars(trim($_POST['profile_img']));
+    $rfid = htmlspecialchars(trim($_POST['rfid'])) ?: null; // Allow NULL for RFID
 
-if (!isset($table_mapping[$profile_type])) {
-    echo json_encode(['success' => false, 'message' => 'Invalid profile type.']);
-    exit();
-}
+    // Admin ID for logging
+    $admin_id = $_SESSION['admin_id'];
 
-$destinationFolder = $_SERVER['DOCUMENT_ROOT'] . $table_mapping[$profile_type]['folder'];
-$destinationPath = $destinationFolder . $profile_img;
+    // Define profile type mappings
+    $table_mapping = [
+        'CFW' => ['table' => 'cfw_profile', 'id_field' => 'cfw_id', 'img_field' => 'cfw_img', 'rfid_field' => 'cfw_rfid', 'folder' => '/TAPNLOG/Image/CFW/'],
+        'OJT' => ['table' => 'ojt_profile', 'id_field' => 'ojt_id', 'img_field' => 'ojt_img', 'rfid_field' => 'ojt_rfid', 'folder' => '/TAPNLOG/Image/OJT/'],
+        'EMPLOYEE' => ['table' => 'employees_profile', 'id_field' => 'employee_id', 'img_field' => 'employee_img', 'rfid_field' => 'employee_rfid', 'folder' => '/TAPNLOG/Image/EMPLOYEES/'],
+    ];
 
-// Move the image
-$sourcePath = $_SERVER['DOCUMENT_ROOT'] . "/TAPNLOG/Image/Pending/" . $profile_img;
-if (file_exists($sourcePath) && rename($sourcePath, $destinationPath)) {
+    if (!isset($table_mapping[$profile_type])) {
+        $response['message'] = 'Invalid profile type.';
+        echo json_encode($response);
+        exit();
+    }
 
-    // Prepare the insert query
-    $rfid_value = $rfid ? $rfid : NULL;
-    
-    $sql = "INSERT INTO {$table_mapping[$profile_type]['table']} (first_name, last_name, {$profile_type}_img, {$profile_type}_rfid) VALUES (?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ssss', $first_name, $last_name, $profile_img, $rfid_value);
+    // Source and destination paths
+    $sourcePath = $_SERVER['DOCUMENT_ROOT'] . "/TAPNLOG/Image/Pending/" . $profile_img;
+    $destinationFolder = $_SERVER['DOCUMENT_ROOT'] . $table_mapping[$profile_type]['folder'];
+    $destinationPath = $destinationFolder . $profile_img;
 
-    if ($stmt->execute()) {
-        // Delete from profile_registration
+    // Begin transaction
+    $conn->begin_transaction();
+
+    try {
+        // Move image file
+        if (!file_exists($sourcePath) || !rename($sourcePath, $destinationPath)) {
+            throw new Exception('Failed to move image.');
+        }
+
+        // Insert into the corresponding profile table
+        $sql = "INSERT INTO {$table_mapping[$profile_type]['table']} (first_name, last_name, {$table_mapping[$profile_type]['img_field']}, {$table_mapping[$profile_type]['rfid_field']}) VALUES (?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('ssss', $first_name, $last_name, $profile_img, $rfid);
+
+        if (!$stmt->execute()) {
+            throw new Exception('Failed to save profile to database.');
+        }
+
+        // Fetch the newly inserted record
+        $inserted_id = $stmt->insert_id;
+        $select_sql = "SELECT * FROM {$table_mapping[$profile_type]['table']} WHERE {$table_mapping[$profile_type]['id_field']} = ?";
+        $select_stmt = $conn->prepare($select_sql);
+        $select_stmt->bind_param('i', $inserted_id);
+        $select_stmt->execute();
+        $result = $select_stmt->get_result();
+        if ($result->num_rows === 0) {
+            throw new Exception('Failed to fetch the newly approved profile.');
+        }
+        $profile_data = $result->fetch_assoc();
+
+        // Delete from `profile_registration`
         $deleteSql = "DELETE FROM profile_registration WHERE profile_id = ?";
         $deleteStmt = $conn->prepare($deleteSql);
         $deleteStmt->bind_param('i', $profile_id);
-        $deleteStmt->execute();
+        if (!$deleteStmt->execute()) {
+            throw new Exception('Failed to delete profile registration.');
+        }
 
-        echo json_encode(['success' => true, 'message' => 'Profile approved successfully!']);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Failed to save profile to database.']);
+        // Prepare activity log details
+        $logDetails = "Approve Profile:\n\nID: {$profile_data[$table_mapping[$profile_type]['id_field']]}\nName: {$profile_data['first_name']} {$profile_data['last_name']}\nType of Profile: $profile_type\nRFID: " . ($profile_data[$table_mapping[$profile_type]['rfid_field']] ?: 'None') . "\nDate Approved: {$profile_data['date_approved']}";
+        $logQuery = "INSERT INTO admin_activity_log (section, details, category, admin_id) VALUES ('RFID', ?, 'INSERT', ?)";
+        $logStmt = $conn->prepare($logQuery);
+        $logStmt->bind_param('si', $logDetails, $admin_id);
+        if (!$logStmt->execute()) {
+            throw new Exception('Failed to log activity.');
+        }
+
+        // Commit transaction
+        $conn->commit();
+
+        $response['success'] = true;
+        $response['message'] = 'Profile approved successfully!';
+    } catch (Exception $e) {
+        // Rollback transaction in case of error
+        $conn->rollback();
+        $response['message'] = $e->getMessage();
     }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Failed to move image.']);
 }
-?>
 
+echo json_encode($response);
+
+?>

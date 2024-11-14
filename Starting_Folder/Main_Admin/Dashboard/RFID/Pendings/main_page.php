@@ -69,6 +69,30 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             overflow-y: auto;
         }
     </style>
+
+    <style>
+        /* Fixed header and scrollable body styling */
+        .table-responsive {
+            height: 400px;
+            /* Adjust the height as needed */
+            overflow-y: auto;
+        }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #343a40;
+            /* Background color for header */
+            color: white;
+            z-index: 1;
+        }
+
+        /* Pre-style to maintain line breaks without wrapping text */
+        .table-pre {
+            white-space: pre;
+            /* Maintains line breaks without word wrapping */
+        }
+    </style>
 </head>
 
 <body>
@@ -79,18 +103,14 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
 
-        <div class="container row col-sm-12">
+        <div class="container-fluid row col-sm-12">
 
             <div class="container col-sm-12 mb-3">
                 <button type="button" class="btn btn-primary" id="backbtn">Back</button>
-                <!-- Button to Open Modal -->
-                <button data-bs-toggle="modal" data-bs-target="#profileDetailsModal" class="btn btn-primary">Try for View Profile</button>
-                <!-- Button to Open Modal -->
-                <button data-bs-toggle="modal" data-bs-target="#duplicateProfileModal" class="btn btn-primary">Try for duplicate Profile</button>
             </div>
 
-            <div class="container col-sm-12">
-                <div class="container mt-5">
+            <div class="container-fluid col-sm-12">
+                <div class="container-fluid text-center">
                     <h2>Profile Management</h2>
                     <div class="mb-3">
                         <input type="text" id="searchTextbox" class="form-control" placeholder="Search by name or ID">
@@ -100,7 +120,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         <div class="container col-lg-6">
                             <div class="row">
                                 <div class="container col-md-6">
-                                    <div class="mb-3">
+                                    <div class="mb-3 text-start">
                                         <label for="from_dateInput" class="form-label">From Date</label>
                                         <div class="input-group">
                                             <input type="date" class="form-control" id="from_dateInput">
@@ -110,7 +130,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                         </div>
                                     </div>
                                 </div>
-                                <div class="container col-md-6">
+                                <div class="container col-md-6 text-start">
                                     <div class="mb-3">
                                         <label for="to_dateInput" class="form-label">To Date</label>
                                         <div class="input-group">
@@ -133,13 +153,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                     <th>ID</th>
                                     <th>Date (YYYY/MM/DD)</th>
                                     <th>Name</th>
-                                    <th class="text-center d-flex justify-content-center">
-                                        <select id="profileType" class="form-select form-select-sm">
-                                            <option value="">Type of Profiles</option>
-                                            <option value="OJT">On the job Trainees</option>
-                                            <option value="CFW">Cash for Work Staff</option>
-                                            <option value="EMPLOYEE">Employees</option>
-                                        </select>
+                                    <th>
+                                        <div class="container-fluid text-center d-flex justify-content-center" style="min-width: 200px;">
+                                            <select id="profileType" class="form-select form-select-sm">
+                                                <option value="">Type of Profiles</option>
+                                                <option value="OJT">On the job Trainees</option>
+                                                <option value="CFW">Cash for Work Staff</option>
+                                                <option value="EMPLOYEE">Employees</option>
+                                            </select>
+                                        </div>
                                     </th>
                                     <th>Actions</th>
                                 </tr>
@@ -1016,6 +1038,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         profile_img: profileImg,
                         rfid: rfid, // Include RFID in the request
                     },
+
                     success: function(response) {
                         const result = JSON.parse(response);
                         if (result.success) {
@@ -1054,7 +1077,10 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             timerProgressBar: true,
                             showConfirmButton: false
                         });
-                        console.error(status, error);
+
+                        console.error("AJAX Error: ", error);
+                        console.log("Raw Response: ", xhr.responseText);
+
                     },
                 });
             }
