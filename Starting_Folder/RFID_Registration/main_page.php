@@ -6,6 +6,12 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     exit();
 }
 
+if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset($_SESSION['website_link'])){
+    header("Location: /tapnlog/index.php");
+    exit();
+}
+
+
 ?>
 
 <!DOCTYPE html>

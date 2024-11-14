@@ -54,7 +54,6 @@ $_SESSION['website_link'] = 'http://' . $_SESSION['ip_address'] . '/TAPNLOG';
 
 
 
-
 header("Location: /tapnlog/starting_folder/landing_page/index.php");
 exit();
 
