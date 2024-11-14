@@ -234,12 +234,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             // Check if the response indicates success
                             if (response.success) {
                                 alert(response.message); // Show success message
-                                $('#profileForm')[0].reset(); // Reset the form fields
-                                $('#profileImg').attr('src', '../../Image/logo_and_icons/default_avatar.png'); // Reset the profile image
-                                croppedImage = null;
 
                                 // Head to main menu to avoid double sending the request
                                 window.location.href = '/TAPNLOG/Starting_Folder/Landing_page/index.php';
+
+                                // $('#profileForm')[0].reset(); // Reset the form fields
+                                // $('#profileImg').attr('src', '../../Image/logo_and_icons/default_avatar.png'); // Reset the profile image
+                                // croppedImage = null;
+
+                                
                             } else {
                                 alert(response.message); // Show error message
                             }

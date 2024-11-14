@@ -43,6 +43,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
     <title>Login Page</title>
 
     <style>
+        /* Style for password inputs */
         .input-group {
             position: relative;
         }
@@ -50,23 +51,132 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
         .toggle-password {
             cursor: pointer;
         }
+
+        /* Style for login container */
+
+        /* General Facebook theme */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+
+        .back-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #1877f2;
+            font-size: 40px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .back-icon:hover {
+            color: #145dbf;
+        }
+
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .logo-container h1 {
+            color: #1877f2;
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #1877f2;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #145dbf;
+        }
+
+        .input-group-text {
+            background-color: #f0f2f5;
+            border: none;
+        }
+
+        .forgot-password-link {
+            display: block;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .login-container {
+                margin: 10px;
+                box-shadow: none;
+            }
+
+            .back-icon {
+                font-size: 25px;
+                top: 30px;
+                left: 20px;
+            }
+        }
     </style>
+
 </head>
 
 <body>
 
-    <a href="../../Landing_page/index.php">back button</a>
+    <!-- Back Icon -->
+    <a href="../../Landing_page/index.php" class="back-icon">
+        <i class="bi bi-arrow-left"></i>
+    </a>
 
-    <div class="container mt-5">
-        <form id="loginForm" action="validate_login.php" method="post">
+    <div class="login-container">
+
+        <!-- Logo Section -->
+        <div class="logo-container">
+            <img src="/tapnlog/image/logo_and_icons/logo_icon.png" alt="Tap-N-Log Logo">
+            <h1>Tap-N-Log</h1>
+        </div>
+
+        <!-- Login Form -->
+        <form class="w-100" id="loginForm" action="validate_login.php" method="post">
             <div class="mb-3">
-                <label for="usernameOrEmail" class="form-label">Admin Username or Email: </label>
+                <label for="usernameOrEmail" class="form-label">Admin Username or Email:</label>
                 <input type="text" class="form-control" id="usernameOrEmail" name="usernameOrEmail" required>
-                <div id="usernameOrEmail-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
+                <div id="usernameOrEmail-feedback" class="invalid-feedback"></div>
             </div>
 
             <div class="mb-3">
-                <label for="password" class="form-label">Password: </label>
+                <label for="password" class="form-label">Password:</label>
                 <div class="input-group">
                     <input type="password" id="password" name="password" class="form-control" required>
                     <span class="input-group-text toggle-password">
@@ -79,15 +189,13 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
             <div class="mb-3">
                 <label for="captcha" class="form-label">What is <?php echo $number1 . " " . $operation . " " . $number2; ?>?</label>
                 <input type="text" class="form-control" id="captcha" name="captcha" required>
-                <div id="captcha-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
+                <div id="captcha-feedback" class="invalid-feedback"></div>
             </div>
-        </form>
-        <button type="button" id="loginBtn" class="btn btn-primary">Login</button>
 
-        <div class="mb-3">
-            <!-- Forgot password button -->
-            <button class="btn btn-primary" id="forgotPasswordButton" data-bs-toggle="modal" data-bs-target="#modalForgotPassword">Forgot Password</button>
-        </div>
+            <button type="button" id="loginBtn" class="btn btn-primary w-100">Login</button>
+        </form>
+
+        <a href="#" class="forgot-password-link" id="forgotPasswordButton" data-bs-toggle="modal" data-bs-target="#modalForgotPassword">Forgot Password?</a>
     </div>
 
     <!-- Modal 1: Enter Email/Username -->
@@ -178,6 +286,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
     <script>
         $(document).ready(function() {
 
+
             // Toggle password visibility
             $(document).on('click', '.toggle-password', function() {
                 let input = $(this).siblings('input');
@@ -241,7 +350,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                 $('#password-feedback').text('').removeClass('invalid-feedback');
 
                 if (password === "") {
-                    feedbackMessage = 'password cannot be empty.';
+                    feedbackMessage = 'Password cannot be empty.';
                 } else if (password.length < 8) {
                     feedbackMessage = 'Password must be at least 8 characters long.';
                 }
@@ -262,7 +371,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                 $('#captcha-feedback').text('').removeClass('invalid-feedback');
 
                 if (captcha === "") {
-                    feedbackMessage = 'captcha cannot be empty.';
+                    feedbackMessage = 'Captcha cannot be empty.';
                 }
 
                 if (feedbackMessage) {
