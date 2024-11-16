@@ -517,6 +517,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             });
 
             $('#saveEditBtn').click(function() {
+
                 // Validate fields before submission
                 validateFirstName();
                 validateLastName();
@@ -524,6 +525,33 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
                 // If validation fails, display an alert
                 if (checksaveEditBtn()) {
+
+                    // Check for changes
+                    const currentData = {
+                        firstName: $('#modal_1_firstName').val().trim(),
+                        lastName: $('#modal_1_lastName').val().trim(),
+                        profileType: $('#modal_1_profileType').val(),
+                        rfid: $('#modal_1_rfid').val().trim(),
+                    };
+
+                    const isChanged =
+                        currentData.firstName !== originalData.firstName ||
+                        currentData.lastName !== originalData.lastName ||
+                        currentData.profileType !== originalData.profileType ||
+                        currentData.rfid !== (originalData.rfid || '');
+
+                    if (!isChanged) {
+                        Swal.fire({
+                            title: 'No Changes Detected',
+                            text: 'You have not made any changes to the profile.',
+                            icon: 'info',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                        });
+                        return;
+                    }
+
                     Swal.fire({
                         title: 'Are you sure?',
                         text: "Do you want to save the changes?",
