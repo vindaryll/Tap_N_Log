@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Fetch the newly inserted record
         $inserted_id = $stmt->insert_id;
-        $select_sql = "SELECT *, DATE_FORMAT(date_approved, '%M %d, %Y') AS date_approved_f FROM {$table_mapping[$profile_type]['table']} WHERE {$table_mapping[$profile_type]['id_field']} = ?";
+        $select_sql = "SELECT * FROM {$table_mapping[$profile_type]['table']} WHERE {$table_mapping[$profile_type]['id_field']} = ?";
         $select_stmt = $conn->prepare($select_sql);
         $select_stmt->bind_param('i', $inserted_id);
         $select_stmt->execute();
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Prepare activity log details
-        $logDetails = "Approve Profile:\n\nID: {$profile_data[$table_mapping[$profile_type]['id_field']]}\nName: {$profile_data['first_name']} {$profile_data['last_name']}\nType of Profile: $profile_type\nRFID: " . ($profile_data[$table_mapping[$profile_type]['rfid_field']] ?: 'None') . "\nDate Approved: {$profile_data['date_approved_f']}";
+        $logDetails = "Approve Profile:\n\nID: {$profile_data[$table_mapping[$profile_type]['id_field']]}\nName: {$profile_data['first_name']} {$profile_data['last_name']}\nType of Profile: $profile_type\nRFID: " . ($profile_data[$table_mapping[$profile_type]['rfid_field']] ?: 'None');
         $logQuery = "INSERT INTO admin_activity_log (section, details, category, admin_id) VALUES ('RFID', ?, 'INSERT', ?)";
         $logStmt = $conn->prepare($logQuery);
         $logStmt->bind_param('si', $logDetails, $admin_id);

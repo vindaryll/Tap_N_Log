@@ -494,26 +494,71 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
             // Cancel Edit Button Click Handler
             $('#cancelEditBtn').click(function() {
-                // Revert fields to original values
-                $('#modal_1_firstName').val(originalData.firstName);
-                $('#modal_1_lastName').val(originalData.lastName);
-                $('#modal_1_profileType').val(originalData.profileType);
+                // Capture current values from modal
+                const currentFirstName = $('#modal_1_firstName').val().trim();
+                const currentLastName = $('#modal_1_lastName').val().trim();
+                const currentProfileType = $('#modal_1_profileType').val();
 
-                $('#firstName-feedback').text('').removeClass('invalid-feedback');
-                $('#lastName-feedback').text('').removeClass('invalid-feedback');
-                $('#modal_1_firstName').removeClass('is-invalid');
-                $('#modal_1_lastName').removeClass('is-invalid');
+                // Check if there are any changes
+                const hasChanges =
+                    currentFirstName !== originalData.firstName ||
+                    currentLastName !== originalData.lastName ||
+                    currentProfileType !== originalData.profileType;
 
-                // Reset image in case it was modified
-                $('#modal_1_profileImg').attr('src', originalData.imgSrc);
+                if (hasChanges) {
+                    // Show confirmation dialog if there are changes
+                    Swal.fire({
+                        title: 'Unsaved Changes Detected',
+                        text: 'You have unsaved changes. Are you sure you want to cancel and revert the values?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, Revert Changes',
+                        cancelButtonText: 'No, Stay Here',
+                        reverseButtons: true,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Revert fields to original values
+                            $('#modal_1_firstName').val(originalData.firstName);
+                            $('#modal_1_lastName').val(originalData.lastName);
+                            $('#modal_1_profileType').val(originalData.profileType);
 
-                // Hide edit buttons and show action buttons
-                $('#cancelEditBtn_cont, #saveEditBtn_cont').hide();
-                $('#discardBtn_cont, #editBtn_cont, #approveBtn_cont').show();
+                            // Reset validation messages and classes
+                            $('#firstName-feedback, #lastName-feedback').text('').removeClass('invalid-feedback');
+                            $('#modal_1_firstName, #modal_1_lastName').removeClass('is-invalid');
 
-                // Disable editing
-                $('#modal_1_firstName, #modal_1_lastName, #modal_1_profileType').prop('disabled', true);
-                $('#modal_1_rfid').prop('disabled', false);
+                            // Reset image in case it was modified
+                            $('#modal_1_profileImg').attr('src', originalData.imgSrc);
+
+                            // Hide edit buttons and show action buttons
+                            $('#cancelEditBtn_cont, #saveEditBtn_cont').hide();
+                            $('#discardBtn_cont, #editBtn_cont, #approveBtn_cont').show();
+
+                            // Disable fields
+                            $('#modal_1_firstName, #modal_1_lastName, #modal_1_profileType').prop('disabled', true);
+                            $('#modal_1_rfid').prop('disabled', false);
+                        }
+                    });
+                } else {
+                    // No changes, directly revert without confirmation
+                    $('#modal_1_firstName').val(originalData.firstName);
+                    $('#modal_1_lastName').val(originalData.lastName);
+                    $('#modal_1_profileType').val(originalData.profileType);
+
+                    // Reset validation messages and classes
+                    $('#firstName-feedback, #lastName-feedback').text('').removeClass('invalid-feedback');
+                    $('#modal_1_firstName, #modal_1_lastName').removeClass('is-invalid');
+
+                    // Reset image
+                    $('#modal_1_profileImg').attr('src', originalData.imgSrc);
+
+                    // Hide edit buttons and show action buttons
+                    $('#cancelEditBtn_cont, #saveEditBtn_cont').hide();
+                    $('#discardBtn_cont, #editBtn_cont, #approveBtn_cont').show();
+
+                    // Disable fields
+                    $('#modal_1_firstName, #modal_1_lastName, #modal_1_profileType').prop('disabled', true);
+                    $('#modal_1_rfid').prop('disabled', false);
+                }
             });
 
             $('#saveEditBtn').click(function() {
@@ -887,6 +932,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                                 <img src="${imgPath}" class="card-img-top" alt="Profile Image">
                                             </div>
                                             <div class="card-body">
+                                                <p class="card-text"><strong>Date Approved:</strong> ${profile.formatted_date || "N/A"}</p>
                                                 <p class="card-text"><strong>Name:</strong> ${profile.first_name} ${profile.last_name}</p>
                                                 <p class="card-text"><strong>Type:</strong> ${profile.type}</p>
                                                 <p class="card-text"><strong>Status:</strong> ${profile.status}</p>

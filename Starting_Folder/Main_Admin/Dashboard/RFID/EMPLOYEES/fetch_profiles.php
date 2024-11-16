@@ -32,13 +32,20 @@ $result = $conn->query($query);
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+        
+        // If RFID is null, set it to an empty string for the modal
+        $rfidForModal = $row['employee_rfid'] ?? '';
+
+        // Display "None" for RFID in the card view
+        $rfidDisplay = $row['employee_rfid'] ?? 'None';
+
         $buttonHtml = $row['status'] === 'ACTIVE' ? "
             <div class='col-6'>
                 <button type='button' class='btn btn-warning w-100 edit-btn'
                     data-id='{$row['employee_id']}'
                     data-first-name='{$row['first_name']}'
                     data-last-name='{$row['last_name']}'
-                    data-rfid='{$row['employee_rfid']}'
+                    data-rfid='{$rfidForModal}'
                     data-img='/TAPNLOG/Image/EMPLOYEES/{$row['employee_img']}'>
                     Edit
                 </button>
@@ -59,7 +66,7 @@ if ($result->num_rows > 0) {
         ";
 
         echo "
-            <div class='col-lg-3 col-md-6 card-container'>
+            <div class='col-xl-3 col-lg-4 col-md-6 card-container'>
                 <div class='card'>
                     <div class='profile-image-container'>
                         <img src='/TAPNLOG/Image/EMPLOYEES/{$row['employee_img']}' class='card-img-top' alt='Profile Image'>
@@ -67,7 +74,7 @@ if ($result->num_rows > 0) {
                     <div class='card-body'>
                         <h5 class='card-title'>{$row['first_name']} {$row['last_name']}</h5>
                         <p class='card-text'><strong>Date Approved:</strong> {$row['date_approved']}</p>
-                        <p class='card-text'><strong>RFID:</strong> {$row['employee_rfid']}</p>
+                        <p class='card-text'><strong>RFID:</strong> {$rfidDisplay}</p>
                         <p class='card-text'><strong>Status:</strong> {$row['status']}</p>
                     </div>
                     <div class='card-footer'>

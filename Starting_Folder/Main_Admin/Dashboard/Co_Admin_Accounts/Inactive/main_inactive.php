@@ -47,7 +47,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 <body>
 
     <!-- Nav Bar -->
-    <?php require_once 'C:\xampp\htdocs\TAPNLOG\Starting_Folder\Main_Admin\Dashboard\navbar.php'; ?>
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Main_Admin\Dashboard\navbar.php'; ?>
 
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">

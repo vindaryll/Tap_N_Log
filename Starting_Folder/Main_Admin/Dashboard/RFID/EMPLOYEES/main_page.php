@@ -472,6 +472,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     `,
                     showCancelButton: true,
                     confirmButtonText: 'Save Crop',
+                    reverseButtons: true,
                     didOpen: () => {
                         // Initialize file input behavior
                         $('#swalFileInput').change(function() {
@@ -618,10 +619,10 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     const currentLastName = $('#modal_1_lastName').attr('data-current');
                     const currentRFID = $('#modal_1_rfid').attr('data-current') || null;
 
-                    console.log('First Name:', firstName, 'Current:', currentFirstName);
-                    console.log('Last Name:', lastName, 'Current:', currentLastName);
-                    console.log('RFID:', rfid, 'Current:', currentRFID);
-                    console.log('Cropped Image:', croppedImageData);
+                    // console.log('First Name:', firstName, 'Current:', currentFirstName);
+                    // console.log('Last Name:', lastName, 'Current:', currentLastName);
+                    // console.log('RFID:', rfid, 'Current:', currentRFID);
+                    // console.log('Cropped Image:', croppedImageData);
 
                     // Check if there are any changes
                     if (
@@ -723,7 +724,207 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 }
             });
 
+            $('#cancelEditBtn').on('click', function() {
+                const firstName = $('#modal_1_firstName').val().trim();
+                const lastName = $('#modal_1_lastName').val().trim();
+                const rfid = $('#modal_1_rfid').val().trim() || null;
+                const croppedImageData = croppedImage || null;
 
+                // Retrieve current values from the `data-current` attributes
+                const currentFirstName = $('#modal_1_firstName').attr('data-current');
+                const currentLastName = $('#modal_1_lastName').attr('data-current');
+                const currentRFID = $('#modal_1_rfid').attr('data-current') || null;
+
+                // Check for changes
+                const hasChanges =
+                    firstName !== currentFirstName ||
+                    lastName !== currentLastName ||
+                    rfid !== currentRFID ||
+                    croppedImageData;
+
+                if (hasChanges) {
+                    // Show confirmation dialog if there are changes
+                    Swal.fire({
+                        title: 'Unsaved Changes Detected',
+                        text: 'You have unsaved changes. Are you sure you want to close the editor?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, close it',
+                        cancelButtonText: 'No, stay here',
+                        reverseButtons: true,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#EditProfileDetailsModal').modal('hide'); // Close modal
+                        }
+                    });
+                } else {
+                    // No changes, simply close the modal
+                    $('#EditProfileDetailsModal').modal('hide');
+                }
+            });
+
+            $(document).on('click', '.status-btn', function() {
+                const employeeId = $(this).data('id');
+                const newStatus = $(this).data('status');
+                const endpoint = newStatus === 'INACTIVE' ? 'deactivate_employee.php' : 'reactivate_employee.php';
+                const actionText = newStatus === 'INACTIVE' ? 'DEACTIVATE' : 'REACTIVATE';
+
+                Swal.fire({
+                    title: `Are you sure?`,
+                    text: `Do you want to ${actionText} this employee?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, proceed',
+                    cancelButtonText: 'No, cancel',
+                    reverseButtons: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        if (newStatus === 'ACTIVE') {
+                            Swal.fire({
+                                title: 'Reactivate Employee',
+                                html: `
+                                        <label class="mb-2" for="rfidInput">Enter RFID (optional):</label>
+                                        <input type="text" id="rfidInput" class="form-control" placeholder="RFID Number">
+                                    `,
+                                showCancelButton: true,
+                                confirmButtonText: 'Reactivate',
+                                cancelButtonText: 'Skip RFID',
+                                preConfirm: () => {
+                                    const rfid = document.getElementById('rfidInput').value.trim();
+                                    return rfid;
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed || result.dismiss === Swal.DismissReason.cancel) {
+                                    const rfid = result.value || null; // RFID is null if skipped
+                                    $.ajax({
+                                        url: endpoint,
+                                        type: 'POST',
+                                        data: {
+                                            employee_id: employeeId,
+                                            rfid: rfid
+                                        },
+                                        dataType: 'json',
+                                        success: function(response) {
+                                            Swal.fire({
+                                                title: response.success ? 'Success!' : 'Error!',
+                                                text: response.message,
+                                                icon: response.success ? 'success' : 'error',
+                                                timer: 3000,
+                                                showConfirmButton: false,
+                                            });
+                                            if (response.success) fetchProfiles();
+                                        },
+                                        error: function() {
+                                            Swal.fire({
+                                                title: 'Error!',
+                                                text: 'An unexpected error occurred.',
+                                                icon: 'error',
+                                            });
+                                        },
+                                    });
+                                }
+                            });
+                        }
+
+                        // INACTIVE
+                        else {
+                            // Check if the employee has an RFID
+                            $.ajax({
+                                url: 'check_rfid_status.php',
+                                type: 'POST',
+                                data: {
+                                    employee_id: employeeId
+                                },
+                                dataType: 'json',
+                                success: function(response) {
+                                    if (response.hasRFID) {
+                                        // Open SweetAlert modal if the employee has an RFID
+                                        Swal.fire({
+                                            title: 'Deactivate Employee',
+                                            html: `
+                                                    <p>Does the employee return the RFID?</p>
+                                                    <input type="text" id="returnedRFID" class="form-control mb-2" placeholder="Enter returned RFID">
+                                                    <div id="rfid-feedback" class="invalid-feedback d-none">RFID does not match the database.</div>
+                                                `,
+                                            showCancelButton: true,
+                                            confirmButtonText: 'Proceed',
+                                            cancelButtonText: 'Lost RFID',
+                                            didOpen: () => {
+                                                const input = document.getElementById('returnedRFID');
+                                                input.addEventListener('input', function() {
+                                                    const rfid = input.value.trim();
+                                                    $.ajax({
+                                                        url: 'validate_rfid.php',
+                                                        type: 'POST',
+                                                        data: {
+                                                            employee_id: employeeId,
+                                                            rfid: rfid
+                                                        },
+                                                        dataType: 'json',
+                                                        success: function(validation) {
+                                                            if (validation.valid) {
+                                                                input.classList.remove('is-invalid');
+                                                                $('#rfid-feedback').addClass('d-none');
+                                                                $('.swal2-confirm').prop('disabled', false);
+                                                            } else {
+                                                                input.classList.add('is-invalid');
+                                                                $('#rfid-feedback').removeClass('d-none').text('RFID does not match.');
+                                                                $('.swal2-confirm').prop('disabled', true);
+                                                            }
+                                                        },
+                                                    });
+                                                });
+                                            },
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                const returnedRFID = $('#returnedRFID').val().trim();
+                                                deactivateEmployee(employeeId, 'returned', returnedRFID);
+                                            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                                deactivateEmployee(employeeId, 'lost');
+                                            }
+                                        });
+                                    } else {
+                                        // Proceed with deactivation if no RFID
+                                        deactivateEmployee(employeeId, 'no_rfid');
+                                    }
+                                },
+                            });
+                        }
+
+                    }
+                });
+            });
+
+            function deactivateEmployee(employeeId, type, rfid = null) {
+                $.ajax({
+                    url: 'deactivate_employee.php',
+                    type: 'POST',
+                    data: {
+                        employee_id: employeeId,
+                        type: type,
+                        rfid: rfid,
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        Swal.fire({
+                            title: response.success ? 'Success!' : 'Error!',
+                            text: response.message,
+                            icon: response.success ? 'success' : 'error',
+                            timer: 3000,
+                            showConfirmButton: false,
+                        });
+                        if (response.success) fetchProfiles(); // Refresh profiles
+                    },
+                    error: function() {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'An unexpected error occurred.',
+                            icon: 'error',
+                        });
+                    },
+                });
+            }
 
         });
     </script>

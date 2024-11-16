@@ -63,7 +63,7 @@ $stationsResult = $conn->query($stationsSql);
 
 <body>
     <!-- Nav Bar -->
-    <?php require_once 'C:\xampp\htdocs\TAPNLOG\Starting_Folder\Main_Admin\Dashboard\navbar.php'; ?>
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Main_Admin\Dashboard\navbar.php'; ?>
 
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
@@ -110,11 +110,15 @@ $stationsResult = $conn->query($stationsSql);
                     </tbody>
                 </table>
 
-                <!-- Add Guard Button -->
-                <button type="button" id="addGuardModalButton" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addGuardModal">Add Guard</button>
+                <div class="row mb-2">
+                    <!-- Add Guard Button -->
+                    <button type="button" id="addGuardModalButton" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addGuardModal">Add Guard</button>
+                </div>
+                <div class="row">
+                    <!-- Inactive guard button -->
+                    <button type="button" id="goToInactive" class="btn btn-primary">Inactive Guard Accounts</button>
+                </div>
 
-                <!-- Inactive guard button -->
-                <button type="button" id="goToInactive" class="btn btn-primary">Inactive Guard Accounts</button>
             </div>
 
         </div>
@@ -373,28 +377,56 @@ $stationsResult = $conn->query($stationsSql);
 
         // Function to deactivate guard
         function deactivateGuard(guardId) {
-            if (confirm("Do you want to deactivate guard no: " + guardId + "?")) {
-                $.ajax({
-                    url: 'deactivate_guard.php',
-                    type: 'POST',
-                    data: {
-                        guard_id: guardId
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            alert(response.message);
-
-                            fetchActiveGuards(); // Reload the table
-                        } else {
-                            alert(response.message); // Show error message
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `Do you want to deactivate guard no: ${guardId}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Deactivate',
+                cancelButtonText: 'No, Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'deactivate_guard.php',
+                        type: 'POST',
+                        data: {
+                            guard_id: guardId
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: response.message,
+                                    icon: 'success',
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false
+                                });
+                                fetchActiveGuards();
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: response.message,
+                                    icon: 'error',
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                });
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: `An unexpected error occurred: ${error}`,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        alert("An unexpected error occurred: " + error);
-                    }
-                });
-            }
+                    });
+                }
+            });
         }
 
 
@@ -479,9 +511,19 @@ $stationsResult = $conn->query($stationsSql);
                 validateConfirmPassword();
 
                 if (checkAddGuardButton()) {
-                    if (confirm('Are you sure you want to add this guard?')) {
-                        $('#addGuardForm').submit(); // Trigger the form submission
-                    }
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'Do you want to add this guard?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, Add',
+                        cancelButtonText: 'No, Cancel',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#addGuardForm').submit();
+                        }
+                    });
                 }
 
             });
@@ -496,19 +538,37 @@ $stationsResult = $conn->query($stationsSql);
                     data: $(this).serialize(),
                     dataType: 'json', // Expect a JSON response from the server
                     success: function(response) {
+                        // Handle alert messages
                         if (response.success) {
-                            // Handle success response
-                            alert(response.message); // 'Guard added successfully!'
+                            Swal.fire({
+                                title: 'Success!',
+                                text: response.message,
+                                icon: 'success',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false
+                            });
 
                             fetchActiveGuards();
 
                         } else {
-                            // Handle custom error message from the server
-                            alert('Error: ' + response.message); // Display the custom error message
+                            Swal.fire({
+                                title: 'Error!',
+                                text: response.message,
+                                icon: 'error',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false,
+                            });
                         }
                     },
                     error: function(xhr, status, error) {
-                        alert('An error occurred while adding the guard: ' + error);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: `An error occurred while adding the guard: ${error}`,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
                     },
                     complete: function() {
                         $('#addGuardModal').modal('hide'); // Optionally hide the modal
@@ -532,29 +592,62 @@ $stationsResult = $conn->query($stationsSql);
             });
 
             // Event listener for the discard button
+            // Event listener for the discard button
             $('#discardButton').click(function() {
+                // Get current values from the modal inputs
+                const currentGuardName = $('#modalGuardName').val().trim();
+                const currentStationId = $('#modalStationName').val();
+                const currentUsername = $('#modalUsername').val().trim();
+                const currentEmail = $('#modalEmail').val().trim();
 
-                // Disable inputs
-                $('#modalGuardName, #modalStationName, #modalUsername, #modalEmail').prop('disabled', true);
+                // Check if there are any changes
+                const hasChanges =
+                    currentGuardName !== current.guard_name ||
+                    currentStationId !== current.station_id ||
+                    currentUsername !== current.username ||
+                    currentEmail !== current.email;
 
+                if (hasChanges) {
+                    // Show confirmation dialog if there are changes
+                    Swal.fire({
+                        title: 'Unsaved Changes Detected',
+                        text: 'You have unsaved changes. Are you sure you want to discard them?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, Discard Changes',
+                        cancelButtonText: 'No, Keep Editing',
+                        reverseButtons: true,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Revert inputs to original values
+                            resetGuardModalToOriginal();
+                        }
+                    });
+                } else {
+                    // No changes, directly reset without confirmation
+                    resetGuardModalToOriginal();
+                }
+            });
+
+            // Function to reset modal values to the original data
+            function resetGuardModalToOriginal() {
                 // Reset inputs to the original data
                 $('#modalGuardName').val(current.guard_name);
                 $('#modalStationName').val(current.station_id);
                 $('#modalUsername').val(current.username);
                 $('#modalEmail').val(current.email);
 
-                // Clear invalid feedbacks if any
-                $('#editName-feedback').text('').removeClass('invalid-feedback');
-                $('#editUsername-feedback').text('').removeClass('invalid-feedback');
-                $('#editEmail-feedback').text('').removeClass('invalid-feedback');
-                $('#modalGuardName').removeClass('is-invalid');
-                $('#modalUsername').removeClass('is-invalid');
-                $('#modalEmail').removeClass('is-invalid');
+                // Clear validation feedback
+                $('#editName-feedback, #editUsername-feedback, #editEmail-feedback').text('').removeClass('invalid-feedback');
+                $('#modalGuardName, #modalUsername, #modalEmail').removeClass('is-invalid');
+
+                // Disable inputs
+                $('#modalGuardName, #modalStationName, #modalUsername, #modalEmail').prop('disabled', true);
 
                 // Hide Save and Discard buttons, show Edit button
                 $('#saveButton, #discardButton').hide();
                 $('#editButton, #changePasswordButton').show();
-            });
+            }
 
 
             // Event listener for the closing view guards modal
@@ -584,21 +677,52 @@ $stationsResult = $conn->query($stationsSql);
 
                 if (checkEditGuardButton()) {
 
-                    if (confirm('Are you sure you want to save the changes?')) {
-                        $('#editGuardForm').submit(); // Trigger the form submission
+                    // Check for changes
+                    const currentData = {
+                        guard_name: $('#modalGuardName').val().trim(),
+                        username: $('#modalUsername').val().trim(),
+                        email: $('#modalEmail').val().trim(),
+                        station_id: $('#modalStationName').val(),
+                    };
 
-                        // Disable inputs
-                        $('#modalGuardName, #modalStationName, #modalUsername, #modalEmail').prop('disabled', true);
+                    const isChanged =
+                        currentData.guard_name !== current.guard_name ||
+                        currentData.username !== current.username ||
+                        currentData.email !== current.email ||
+                        currentData.station_id !== current.station_id;
 
-                        // Hide buttons
-                        $('#saveButton, #discardButton').hide();
-                        $('#editButton, #changePasswordButton').show();
-
+                    if (!isChanged) {
+                        Swal.fire({
+                            title: 'No Changes Detected',
+                            text: 'You have not made any changes to the guard details.',
+                            icon: 'info',
+                            confirmButtonText: 'OK',
+                        });
+                        return;
                     }
-                } else {
-                    alert("Please enter valid input.");
-                }
 
+                    // Confirmation dialog before saving
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'Do you want to save the changes?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, Save',
+                        cancelButtonText: 'No, Cancel',
+                        reverseButtons: true, // Optional: Switch button positions
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#editGuardForm').submit(); // Trigger the form submission
+
+                            // Disable inputs
+                            $('#modalGuardName, #modalStationName, #modalUsername, #modalEmail').prop('disabled', true);
+
+                            // Hide buttons
+                            $('#saveButton, #discardButton').hide();
+                            $('#editButton, #changePasswordButton').show();
+                        }
+                    });
+                }
             });
 
 
@@ -620,7 +744,15 @@ $stationsResult = $conn->query($stationsSql);
                     dataType: 'json',
                     success: function(response) {
                         if (response.success) {
-                            alert(response.message); // Show success message
+
+                            Swal.fire({
+                                title: 'Success!',
+                                text: response.message,
+                                icon: 'success',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false
+                            });
 
                             fetchActiveGuards();
 
@@ -633,11 +765,16 @@ $stationsResult = $conn->query($stationsSql);
                             // Reset the modal data
                             populateDetails(current);
 
-
-
-
                         } else {
-                            alert(response.message); // Show error message if unsuccessful
+                            // Show error message if unsuccessful
+                            Swal.fire({
+                                title: 'Error!',
+                                text: response.message,
+                                icon: 'error',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false,
+                            });
                         }
                     },
                     error: function(xhr, status, error) {
@@ -715,7 +852,15 @@ $stationsResult = $conn->query($stationsSql);
                         dataType: 'json',
                         success: function(response) {
                             if (response.success) {
-                                alert(response.message); // Show success message
+                                // Handle success message
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: response.message,
+                                    icon: 'success',
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false
+                                });
 
                                 fetchActiveGuards();
 
@@ -724,7 +869,15 @@ $stationsResult = $conn->query($stationsSql);
                                 openDetailsModal(current);
 
                             } else {
-                                alert(response.message); // Show error message if unsuccessful
+                                // Show error message if unsuccessful
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: response.message,
+                                    icon: 'error',
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                });
                             }
                         },
                         error: function(xhr, status, error) {

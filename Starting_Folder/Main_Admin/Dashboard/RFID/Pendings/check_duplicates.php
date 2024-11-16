@@ -17,16 +17,19 @@ $table_mapping = [
         'table' => 'cfw_profile',
         'img_column' => 'cfw_img',
         'rfid_column' => 'cfw_rfid',
+        'display_name' => 'Cash for Work Staff'
     ],
     'OJT' => [
         'table' => 'ojt_profile',
         'img_column' => 'ojt_img',
         'rfid_column' => 'ojt_rfid',
+        'display_name' => 'On the Job Trainees'
     ],
     'EMPLOYEE' => [
         'table' => 'employees_profile',
         'img_column' => 'employee_img',
         'rfid_column' => 'employee_rfid',
+        'display_name' => 'Employee'
     ],
 ];
 
@@ -40,14 +43,16 @@ $table_info = $table_mapping[$type_of_profile];
 $table = $table_info['table'];
 $img_column = $table_info['img_column'];
 $rfid_column = $table_info['rfid_column'];
+$display_name = $table_info['display_name'];
 
 // Construct the SQL query
-$sql = "SELECT first_name, last_name, $img_column AS img, $rfid_column AS rfid, status, ? AS type 
+$sql = "SELECT first_name, last_name, $img_column AS img, $rfid_column AS rfid, status,
+        DATE_FORMAT(date_approved, '%M %d, %Y') AS formatted_date, ? AS type 
         FROM $table 
         WHERE first_name = ? AND last_name = ?";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param('sss', $type_of_profile, $first_name, $last_name);
+$stmt->bind_param('sss', $display_name, $first_name, $last_name);
 $stmt->execute();
 $result = $stmt->get_result();
 
