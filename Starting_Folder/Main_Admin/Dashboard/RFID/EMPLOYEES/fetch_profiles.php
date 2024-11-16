@@ -6,10 +6,14 @@ session_start();
 
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-$search = $_GET['search'] ?? '';
-$status = $_GET['status'] ?? '';
-$from_date = $_GET['from_date'] ?? '';
-$to_date = $_GET['to_date'] ?? '';
+function sanitizeInput($data) {
+    return htmlspecialchars(stripslashes(trim($data)));
+}
+
+$search = isset($_GET['search']) ? sanitizeInput($_GET['search']) : '';
+$status = isset($_GET['status']) ? sanitizeInput($_GET['status']) : '';
+$from_date = isset($_GET['from_date']) ? sanitizeInput($_GET['from_date']) : '';
+$to_date = isset($_GET['to_date']) ? sanitizeInput($_GET['to_date']) : '';
 
 // SQL Query with optional filters
 $query = "SELECT * FROM employees_profile WHERE 1=1";

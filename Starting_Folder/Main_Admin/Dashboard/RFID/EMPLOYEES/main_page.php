@@ -168,7 +168,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                             <span class="input-group-text">
                                                 From
                                             </span>
-                                            <input type="date" class="form-control" id="from_dateInput" placeholder="MM/DD/YYYY">
+                                            <input type="date" class="form-control" id="from_dateInput">
                                         </div>
                                     </div>
                                 </div>
@@ -179,7 +179,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                             <span class="input-group-text">
                                                 To
                                             </span>
-                                            <input type="date" class="form-control" id="to_dateInput" placeholder="MM/DD/YYYY">
+                                            <input type="date" class="form-control" id="to_dateInput">
                                         </div>
                                     </div>
                                 </div>
@@ -283,10 +283,6 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         $(document).ready(function() {
 
             // VALIDATE DATE INPUTS
-
-
-
-            // -----------------------
 
             // Get today's date in local time (correcting for time zone)
             const today = new Date();

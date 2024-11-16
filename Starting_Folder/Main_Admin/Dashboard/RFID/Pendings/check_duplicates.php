@@ -2,9 +2,14 @@
 session_start();
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-$first_name = trim($_POST['first_name']);
-$last_name = trim($_POST['last_name']);
-$type_of_profile = trim($_POST['type_of_profile']);
+function sanitizeInput($data) {
+    return htmlspecialchars(stripslashes(trim($data)));
+}
+
+// Sanitize inputs
+$first_name = sanitizeInput($_POST['first_name']);
+$last_name = sanitizeInput($_POST['last_name']);
+$type_of_profile = sanitizeInput($_POST['type_of_profile']);
 
 // Map profile types to their respective tables and column names
 $table_mapping = [

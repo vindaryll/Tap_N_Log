@@ -21,13 +21,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    $sql = "SELECT * FROM admin_account WHERE username = '$usernameOrEmail' OR email = '$usernameOrEmail' LIMIT 1";
-    $result = mysqli_query($conn, $sql);
+    $sql = "SELECT * FROM admin_account WHERE username = ? OR email = ? LIMIT 1";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $usernameOrEmail, $usernameOrEmail);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     // Check if the query was successful and if any row was returned
-    if (mysqli_num_rows($result) > 0) {
+    if ($result->num_rows > 0) {
+        
         // Fetch the user data
-        $row = mysqli_fetch_assoc($result);
+        $row = $result->fetch_assoc();
         
         // Verify the password
         if (password_verify($password, $row['password'])) {

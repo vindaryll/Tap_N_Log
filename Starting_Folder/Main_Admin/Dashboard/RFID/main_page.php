@@ -65,13 +65,13 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         <a href="Pendings/main_page.php" class="btn btn-primary w-100 p-3">PENDINGS</a>
                     </div>
                     <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
+                        <a href="EMPLOYEES/main_page.php" class="btn btn-primary w-100 p-3">EMPLOYEES</a>
+                    </div>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
                         <a href="" class="btn btn-primary w-100 p-3">CASH FOR WORK STAFF</a>
                     </div>
                     <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
                         <a href="" class="btn btn-primary w-100 p-3">ON THE JOB TRAINEES</a>
-                    </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="EMPLOYEES/main_page.php" class="btn btn-primary w-100 p-3">EMPLOYEES</a>
                     </div>
                 </div>
             </div>

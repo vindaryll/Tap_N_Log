@@ -156,7 +156,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Date (YYYY/MM/DD)</th>
+                                    <th>Date</th>
                                     <th>Name</th>
                                     <th>
                                         <div class="container-fluid text-center d-flex justify-content-center" style="min-width: 200px;">
@@ -188,7 +188,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Profile</h5>
+                    <h5 class="modal-title">Profile Details</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -248,7 +248,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
 
                             <div id="discardBtn_cont" class="col-md-4 col-sm-12 p-1">
-                                <button type="button" class="btn btn-danger w-100" id="discardBtn">DISCARD</button>
+                                <button type="button" class="btn btn-danger w-100" id="discardBtn">DELETE</button>
                             </div>
                             <div id="editBtn_cont" class="col-md-4 col-sm-12 p-1">
                                 <button type="button" class="btn btn-warning w-100" id="editBtn">EDIT</button>
@@ -293,7 +293,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
                     <div class="row p-0 w-100">
                         <div id="discardSimilarBtn_cont" class="col-md-6 col-sm-12 p-1">
-                            <button type="button" class="btn btn-danger w-100" id="discardSimilarBtn">DISCARD</button>
+                            <button type="button" class="btn btn-danger w-100" id="discardSimilarBtn">DELETE</button>
                         </div>
                         <div id="approveSimilarBtn_cont" class="col-md-6 col-sm-12 p-1">
                             <button type="button" class="btn btn-success w-100" id="approveSimilarBtn">APPROVE ANYWAY</button>
@@ -386,7 +386,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
             // RFID TEXT DELETE BEHAVIOR:
             $('#modal_1_rfid').on('keydown', function(e) {
-                
+
                 // Check if the key pressed is either Backspace (8) or Delete (46)
                 if (e.keyCode === 8 || e.keyCode === 46) {
                     // Clear the input field

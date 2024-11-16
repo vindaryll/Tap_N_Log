@@ -2,11 +2,15 @@
 session_start();
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-// Get filter parameters
-$type = $_GET['type'] ?? '';
-$search = $_GET['search'] ?? '';
-$from_date = $_GET['from_date'] ?? '';
-$to_date = $_GET['to_date'] ?? '';
+function sanitizeInput($data) {
+    return htmlspecialchars(stripslashes(trim($data)));
+}
+
+// Get and sanitize filter parameters
+$type = sanitizeInput($_GET['type'] ?? '');
+$search = sanitizeInput($_GET['search'] ?? '');
+$from_date = sanitizeInput($_GET['from_date'] ?? '');
+$to_date = sanitizeInput($_GET['to_date'] ?? '');
 
 // Build the base SQL query
 $sql = "SELECT profile_id, date_att, CONCAT(first_name, ' ', last_name) AS name, type_of_profile
@@ -36,9 +40,10 @@ $result = $conn->query($sql);
 // Check and output results
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+        $formattedDate = date('F d, Y', strtotime($row['date_att'])); // Format the date
         echo "<tr>";
         echo "<td>" . htmlspecialchars($row['profile_id']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['date_att']) . "</td>";
+        echo "<td>" . htmlspecialchars($formattedDate) . "</td>";
         echo "<td>" . htmlspecialchars($row['name']) . "</td>";
         echo "<td>" . htmlspecialchars($row['type_of_profile']) . "</td>";
         echo "<td><button class='btn btn-info' onclick='viewDetails(" . $row['profile_id'] . ")'>View Details</button></td>";

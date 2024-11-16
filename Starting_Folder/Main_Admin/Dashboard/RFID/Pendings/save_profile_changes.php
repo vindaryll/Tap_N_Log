@@ -16,11 +16,16 @@ if (!isset($_POST['profile_id'], $_POST['first_name'], $_POST['last_name'], $_PO
     exit();
 }
 
+function sanitizeInput($data) {
+    return htmlspecialchars(stripslashes(trim($data)));
+}
+
 // Retrieve and sanitize inputs
 $profile_id = intval($_POST['profile_id']);
-$first_name = trim(mysqli_real_escape_string($conn, $_POST['first_name']));
-$last_name = trim(mysqli_real_escape_string($conn, $_POST['last_name']));
-$type_of_profile = trim(mysqli_real_escape_string($conn, $_POST['type_of_profile']));
+$first_name = sanitizeInput($_POST['first_name']);
+$last_name = sanitizeInput($_POST['last_name']);
+$type_of_profile = sanitizeInput($_POST['type_of_profile']);
+
 
 // Validate inputs
 if (empty($first_name) || !preg_match("/^[A-Za-z.\-'\s]+$/", $first_name)) {
