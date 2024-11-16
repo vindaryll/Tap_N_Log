@@ -73,7 +73,7 @@
 </div>
 
 <!-- Modal 1: Enter OTP Code -->
-<div class="modal fade" id="nav_modalOTP1" data-bs-backdrop="static" tabindex="-1" aria-labelledby="nav_modalOTP1Label" aria-hidden="true">
+<div class="modal fade" id="nav_modalOTP1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="nav_modalOTP1Label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -95,7 +95,7 @@
 </div>
 
 <!-- Modal 2: Enter New Email -->
-<div class="modal fade" id="nav_modalNewEmail" data-bs-backdrop="static" tabindex="-1" aria-labelledby="nav_modalNewEmailLabel" aria-hidden="true">
+<div class="modal fade" id="nav_modalNewEmail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="nav_modalNewEmailLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -116,7 +116,7 @@
 </div>
 
 <!-- Modal 3: Enter OTP Code for New Email -->
-<div class="modal fade" id="nav_modalOTP2" data-bs-backdrop="static" tabindex="-1" aria-labelledby="nav_modalOTP2Label" aria-hidden="true">
+<div class="modal fade" id="nav_modalOTP2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="nav_modalOTP2Label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -138,7 +138,7 @@
 </div>
 
 <!-- Modal 4: Change password -->
-<div class="modal fade" id="nav_modalChangePassword" data-bs-backdrop="static" tabindex="-1" aria-labelledby="nav_modalChangePasswordLabel" aria-hidden="true">
+<div class="modal fade" id="nav_modalChangePassword" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="nav_modalChangePasswordLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

@@ -95,7 +95,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
     </div>
 
     <!-- Modal 1: Enter Email/Username -->
-    <div class="modal fade" id="modalForgotPassword" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalForgotPasswordLabel" aria-hidden="true">
+    <div class="modal fade" id="modalForgotPassword" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalForgotPasswordLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -116,7 +116,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
     </div>
 
     <!-- Modal 2: Enter OTP Code -->
-    <div class="modal fade" id="modalOTP" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalOTPLabel" aria-hidden="true">
+    <div class="modal fade" id="modalOTP" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalOTPLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -138,7 +138,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
     </div>
 
     <!-- Modal 3: Reset Password -->
-    <div class="modal fade" id="modalResetPassword" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalResetPasswordLabel" aria-hidden="true">
+    <div class="modal fade" id="modalResetPassword" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalResetPasswordLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

@@ -125,7 +125,7 @@ $stationsResult = $conn->query($stationsSql);
 
 
         <!-- Modal for Adding Guard -->
-        <div class="modal fade" id="addGuardModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addGuardModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addGuardModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addGuardModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -200,7 +200,7 @@ $stationsResult = $conn->query($stationsSql);
 
 
         <!-- Modal for Guard Details -->
-        <div class="modal fade" id="guardDetailsModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="guardDetailsLabel" aria-hidden="true">
+        <div class="modal fade" id="guardDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="guardDetailsLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -267,7 +267,7 @@ $stationsResult = $conn->query($stationsSql);
 
 
         <!-- Modal for Password Change -->
-        <div class="modal fade" id="passwordChangeModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="passwordChangeLabel" aria-hidden="true">
+        <div class="modal fade" id="passwordChangeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="passwordChangeLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

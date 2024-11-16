@@ -8,7 +8,7 @@ function sanitizeInput($data) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $employeeId = intval(sanitizeInput($_POST['employee_id']));
-    $rfid = isset($_POST['rfid']) ? sanitizeInput($_POST['rfid']) : null;
+    $rfid = (isset($_POST['rfid']) && !empty($_POST['rfid']) && $_POST['rfid'] !== '') ? sanitizeInput($_POST['rfid']) : null;
     $adminId = $_SESSION['admin_id']; // Assuming this is set for the logged-in admin
 
     if (empty($employeeId)) {

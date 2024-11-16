@@ -6,7 +6,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     exit();
 }
 
-if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset($_SESSION['website_link'])){
+if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset($_SESSION['website_link'])) {
     header("Location: /tapnlog/index.php");
     exit();
 }
@@ -18,9 +18,11 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RFID Profile Registration</title>
+
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Jquery CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -29,9 +31,17 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
     <!-- Cropper.js CDN -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 
+    <title>RFID Profile Registration</title>
     <style>
         #profileImg {
             width: 100%;
@@ -105,7 +115,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
     </div>
 
     <!-- Modal for Picture Upload -->
-    <div class="modal fade" id="uploadModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal fade" id="uploadModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -248,7 +258,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                                 // $('#profileImg').attr('src', '../../Image/logo_and_icons/default_avatar.png'); // Reset the profile image
                                 // croppedImage = null;
 
-                                
+
                             } else {
                                 alert(response.message); // Show error message
                             }

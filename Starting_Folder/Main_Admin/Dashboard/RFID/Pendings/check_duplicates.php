@@ -23,7 +23,7 @@ $table_mapping = [
         'table' => 'ojt_profile',
         'img_column' => 'ojt_img',
         'rfid_column' => 'ojt_rfid',
-        'display_name' => 'On the Job Trainees'
+        'display_name' => 'On the Job Trainee'
     ],
     'EMPLOYEE' => [
         'table' => 'employees_profile',

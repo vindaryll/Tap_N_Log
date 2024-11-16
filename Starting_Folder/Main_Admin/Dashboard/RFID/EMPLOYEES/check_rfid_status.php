@@ -1,25 +1,51 @@
 <?php
-// Backend to check if the profile for deactivation has an rfid or none
-
 session_start();
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-function sanitizeInput($data) {
+function sanitizeInput($data)
+{
     return htmlspecialchars(stripslashes(trim($data)));
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $employeeId = intval(sanitizeInput($_POST['employee_id']));
+    $rfid = isset($_POST['rfid']) ? sanitizeInput($_POST['rfid']) : null;
 
-    $query = $conn->prepare("SELECT employee_rfid FROM employees_profile WHERE employee_id = ?");
-    $query->bind_param("i", $employeeId);
-    $query->execute();
-    $result = $query->get_result();
-    $employee = $result->fetch_assoc();
+    try {
+        $query = $conn->prepare("SELECT employee_rfid FROM employees_profile WHERE employee_id = ?");
+        $query->bind_param("i", $employeeId);
+        $query->execute();
+        $result = $query->get_result();
+        $employee = $result->fetch_assoc();
 
-    if ($employee && !empty($employee['employee_rfid'])) {
-        echo json_encode(['hasRFID' => true]);
-    } else {
-        echo json_encode(['hasRFID' => false]);
+        if ($employee) {
+            $assignedRFID = trim($employee['employee_rfid']); // Clean assigned RFID from DB
+
+            if (!empty($assignedRFID)) {
+                if ($rfid && $assignedRFID === $rfid) {
+                    echo json_encode([
+                        'success' => true,
+                        'hasRFID' => true,
+                        'match' => true,
+                        'rfid' => $assignedRFID
+                    ]);
+                } else {
+                    echo json_encode([
+                        'success' => true,
+                        'hasRFID' => true,
+                        'match' => false,
+                        'rfid' => $assignedRFID
+                    ]);
+                }
+            } else {
+                // Employee has no RFID assigned
+                echo json_encode(['success' => true, 'hasRFID' => false]);
+            }
+        } else {
+            // Employee not found
+            echo json_encode(['success' => false, 'message' => 'Employee not found.']);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => 'Error occurred.', 'error' => $e->getMessage()]);
     }
 }

@@ -184,7 +184,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     </div>
 
     <!-- Profile Details Modal 1 -->
-    <div class="modal fade" id="profileDetailsModal" tabindex="-1" aria-labelledby="profileDetailsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="profileDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="profileDetailsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -274,7 +274,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     </div>
 
     <!-- Duplicate Profile Modal -->
-    <div class="modal fade" id="duplicateProfileModal" tabindex="-1" aria-labelledby="duplicateProfileModalLabel" aria-hidden="true">
+    <div class="modal fade" id="duplicateProfileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="duplicateProfileModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -934,9 +934,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                             <div class="card-body">
                                                 <p class="card-text"><strong>Date Approved:</strong> ${profile.formatted_date || "N/A"}</p>
                                                 <p class="card-text"><strong>Name:</strong> ${profile.first_name} ${profile.last_name}</p>
-                                                <p class="card-text"><strong>Type:</strong> ${profile.type}</p>
+                                                <p class="card-text"><strong>Profile Type:</strong> ${profile.type}</p>
                                                 <p class="card-text"><strong>Status:</strong> ${profile.status}</p>
-                                                <p class="card-text"><strong>RFID:</strong> ${rfidValue}</p>
+                                                <p class="card-text"><strong>RFID Number:</strong> ${rfidValue}</p>
                                             </div>
                                         </div>
                                     </div>`;

@@ -203,12 +203,11 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     </div>
 
     <!-- Edit Profile Details Modal-->
-    <div class="modal fade" id="EditProfileDetailsModal" tabindex="-1" aria-labelledby="EditProfileDetailsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="EditProfileDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="EditProfileDetailsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Profile</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -619,11 +618,6 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     const currentLastName = $('#modal_1_lastName').attr('data-current');
                     const currentRFID = $('#modal_1_rfid').attr('data-current') || null;
 
-                    // console.log('First Name:', firstName, 'Current:', currentFirstName);
-                    // console.log('Last Name:', lastName, 'Current:', currentLastName);
-                    // console.log('RFID:', rfid, 'Current:', currentRFID);
-                    // console.log('Cropped Image:', croppedImageData);
-
                     // Check if there are any changes
                     if (
                         firstName === currentFirstName &&
@@ -634,7 +628,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         // No changes detected
                         Swal.fire({
                             title: 'No Changes Detected!',
-                            text: "There's nothing to update.",
+                            text: "You have not made any changes to the profile.",
                             icon: 'info',
                             timer: 3000,
                             timerProgressBar: true,
@@ -746,11 +740,11 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     // Show confirmation dialog if there are changes
                     Swal.fire({
                         title: 'Unsaved Changes Detected',
-                        text: 'You have unsaved changes. Are you sure you want to close the editor?',
+                        text: 'You have unsaved changes. Are you sure you want to DISCARD the changes?',
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonText: 'Yes, close it',
-                        cancelButtonText: 'No, stay here',
+                        confirmButtonText: 'YES, DISCARD CHANGES',
+                        cancelButtonText: 'NO, KEEP EDITING',
                         reverseButtons: true,
                     }).then((result) => {
                         if (result.isConfirmed) {
@@ -765,70 +759,22 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
             $(document).on('click', '.status-btn', function() {
                 const employeeId = $(this).data('id');
-                const newStatus = $(this).data('status');
-                const endpoint = newStatus === 'INACTIVE' ? 'deactivate_employee.php' : 'reactivate_employee.php';
+                const newStatus = $(this).data('status'); // ACTIVE or INACTIVE
                 const actionText = newStatus === 'INACTIVE' ? 'DEACTIVATE' : 'REACTIVATE';
 
+                // Step 1: Show initial confirmation modal
                 Swal.fire({
                     title: `Are you sure?`,
                     text: `Do you want to ${actionText} this employee?`,
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Yes, proceed',
-                    cancelButtonText: 'No, cancel',
-                    reverseButtons: true,
+                    confirmButtonText: `YES, ${actionText}`,
+                    cancelButtonText: 'NO, CANCEL',
+                    reverseButtons: true
                 }).then((result) => {
+
                     if (result.isConfirmed) {
-
-                        if (newStatus === 'ACTIVE') {
-                            Swal.fire({
-                                title: 'Reactivate Employee',
-                                html: `
-                                        <label class="mb-2" for="rfidInput">Enter RFID (optional):</label>
-                                        <input type="text" id="rfidInput" class="form-control" placeholder="RFID Number">
-                                    `,
-                                showCancelButton: true,
-                                confirmButtonText: 'Reactivate',
-                                cancelButtonText: 'Skip RFID',
-                                preConfirm: () => {
-                                    const rfid = document.getElementById('rfidInput').value.trim();
-                                    return rfid;
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed || result.dismiss === Swal.DismissReason.cancel) {
-                                    const rfid = result.value || null; // RFID is null if skipped
-                                    $.ajax({
-                                        url: endpoint,
-                                        type: 'POST',
-                                        data: {
-                                            employee_id: employeeId,
-                                            rfid: rfid
-                                        },
-                                        dataType: 'json',
-                                        success: function(response) {
-                                            Swal.fire({
-                                                title: response.success ? 'Success!' : 'Error!',
-                                                text: response.message,
-                                                icon: response.success ? 'success' : 'error',
-                                                timer: 3000,
-                                                showConfirmButton: false,
-                                            });
-                                            if (response.success) fetchProfiles();
-                                        },
-                                        error: function() {
-                                            Swal.fire({
-                                                title: 'Error!',
-                                                text: 'An unexpected error occurred.',
-                                                icon: 'error',
-                                            });
-                                        },
-                                    });
-                                }
-                            });
-                        }
-
-                        // INACTIVE
-                        else {
+                        if (newStatus === 'INACTIVE') {
                             // Check if the employee has an RFID
                             $.ajax({
                                 url: 'check_rfid_status.php',
@@ -838,93 +784,359 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                 },
                                 dataType: 'json',
                                 success: function(response) {
-                                    if (response.hasRFID) {
-                                        // Open SweetAlert modal if the employee has an RFID
-                                        Swal.fire({
-                                            title: 'Deactivate Employee',
-                                            html: `
-                                                    <p>Does the employee return the RFID?</p>
-                                                    <input type="text" id="returnedRFID" class="form-control mb-2" placeholder="Enter returned RFID">
-                                                    <div id="rfid-feedback" class="invalid-feedback d-none">RFID does not match the database.</div>
-                                                `,
-                                            showCancelButton: true,
-                                            confirmButtonText: 'Proceed',
-                                            cancelButtonText: 'Lost RFID',
-                                            didOpen: () => {
-                                                const input = document.getElementById('returnedRFID');
-                                                input.addEventListener('input', function() {
-                                                    const rfid = input.value.trim();
-                                                    $.ajax({
-                                                        url: 'validate_rfid.php',
-                                                        type: 'POST',
-                                                        data: {
-                                                            employee_id: employeeId,
-                                                            rfid: rfid
-                                                        },
-                                                        dataType: 'json',
-                                                        success: function(validation) {
-                                                            if (validation.valid) {
-                                                                input.classList.remove('is-invalid');
-                                                                $('#rfid-feedback').addClass('d-none');
-                                                                $('.swal2-confirm').prop('disabled', false);
-                                                            } else {
-                                                                input.classList.add('is-invalid');
-                                                                $('#rfid-feedback').removeClass('d-none').text('RFID does not match.');
-                                                                $('.swal2-confirm').prop('disabled', true);
-                                                            }
-                                                        },
-                                                    });
-                                                });
-                                            },
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
-                                                const returnedRFID = $('#returnedRFID').val().trim();
-                                                deactivateEmployee(employeeId, 'returned', returnedRFID);
-                                            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                                                deactivateEmployee(employeeId, 'lost');
-                                            }
-                                        });
+                                    if (response.success) {
+                                        if (response.hasRFID) {
+                                            // Employee has an RFID; show the modal
+                                            showDeactivateModal(employeeId, response.rfid);
+                                            $('#returnedRFID').focus();
+                                        } else {
+                                            // No RFID; directly deactivate without modal
+                                            deactivateEmployee(employeeId, 'no_rfid', null);
+                                        }
                                     } else {
-                                        // Proceed with deactivation if no RFID
-                                        deactivateEmployee(employeeId, 'no_rfid');
+                                        Swal.fire({
+                                            title: 'Error!',
+                                            text: response.message || 'Unable to fetch RFID details.',
+                                            icon: 'error',
+                                            timer: 3000,
+                                            timerProgressBar: true,
+                                            showConfirmButton: false,
+                                        });
                                     }
                                 },
+                                error: function() {
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'An error occurred while checking RFID.',
+                                        icon: 'error',
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                    });
+                                },
                             });
+                        } else {
+                            // Reactivate employee
+                            showReactivateModal(employeeId);
+                            $('#rfidInput').focus();
                         }
-
                     }
+
+
                 });
             });
 
-            function deactivateEmployee(employeeId, type, rfid = null) {
+            // Show Deactivate Modal
+            function showDeactivateModal(employeeId) {
+                Swal.fire({
+                    title: 'Deactivate Employee',
+                    html: `
+                            <p>Does the employee return the RFID?</p>
+                            <input type="text" id="returnedRFID" class="form-control mb-2" placeholder="Enter returned RFID">
+                            <div id="rfid-feedback_deactivate" class="invalid-feedback d-none">RFID validation feedback.</div>
+                        `,
+                    showCancelButton: false,
+                    confirmButtonText: 'Yes',
+                    showDenyButton: true,
+                    denyButtonText: 'Lost RFID',
+                    didOpen: () => {
+                        const inputElement = $('#returnedRFID');
+
+                        validateDeactivateRFID(employeeId, inputElement); // Initial validation
+
+                        // Add event listener for input validation
+                        inputElement.on('input keyup', function(e) {
+                            validateDeactivateRFID(employeeId, inputElement);
+                        });
+
+                        // Add event listener for input validation
+                        inputElement.on('keydown', function(e) {
+                            // Clear the input field on Backspace or Delete
+                            if (e.keyCode === 8 || e.keyCode === 46) {
+                                $(this).val('');
+                            }
+                        });
+                    },
+                    preConfirm: () => {
+                        const rfid = $('#returnedRFID').val().trim();
+                        return {
+                            rfid
+                        };
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Confirmed with "Yes"
+                        const rfid = result.value.rfid;
+
+                        // Proceed with the deactivation process for returned RFID
+                        deactivateEmployee(employeeId, 'returned', rfid);
+                    } else if (result.isDenied) {
+
+                        // Proceed with the deactivation process for lost RFID
+                        deactivateEmployee(employeeId, 'lost', null);
+                    }
+                });
+            }
+
+            // Reusable function for deactivating the employee
+            function deactivateEmployee(employeeId, type, rfid) {
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we deactivate the employee.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                });
+
                 $.ajax({
                     url: 'deactivate_employee.php',
                     type: 'POST',
                     data: {
                         employee_id: employeeId,
-                        type: type,
-                        rfid: rfid,
+                        rfid,
+                        type,
                     },
-                    dataType: 'json',
                     success: function(response) {
+                        Swal.close(); // Close the loading modal
+                        const result = JSON.parse(response);
+
                         Swal.fire({
-                            title: response.success ? 'Success!' : 'Error!',
-                            text: response.message,
-                            icon: response.success ? 'success' : 'error',
+                            title: result.success ? 'Success!' : 'Error!',
+                            text: result.message,
+                            icon: result.success ? 'success' : 'error',
                             timer: 3000,
+                            timerProgressBar: true,
                             showConfirmButton: false,
                         });
-                        if (response.success) fetchProfiles(); // Refresh profiles
+
+                        if (result.success) {
+                            fetchProfiles(); // Refresh profile list
+                        }
                     },
                     error: function() {
+                        Swal.close(); // Close the loading modal
                         Swal.fire({
                             title: 'Error!',
-                            text: 'An unexpected error occurred.',
+                            text: 'An error occurred while deactivating the employee.',
                             icon: 'error',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
                         });
                     },
                 });
             }
+
+            function validateDeactivateRFID(employeeId, inputElement) {
+                const rfid = inputElement.val().trim();
+                const feedback = $('#rfid-feedback_deactivate');
+
+                // Reset feedback and button state
+                feedback.addClass('d-none').text('');
+                inputElement.removeClass('is-invalid');
+                $('.swal2-confirm').prop('disabled', true); // Disable Deactivate button initially
+
+                // Check for empty value
+                if (!rfid) {
+                    feedback.removeClass('d-none').text('RFID cannot be empty.');
+                    inputElement.addClass('is-invalid');
+                    checkDeactivateButtonState(inputElement);
+                    return;
+                }
+
+                // Check for non-alphanumeric characters
+                if (!/^[A-Za-z0-9]+$/.test(rfid)) {
+                    feedback.removeClass('d-none').text('RFID must be alphanumeric.');
+                    inputElement.addClass('is-invalid');
+                    checkDeactivateButtonState(inputElement);
+                    return;
+                }
+
+                // Check if the RFID matches the employee's assigned RFID
+                $.ajax({
+                    url: 'check_rfid_status.php', // Endpoint to validate RFID
+                    type: 'POST',
+                    data: {
+                        employee_id: employeeId,
+                        rfid: rfid
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log('Input RFID:', rfid);
+                        console.log('Response RFID:', response.rfid);
+
+                        if (response.success && response.hasRFID) {
+                            if (response.rfid === rfid) {
+                                feedback.addClass('d-none').text('');
+                                inputElement.removeClass('is-invalid');
+                                checkDeactivateButtonState(inputElement);
+                            } else {
+                                feedback.removeClass('d-none').text('RFID does not match the employee\'s record.');
+                                inputElement.addClass('is-invalid');
+                                checkDeactivateButtonState(inputElement);
+                            }
+                        } else if (response.success && !response.hasRFID) {
+                            feedback.removeClass('d-none').text('No RFID found for this employee.');
+                            inputElement.addClass('is-invalid');
+                            checkDeactivateButtonState(inputElement);
+                        }
+                    },
+                    error: function() {
+                        // Handle AJAX error
+                        feedback.removeClass('d-none').text('Error occurred while validating RFID.');
+                        inputElement.addClass('is-invalid');
+                        checkDeactivateButtonState(inputElement);
+                    }
+                });
+            }
+
+            // Helper function to check Reactivate button state
+            function checkDeactivateButtonState(inputElement) {
+                const isInvalid = inputElement.hasClass('is-invalid');
+                // Disable Reactivate button if input is invalid
+                $('.swal2-confirm').prop('disabled', isInvalid);
+            }
+
+
+            // Show Reactivate Modal
+            function showReactivateModal(employeeId) {
+                Swal.fire({
+                    title: 'Reactivate Employee',
+                    html: `
+                            <label class="mb-2" for="rfidInput">Enter RFID (optional):</label>
+                            <input type="text" id="rfidInput" class="form-control mb-2" placeholder="Enter RFID Number">
+                            <div id="rfid-feedback_reactivate" class="invalid-feedback d-none">RFID validation feedback.</div>
+                        `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Reactivate',
+                    cancelButtonText: 'Cancel',
+                    didOpen: () => {
+                        const inputElement = $('#rfidInput');
+
+                        validateReactivateRFID(employeeId, inputElement); // Initial validation
+
+                        inputElement.on('input keyup', function(e) {
+                            validateReactivateRFID(employeeId, inputElement);
+                        });
+
+                        // Add event listener for input validation
+                        inputElement.on('keydown', function(e) {
+                            // Clear the input field on Backspace or Delete
+                            if (e.keyCode === 8 || e.keyCode === 46) {
+                                $(this).val('');
+                            }
+                        });
+
+
+                    },
+                    preConfirm: () => {
+                        const rfid = $('#rfidInput').val().trim();
+                        return {
+                            rfid
+                        };
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const rfid = result.value.rfid;
+
+                        // Proceed with the reactivation process
+                        $.ajax({
+                            url: 'reactivate_employee.php',
+                            type: 'POST',
+                            data: {
+                                employee_id: employeeId,
+                                rfid
+                            },
+                            success: function(response) {
+                                const result = JSON.parse(response);
+                                Swal.fire({
+                                    title: result.success ? 'Success!' : 'Error!',
+                                    text: result.message,
+                                    icon: result.success ? 'success' : 'error',
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false
+                                });
+
+                                if (result.success) {
+                                    fetchProfiles(); // Refresh profile list
+                                }
+                            },
+                            error: function() {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'An error occurred while reactivating the employee.',
+                                    icon: 'error',
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+
+
+            function validateReactivateRFID(employeeId, inputElement) {
+                const rfid = inputElement.val().trim(); // Get the trimmed input value
+                const feedback = $('#rfid-feedback_reactivate'); // Feedback element
+
+                // Reset feedback and button state
+                feedback.addClass('d-none').text('');
+                inputElement.removeClass('is-invalid');
+                $('.swal2-confirm').prop('disabled', false); // Enable Reactivate button initially
+
+                // Can be empty
+                if (!rfid) {
+                    return;
+                }
+
+                // Validation for non-alphanumeric characters
+                if (!/^[A-Za-z0-9]+$/.test(rfid)) {
+                    feedback.removeClass('d-none').text('RFID must be alphanumeric.');
+                    inputElement.addClass('is-invalid');
+                    checkReactivateButtonState(inputElement); // Recheck button state
+                    return;
+                }
+
+                // AJAX call to check if RFID already exists
+                $.ajax({
+                    url: 'check_rfid.php', // Backend endpoint to validate RFID
+                    type: 'POST',
+                    data: {
+                        rfid: rfid,
+                        employee_id: employeeId // Current employee ID for context
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (!response.exists) {
+                            // RFID is valid and unique
+                            $('.swal2-confirm').prop('disabled', false); // Enable Reactivate button
+                        } else {
+                            // RFID already exists
+                            feedback.removeClass('d-none').text('RFID already exists for another employee.');
+                            inputElement.addClass('is-invalid');
+                            checkReactivateButtonState(inputElement); // Recheck button state
+                        }
+                    },
+                    error: function() {
+                        // Handle AJAX errors
+                        feedback.removeClass('d-none').text('Error occurred while validating RFID.');
+                        inputElement.addClass('is-invalid');
+                        checkReactivateButtonState(inputElement); // Recheck button state
+                    }
+                });
+            }
+
+            // Helper function to check Reactivate button state
+            function checkReactivateButtonState(inputElement) {
+                const isInvalid = inputElement.hasClass('is-invalid');
+                // Disable Reactivate button if input is invalid
+                $('.swal2-confirm').prop('disabled', isInvalid);
+            }
+
 
         });
     </script>
