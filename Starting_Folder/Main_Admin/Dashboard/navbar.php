@@ -25,7 +25,7 @@
                 <!-- Profile Icon with Modal Trigger (Visible on Large Screens) -->
                 <li class="nav-item d-none d-lg-block">
                     <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#nav_profileModal">
-                        <img src="/TAPNLOG/Image/LOGO_AND_ICONS/admin_icon.png" alt="Profile Icon" style="width: 30px; height: auto;">
+                        <i class="bi bi-person-circle" style="font-size: 1.5rem; color: #1877f2;"></i>
                     </a>
                 </li>
 

@@ -124,11 +124,12 @@ if (isset($_SESSION['admin_logged'])) {
                             }, function(error, url) {
                                 if (!error) {
                                     Swal.fire({
-                                        title: 'Scan this QR Code to Access the Website',
+                                        title: 'Scan QR Code',
                                         html: `
                                             <div style="text-align: center;">
+                                                <p>Scan this QR code to access our website.</p>
                                                 <img src="${url}" alt="QR Code" style="width: 200px; height: 200px; margin-bottom: 15px;">
-                                                <p style="margin-top: 10px;">Or type this link:</p>
+                                                <p style="margin-top: 10px;">Or type this link manually:</p>
                                                 <a href="${websiteLink}" target="_blank" style="color: #1877f2; font-weight: bold;">${websiteLink}</a>
                                             </div>
                                         `,

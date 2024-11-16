@@ -123,28 +123,29 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     <div class="row">
                         <div class="container col-lg-6">
                             <div class="row">
+
                                 <div class="container col-md-6">
                                     <div class="mb-3 text-start">
-                                        <label for="from_dateInput" class="form-label">From Date</label>
                                         <div class="input-group">
+                                            <span class="input-group-text">
+                                                From
+                                            </span>
                                             <input type="date" class="form-control" id="from_dateInput">
-                                            <span class="input-group-text">
-                                                <i class="bi bi-calendar-date"></i> <!-- Bootstrap Icon for Calendar -->
-                                            </span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="container col-md-6 text-start">
+
+                                <div class="container col-md-6">
                                     <div class="mb-3">
-                                        <label for="to_dateInput" class="form-label">To Date</label>
                                         <div class="input-group">
-                                            <input type="date" class="form-control" id="to_dateInput">
                                             <span class="input-group-text">
-                                                <i class="bi bi-calendar-date"></i> <!-- Bootstrap Icon for Calendar -->
+                                                To
                                             </span>
+                                            <input type="date" class="form-control" id="to_dateInput">
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                         <div class="col-lg-6"></div>
@@ -385,12 +386,12 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
             // RFID TEXT DELETE BEHAVIOR:
             $('#modal_1_rfid').on('keydown', function(e) {
+                
                 // Check if the key pressed is either Backspace (8) or Delete (46)
                 if (e.keyCode === 8 || e.keyCode === 46) {
                     // Clear the input field
                     $(this).val('');
                 }
-                validateRFID();
             });
 
 
@@ -690,7 +691,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             // Add input event listeners
             $('#modal_1_firstName').on('input', validateFirstName);
             $('#modal_1_lastName').on('input', validateLastName);
-            $('#modal_1_rfid').on('input', validateRFID);
+            $('#modal_1_rfid').on('input keyup', validateRFID);
 
             // Validation for First Name
             function validateFirstName() {
@@ -832,15 +833,19 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     },
                     dataType: 'json',
                     success: function(response) {
+                        console.log(response);
                         if (response.duplicates.length > 0) {
                             // Populate the modal with duplicate profiles
                             const modalBody = $('#same_result');
                             modalBody.empty();
 
                             response.duplicates.forEach((profile) => {
-                                // Ensure the image path is valid or use a default image
+                                // Ensure the correct folder name for the image path
+                                const folderName = profile.type.toUpperCase() === "EMPLOYEE" ? "EMPLOYEES" : profile.type.toUpperCase();
+
+                                // Construct the image path or fallback to default avatar
                                 const imgPath = profile.img && profile.img.trim() !== "" ?
-                                    `/TAPNLOG/Image/${profile.type.toUpperCase()}/${profile.img}` :
+                                    `/TAPNLOG/Image/${folderName}/${profile.img}` :
                                     "/TAPNLOG/Image/LOGO_AND_ICONS/default_avatar.png";
 
                                 // Handle null or undefined RFID

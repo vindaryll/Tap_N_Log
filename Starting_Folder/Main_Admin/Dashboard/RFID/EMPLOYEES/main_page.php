@@ -42,8 +42,31 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
+    <!-- Cropper.js CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+
     <title>Co-Admin Account | Main Admin</title>
     <style>
+        #employee-container {
+            height: 450px;
+            /* Adjust the height as needed */
+            overflow-y: auto;
+
+        }
+
+        /* General card styling that applies to all sizes */
+        .card-container .card {
+            margin-bottom: 20px;
+            /* Adds space between cards */
+            transition: transform 0.3s;
+            /* Smooth transform effect for hover */
+        }
+
+        .card-container .card:hover {
+            transform: scale(1.03);
+            /* Slightly enlarges the card on hover */
+        }
+
         /* Profile Image with 1:1 Ratio */
         .profile-image-container {
             width: 100%;
@@ -107,15 +130,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
 
-        <div class="container-fluid row col-sm-12">
+        <div class="container-fluid row col-sm-12 p-0">
 
-            <div class="container col-sm-12 mb-3">
+            <div class="container col-sm-12">
                 <button type="button" class="btn btn-primary" id="backbtn">Back</button>
             </div>
 
             <div class="container-fluid col-sm-12">
-                <div class="container-fluid text-center">
-                    <h2>Profile Management</h2>
+                <div class="container mt-3 p-0">
+
                     <div class="mb-3">
                         <input type="text" id="searchTextbox" class="form-control" placeholder="Search by name or ID">
                     </div>
@@ -123,25 +146,40 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     <div class="row">
                         <div class="container col-lg-6">
                             <div class="row">
-                                <div class="container col-md-6">
+
+                                <div class="container col-md-4">
                                     <div class="mb-3 text-start">
-                                        <label for="from_dateInput" class="form-label">From Date</label>
                                         <div class="input-group">
-                                            <input type="date" class="form-control" id="from_dateInput">
                                             <span class="input-group-text">
-                                                <i class="bi bi-calendar-date"></i> <!-- Bootstrap Icon for Calendar -->
+                                                Status
                                             </span>
+                                            <select id="status-select" class="form-select">
+                                                <option value="">Active or Inactive</option>
+                                                <option value="ACTIVE">Active</option>
+                                                <option value="INACTIVE">Inactive</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="container col-md-6 text-start">
-                                    <div class="mb-3">
-                                        <label for="to_dateInput" class="form-label">To Date</label>
+
+                                <div class="container col-md-4">
+                                    <div class="mb-3 text-start">
                                         <div class="input-group">
-                                            <input type="date" class="form-control" id="to_dateInput">
                                             <span class="input-group-text">
-                                                <i class="bi bi-calendar-date"></i> <!-- Bootstrap Icon for Calendar -->
+                                                From
                                             </span>
+                                            <input type="date" class="form-control" id="from_dateInput" placeholder="MM/DD/YYYY">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="container col-md-4 text-start">
+                                    <div class="mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                To
+                                            </span>
+                                            <input type="date" class="form-control" id="to_dateInput" placeholder="MM/DD/YYYY">
                                         </div>
                                     </div>
                                 </div>
@@ -150,40 +188,22 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         <div class="col-lg-6"></div>
                     </div>
 
-                    <div class="table-responsive">
-                        <table class="table table-bordered mt-4">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Date (YYYY/MM/DD)</th>
-                                    <th>Name</th>
-                                    <th>
-                                        <div class="container-fluid text-center d-flex justify-content-center" style="min-width: 200px;">
-                                            <select id="profileType" class="form-select form-select-sm">
-                                                <option value="">Type of Profiles</option>
-                                                <option value="OJT">On the job Trainees</option>
-                                                <option value="CFW">Cash for Work Staff</option>
-                                                <option value="EMPLOYEE">Employees</option>
-                                            </select>
-                                        </div>
-                                    </th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="resultTableBody">
-                                <!-- Results will be dynamically inserted here -->
-                            </tbody>
-                        </table>
-                    </div>
+                    <div class="row d-flex justify-content-center">
 
+                        <!-- Employee Profiles Section -->
+                        <div id="employee-container" class="row d-flex justify-content-center">
+                            <!-- Employee Profile Cards will be inserted here dynamically -->
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Profile Details Modal 1 -->
-    <div class="modal fade" id="profileDetailsModal" tabindex="-1" aria-labelledby="profileDetailsModalLabel" aria-hidden="true">
+    <!-- Edit Profile Details Modal-->
+    <div class="modal fade" id="EditProfileDetailsModal" tabindex="-1" aria-labelledby="EditProfileDetailsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -195,7 +215,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         <!-- Profile Image Column (1:1 Ratio) -->
                         <div class="col-lg-6 d-flex justify-content-center align-items-center">
                             <div class="profile-image-container">
-                                <img id="modal_1_profileImg" src="/tapnlog/Image/LOGO_AND_ICONS/default_avatar.png" alt="Profile Picture" class="img-thumbnail" data-bs-toggle="modal" data-bs-target="#cropImageModal">
+                                <img id="modal_1_profileImg" src="/tapnlog/Image/LOGO_AND_ICONS/default_avatar.png" alt="Profile Picture" class="img-thumbnail">
                             </div>
                         </div>
 
@@ -206,27 +226,17 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                 <!-- hidden Id -->
                                 <input type="hidden" id="modal_1_profileId">
 
-                                <!-- Type of profile -->
-                                <div class="mb-3">
-                                    <label for="modal_1_profileType" class="form-label">Type of Profile</label>
-                                    <select class="form-select" id="modal_1_profileType" name="type_of_profile" required disabled>
-                                        <option value="OJT">On-the-job training</option>
-                                        <option value="CFW">Cash for Work</option>
-                                        <option value="EMPLOYEE">Employee</option>
-                                    </select>
-                                </div>
-
                                 <!-- First name -->
                                 <div class="mb-3">
                                     <label for="modal_1_firstName" class="form-label">First Name</label>
-                                    <input type="text" class="form-control" id="modal_1_firstName" name="firstName" disabled>
+                                    <input type="text" class="form-control" id="modal_1_firstName" name="firstName">
                                     <div id="firstName-feedback" class="invalid-feedback"></div>
                                 </div>
 
                                 <!-- Last name -->
                                 <div class="mb-3">
                                     <label for="modal_1_lastName" class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" id="modal_1_lastName" name="lastName" disabled>
+                                    <input type="text" class="form-control" id="modal_1_lastName" name="lastName">
                                     <div id="lastName-feedback" class="invalid-feedback"></div>
                                 </div>
 
@@ -245,57 +255,18 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     <div class="container d-flex justify-content-around align-items-center p-0">
                         <div class="row w-100 p-0">
 
-
-                            <div id="discardBtn_cont" class="col-md-4 col-sm-12 p-1">
-                                <button type="button" class="btn btn-danger w-100" id="discardBtn">DISCARD</button>
-                            </div>
-                            <div id="editBtn_cont" class="col-md-4 col-sm-12 p-1">
-                                <button type="button" class="btn btn-warning w-100" id="editBtn">EDIT</button>
-                            </div>
-                            <div id="approveBtn_cont" class="col-md-4 col-sm-12 p-1">
-                                <button type="button" class="btn btn-success w-100" id="approveBtn">APPROVE</button>
+                            <!-- For Revert Button -->
+                            <div id="revertOriginalBtn_cont" class="col-md-4 col-sm-12 p-1" style="display: none;">
+                                <button type="button" class="btn btn-warning w-100" id="revertOriginalBtn">REVERT ORIGINAL PICTURE</button>
                             </div>
 
                             <!-- For Edit Buttons -->
-                            <div id="cancelEditBtn_cont" class="col-md-6 col-sm-12 p-1" style="display:none;">
+                            <div id="cancelEditBtn_cont" class="col-md-6 col-sm-12 p-1">
                                 <button type="button" class="btn btn-danger w-100" id="cancelEditBtn">CANCEL</button>
                             </div>
-                            <div id="saveEditBtn_cont" class="col-md-6 col-sm-12 p-1" style="display:none;">
+                            <div id="saveEditBtn_cont" class="col-md-6 col-sm-12 p-1">
                                 <button type="button" class="btn btn-success w-100" id="saveEditBtn">SAVE CHANGES</button>
                             </div>
-
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Duplicate Profile Modal -->
-    <div class="modal fade" id="duplicateProfileModal" tabindex="-1" aria-labelledby="duplicateProfileModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="duplicateProfileModalLabel">SIMILAR PROFILES</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
-
-                    <!-- RESULTS -->
-                    <div class="row d-flex justify-content-center" id="same_result">
-
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-
-                    <div class="row p-0 w-100">
-                        <div id="discardSimilarBtn_cont" class="col-md-6 col-sm-12 p-1">
-                            <button type="button" class="btn btn-danger w-100" id="discardSimilarBtn">DISCARD</button>
-                        </div>
-                        <div id="approveSimilarBtn_cont" class="col-md-6 col-sm-12 p-1">
-                            <button type="button" class="btn btn-success w-100" id="approveSimilarBtn">APPROVE ANYWAY</button>
                         </div>
                     </div>
                 </div>
@@ -307,8 +278,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
     <script>
         $(document).ready(function() {
+
+            // VALIDATE DATE INPUTS
+
+
+
+            // -----------------------
 
             // Get today's date in local time (correcting for time zone)
             const today = new Date();
@@ -318,384 +296,49 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             const todayFormatted = `${year}-${month}-${day}`; // Format as YYYY-MM-DD
 
             // Set initial value and max attribute for both inputs
-            $('#from_dateInput, #to_dateInput').val(todayFormatted).attr('max', todayFormatted);
+            $('#from_dateInput, #to_dateInput').attr('max', todayFormatted);
+            $('#from_dateInput, #to_dateInput').on('input change', validateDateInputs);
 
-
-            // VALIDATION OF DATE INPUTS
-            // Main validation function to check dates
             function validateDateInputs() {
                 const fromDate = $('#from_dateInput').val();
                 const toDate = $('#to_dateInput').val();
 
-                // Convert dates only if both fields have values
+                if (toDate) {
+                    // If to_date exceeds today's date, set it to today's date
+                    if (new Date(toDate) > new Date(todayFormatted)) {
+                        $('#to_dateInput').val(todayFormatted);
+                    }
+                }
+
                 if (fromDate && toDate) {
                     const fromDateValue = new Date(fromDate);
                     const toDateValue = new Date(toDate);
-                    const todayDate = new Date(todayFormatted);
 
-                    // Check if toDate exceeds today's date
-                    if (toDateValue > todayDate) {
-                        $('#to_dateInput').val(todayFormatted);
-                    }
-
-                    // Check if fromDate is after toDate
+                    // If from_date is greater than to_date, set from_date to to_date
                     if (fromDateValue > toDateValue) {
                         $('#from_dateInput').val(toDate);
                     }
+
+                    // If to_date is less than from_date, set to_date to from_date
+                    if (toDateValue < fromDateValue) {
+                        $('#to_dateInput').val(fromDate);
+                    }
                 }
-            }
 
-            // Event handlers for input and change events
-            $('#from_dateInput').on('input change', function() {
-                const fromDate = $(this).val();
-                const toDate = $('#to_dateInput').val();
-
-                if (!fromDate) {
-                    // Default to either toDate or today if fromDate is empty
-                    $(this).val(toDate || todayFormatted);
-                } else if (toDate && new Date(fromDate) > new Date(toDate)) {
-                    // Set fromDate to toDate if it's greater than toDate
-                    $(this).val(toDate);
-                }
-                validateDateInputs();
-            });
-
-            $('#to_dateInput').on('input change', function() {
-                const fromDate = $('#from_dateInput').val();
-                const toDate = $(this).val();
-
-                if (!toDate) {
-                    // Default to today's date if toDate is empty
-                    $(this).val(todayFormatted);
-                } else if (new Date(toDate) > new Date(todayFormatted)) {
-                    // Set toDate to today if it exceeds today's date
-                    $(this).val(todayFormatted);
-                } else if (fromDate && new Date(fromDate) > new Date(toDate)) {
-                    // Reset fromDate if it is greater than the updated toDate
-                    $('#from_dateInput').val(toDate);
-                }
-                validateDateInputs();
-            });
-
-
-            // BACK BUTTON
-            $('#backbtn').on('click', function() {
-                window.location.href = '../main_page.php';
-            });
-
-            // RFID TEXT DELETE BEHAVIOR:
-            $('#modal_1_rfid').on('keydown', function(e) {
-                // Check if the key pressed is either Backspace (8) or Delete (46)
-                if (e.keyCode === 8 || e.keyCode === 46) {
-                    // Clear the input field
-                    $(this).val('');
-                }
-                validateRFID();
-            });
-
-
-            // START
-            fetchProfiles();
-
-            // LIVE SEARCH
-            $('#searchTextbox, #profileType, #from_dateInput, #to_dateInput').on('change keyup', function() {
                 fetchProfiles();
-            });
-
-            function fetchProfiles() {
-                var search = $('#searchTextbox').val();
-                var type = $('#profileType').val();
-                var fromDate = $('#from_dateInput').val();
-                var toDate = $('#to_dateInput').val();
-
-                $.ajax({
-                    url: 'fetch_profiles.php',
-                    type: 'GET',
-                    data: {
-                        search: search,
-                        type: type,
-                        from_date: fromDate,
-                        to_date: toDate
-                    },
-                    success: function(data) {
-                        $('#resultTableBody').html(data);
-                    }
-                });
             }
 
-            // PROFILE DETAILS MODAL 1
+            // VALIDATE EDIT MODAL INPUTS
 
-            let originalData = {}; // Object to store original modal values
-
-            // View Details Function
-            window.viewDetails = function(profileId) {
-                $.ajax({
-                    url: 'get_profile_details.php',
-                    type: 'GET',
-                    data: {
-                        profile_id: profileId
-                    },
-                    success: function(response) {
-                        const profile = JSON.parse(response);
-
-                        // Store original values for reverting later
-                        originalData = {
-                            profileId: profile.profile_id,
-                            firstName: profile.first_name,
-                            lastName: profile.last_name,
-                            profileType: profile.type_of_profile,
-                            imgSrc: '/TAPNLOG/Image/Pending/' + profile.profile_img,
-                        };
-
-                        // Populate modal fields with fetched data
-                        $('#modal_1_profileId').val(originalData.profileId);
-                        $('#modal_1_firstName').val(originalData.firstName);
-                        $('#modal_1_lastName').val(originalData.lastName);
-                        $('#modal_1_profileType').val(originalData.profileType);
-                        $('#modal_1_profileImg').attr('src', originalData.imgSrc);
-
-                        // Remove the invalid first
-                        $('#firstName-feedback').text('').removeClass('invalid-feedback');
-                        $('#lastName-feedback').text('').removeClass('invalid-feedback');
-                        $('#modal_1_rfid').text('').removeClass('invalid-feedback');
-
-                        $('#modal_1_firstName').removeClass('is-invalid');
-                        $('#modal_1_lastName').removeClass('is-invalid');
-                        $('#modal_1_rfid').val('').removeClass('is-invalid');
-
-                        // dine
-
-                        // Hide edit buttons and show action buttons
-                        $('#cancelEditBtn_cont, #saveEditBtn_cont').hide();
-                        $('#discardBtn_cont, #editBtn_cont, #approveBtn_cont').show();
-
-                        // Disable editing
-                        $('#modal_1_firstName, #modal_1_lastName, #modal_1_profileType').prop('disabled', true);
-                        $('#modal_1_rfid').prop('disabled', false);
-
-
-                        // Open modal
-                        $('#profileDetailsModal').modal('show');
-                    },
-                });
-            };
-
-            // Edit Button Click Handler
-            $('#editBtn').click(function() {
-                // Hide buttons
-                $('#discardBtn_cont, #editBtn_cont, #approveBtn_cont').hide();
-                $('#cancelEditBtn_cont, #saveEditBtn_cont').show();
-
-                // Enable fields for editing
-                $('#modal_1_firstName, #modal_1_lastName, #modal_1_profileType').prop('disabled', false);
-                $('#modal_1_rfid').prop('disabled', true);
-            });
-
-            // Cancel Edit Button Click Handler
-            $('#cancelEditBtn').click(function() {
-                // Revert fields to original values
-                $('#modal_1_firstName').val(originalData.firstName);
-                $('#modal_1_lastName').val(originalData.lastName);
-                $('#modal_1_profileType').val(originalData.profileType);
-
-                $('#firstName-feedback').text('').removeClass('invalid-feedback');
-                $('#lastName-feedback').text('').removeClass('invalid-feedback');
-                $('#modal_1_firstName').removeClass('is-invalid');
-                $('#modal_1_lastName').removeClass('is-invalid');
-
-                // Reset image in case it was modified
-                $('#modal_1_profileImg').attr('src', originalData.imgSrc);
-
-                // Hide edit buttons and show action buttons
-                $('#cancelEditBtn_cont, #saveEditBtn_cont').hide();
-                $('#discardBtn_cont, #editBtn_cont, #approveBtn_cont').show();
-
-                // Disable editing
-                $('#modal_1_firstName, #modal_1_lastName, #modal_1_profileType').prop('disabled', true);
-                $('#modal_1_rfid').prop('disabled', false);
-            });
-
-            $('#saveEditBtn').click(function() {
-                // Validate fields before submission
-                validateFirstName();
-                validateLastName();
-                validateRFID();
-
-                // If validation fails, display an alert
-                if (checksaveEditBtn()) {
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "Do you want to save the changes?",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, Save',
-                        cancelButtonText: 'No, Cancel',
-                        reverseButtons: true // Optional: Switch button positions
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Gather the data for submission
-                            const profileData = {
-                                profile_id: $('#modal_1_profileId').val(),
-                                first_name: $('#modal_1_firstName').val().trim(),
-                                last_name: $('#modal_1_lastName').val().trim(),
-                                type_of_profile: $('#modal_1_profileType').val()
-                            };
-
-                            // Send the AJAX request to update the profile
-                            $.ajax({
-                                url: 'save_profile_changes.php', // Endpoint for saving changes
-                                type: 'POST',
-                                data: profileData,
-                                dataType: 'json',
-                                success: function(response) {
-                                    if (response.success) {
-                                        // Display success message
-                                        Swal.fire({
-                                            position: "top",
-                                            title: 'Success!',
-                                            text: response.message,
-                                            icon: 'success',
-                                            timer: 3000,
-                                            timerProgressBar: true,
-                                            showConfirmButton: false
-                                        });
-
-                                        fetchProfiles();
-
-                                        // Update the `originalData` object with the new values
-                                        originalData.firstName = profileData.first_name;
-                                        originalData.lastName = profileData.last_name;
-                                        originalData.profileType = profileData.type_of_profile;
-
-                                        // Update modal fields with the new values
-                                        $('#modal_1_firstName').val(originalData.firstName);
-                                        $('#modal_1_lastName').val(originalData.lastName);
-                                        $('#modal_1_profileType').val(originalData.profileType);
-
-                                        // Hide edit buttons and show action buttons
-                                        $('#cancelEditBtn_cont, #saveEditBtn_cont').hide();
-                                        $('#discardBtn_cont, #editBtn_cont, #approveBtn_cont').show();
-
-                                        // Disable editing
-                                        $('#modal_1_firstName, #modal_1_lastName, #modal_1_profileType').prop('disabled', true);
-                                        $('#modal_1_rfid').prop('disabled', false);
-
-
-                                    } else {
-                                        // Display error message from server
-                                        Swal.fire({
-                                            position: "top",
-                                            title: 'Error!',
-                                            text: response.message,
-                                            icon: 'error',
-                                            timer: 3000,
-                                            timerProgressBar: true,
-                                            showConfirmButton: false
-                                        });
-                                    }
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error('Error details:', status, error); // Log the error for debugging
-                                    Swal.fire({
-                                        position: "top",
-                                        title: 'Error!',
-                                        text: 'An error occurred while saving changes. Please try again.',
-                                        icon: 'error',
-                                        timer: 3000,
-                                        timerProgressBar: true,
-                                        showConfirmButton: false
-                                    });
-                                }
-                            });
-                        }
-                    });
-
-                }
-
-
-
-            });
-
-            // View details: discard button
-            $('#discardBtn').on('click', function() {
-                const profileId = $('#modal_1_profileId').val(); // Get profile ID from the hidden input in the modal
-
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Do you want to delete this profile? This action cannot be undone.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, Delete',
-                    cancelButtonText: 'No, Cancel',
-                    reverseButtons: true // Optional: Switch button positions
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: 'delete_profile.php', // URL to the PHP script
-                            type: 'POST',
-                            data: {
-                                profile_id: profileId
-                            },
-                            success: function(response) {
-                                const result = JSON.parse(response);
-
-                                if (result.success) {
-                                    // Show success message
-                                    Swal.fire({
-                                        position: "top",
-                                        title: 'Success!',
-                                        text: result.message,
-                                        icon: 'success',
-                                        timer: 3000,
-                                        timerProgressBar: true,
-                                        showConfirmButton: false
-                                    });
-
-                                    $('#profileDetailsModal').modal('hide'); // Close the modal
-                                    fetchProfiles(); // Refresh the table or data
-                                } else {
-                                    // Show error message
-                                    Swal.fire({
-                                        position: "top",
-                                        title: 'Error!',
-                                        text: result.message,
-                                        icon: 'error',
-                                        timer: 3000,
-                                        timerProgressBar: true,
-                                        showConfirmButton: false
-                                    });
-                                }
-                            },
-                            error: function(xhr, status, error) {
-                                Swal.fire({
-                                    position: "top",
-                                    title: 'Error!',
-                                    text: 'An error occurred while deleting the profile. Please try again.',
-                                    icon: 'error',
-                                    timer: 3000,
-                                    timerProgressBar: true,
-                                    showConfirmButton: false
-                                });
-                                console.error('Error details:', status, error); // Log details for debugging
-                            }
-                        });
-                    }
-                });
-            });
-
-
-
-            // FUNCTIONS FOR FEEDBACK MESSAGES OF MODAL 1
-
-            // Add input event listeners
+            // Attach input event listeners to fields
             $('#modal_1_firstName').on('input', validateFirstName);
             $('#modal_1_lastName').on('input', validateLastName);
-            $('#modal_1_rfid').on('input', validateRFID);
+            $('#modal_1_rfid').on('input keyup', validateRFID);
 
             // Validation for First Name
             function validateFirstName() {
                 const firstName = $('#modal_1_firstName').val().trim();
-                const nameRegex = /^[A-Za-z.\-'\s]+$/;
+                const nameRegex = /^[A-Za-z.\-'\s]+$/; // Letters, dots, hyphens, apostrophes, and spaces
 
                 $('#firstName-feedback').text('').removeClass('invalid-feedback');
                 $('#modal_1_firstName').removeClass('is-invalid');
@@ -712,7 +355,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             // Validation for Last Name
             function validateLastName() {
                 const lastName = $('#modal_1_lastName').val().trim();
-                const nameRegex = /^[A-Za-z.\-'\s]+$/;
+                const nameRegex = /^[A-Za-z.\-'\s]+$/; // Letters, dots, hyphens, apostrophes, and spaces
 
                 $('#lastName-feedback').text('').removeClass('invalid-feedback');
                 $('#modal_1_lastName').removeClass('is-invalid');
@@ -728,21 +371,26 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
             function validateRFID() {
                 const rfid = $('#modal_1_rfid').val().trim();
-                const profileType = $('#modal_1_profileType').val();
+                const employeeId = $('#modal_1_profileId').val(); // Get the current employee ID
                 const rfidRegex = /^[A-Za-z0-9]*$/; // Alphanumeric, allows empty
 
                 // Clear previous feedback
                 $('#rfid-feedback').text('').removeClass('invalid-feedback');
                 $('#modal_1_rfid').removeClass('is-invalid');
 
-                // If RFID is not empty, validate it
+                // If RFID is not empty, validate it before proceeding
                 if (rfid && !rfidRegex.test(rfid)) {
                     $('#rfid-feedback').text('RFID must be alphanumeric.').addClass('invalid-feedback');
                     $('#modal_1_rfid').addClass('is-invalid');
-                    return;
+
+                    const currentRFID = $('#modal_1_rfid').attr('data-current') || null;
+
+                    $('#modal_1_rfid').val(currentRFID);
+
+                    return; // Stop further validation
                 }
 
-                // If RFID is empty, no need for uniqueness check
+                // If RFID is empty, no further validation is needed
                 if (!rfid) {
                     return;
                 }
@@ -753,12 +401,14 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     type: 'POST',
                     data: {
                         rfid: rfid,
-                        type_of_profile: profileType
+                        employee_id: employeeId // Include the current employee ID
                     },
                     dataType: 'json',
                     success: function(response) {
                         if (response.exists) {
-                            $('#rfid-feedback').text('RFID already exists for this type of profile. Please use a different one.').addClass('invalid-feedback');
+                            $('#rfid-feedback')
+                                .text('RFID already exists. Please use a different one.')
+                                .addClass('invalid-feedback');
                             $('#modal_1_rfid').addClass('is-invalid');
                         } else {
                             $('#rfid-feedback').text(''); // Clear feedback
@@ -769,13 +419,13 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         Swal.fire({
                             position: "top",
                             title: 'Error!',
-                            text: 'An error occurred while validating RFID.' || "An error occurred.",
+                            text: 'An error occurred while validating RFID.',
                             icon: "error",
                             timer: 3000,
                             timerProgressBar: true,
-                            showConfirmButton: false
+                            showConfirmButton: false,
                         });
-                    }
+                    },
                 });
             }
 
@@ -783,311 +433,301 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             function checksaveEditBtn() {
                 const isFirstNameValid = !$('#modal_1_firstName').hasClass('is-invalid') && $('#modal_1_firstName').val().trim() !== '';
                 const isLastNameValid = !$('#modal_1_lastName').hasClass('is-invalid') && $('#modal_1_lastName').val().trim() !== '';
-
-                if (!isFirstNameValid || !isLastNameValid) {
-                    return false;
-                } else {
-                    return true;
-                }
-
-            }
-
-            function checkapproveBtn() {
-                const isFirstNameValid = !$('#modal_1_firstName').hasClass('is-invalid') && $('#modal_1_firstName').val().trim() !== '';
-                const isLastNameValid = !$('#modal_1_lastName').hasClass('is-invalid') && $('#modal_1_lastName').val().trim() !== '';
                 const isRFIDValid = !$('#modal_1_rfid').hasClass('is-invalid');
 
+                // If any of the fields are invalid, return false
                 if (!isFirstNameValid || !isLastNameValid || !isRFIDValid) {
                     return false;
                 } else {
-                    return true;
+                    return true; // All fields are valid
                 }
             }
 
 
-            // APPROVE FUNCTIONS
+            // BACK BUTTON
+            $('#backbtn').on('click', function() {
+                window.location.href = '../main_page.php';
+            });
 
-            $('#approveBtn').on('click', function() {
-
-                if (!checkapproveBtn()) {
-                    // do nothing
-                    return;
+            // RFID TEXT DELETE BEHAVIOR:
+            $('#modal_1_rfid').on('keydown', function(e) {
+                // Check if the key pressed is either Backspace (8) or Delete (46)
+                if (e.keyCode === 8 || e.keyCode === 46) {
+                    // Clear the input field
+                    $(this).val('');
                 }
-
-
-                const profileId = $('#modal_1_profileId').val();
-                const firstName = $('#modal_1_firstName').val().trim();
-                const lastName = $('#modal_1_lastName').val().trim();
-                const profileType = $('#modal_1_profileType').val();
-                const profileImg = $('#modal_1_profileImg').attr('src').split('/').pop();
-                const rfid = $('#modal_1_rfid').val().trim();
-
-                $.ajax({
-                    url: 'check_duplicates.php', // Endpoint to check duplicates
-                    type: 'POST',
-                    data: {
-                        first_name: firstName,
-                        last_name: lastName,
-                        type_of_profile: profileType,
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.duplicates.length > 0) {
-                            // Populate the modal with duplicate profiles
-                            const modalBody = $('#same_result');
-                            modalBody.empty();
-
-                            response.duplicates.forEach((profile) => {
-                                // Ensure the image path is valid or use a default image
-                                const imgPath = profile.img && profile.img.trim() !== "" ?
-                                    `/TAPNLOG/Image/${profile.type.toUpperCase()}/${profile.img}` :
-                                    "/TAPNLOG/Image/LOGO_AND_ICONS/default_avatar.png";
-
-                                // Handle null or undefined RFID
-                                const rfidValue = profile.rfid ? profile.rfid : "N/A";
-
-                                // Create a card for each duplicate profile
-                                const card = `
-                                    <div class="col-lg-6">
-                                        <div class="card mb-3">
-                                            <div class="profile-image-container">
-                                                <img src="${imgPath}" class="card-img-top" alt="Profile Image">
-                                            </div>
-                                            <div class="card-body">
-                                                <p class="card-text"><strong>Name:</strong> ${profile.first_name} ${profile.last_name}</p>
-                                                <p class="card-text"><strong>Type:</strong> ${profile.type}</p>
-                                                <p class="card-text"><strong>Status:</strong> ${profile.status}</p>
-                                                <p class="card-text"><strong>RFID:</strong> ${rfidValue}</p>
-                                            </div>
-                                        </div>
-                                    </div>`;
-                                modalBody.append(card);
-                            });
-
-                            // Show the duplicate modal
-                            $('#duplicateProfileModal').modal('show');
-                        } else {
-
-                            Swal.fire({
-                                title: 'Are you sure?',
-                                text: "Do you want to approve this profile?",
-                                icon: 'question',
-                                showCancelButton: true,
-                                confirmButtonText: 'Yes, Approve',
-                                cancelButtonText: 'No, Cancel',
-                                reverseButtons: true // Optional: Switch button positions
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    // No duplicates, approve the profile
-                                    approveProfile(profileId, firstName, lastName, profileType, profileImg, rfid);
-                                }
-                            });
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        Swal.fire({
-                            position: "top",
-                            title: 'Error!',
-                            text: 'Error occurred while checking duplicates.' || "An error occurred.",
-                            icon: "error",
-                            timer: 3000,
-                            timerProgressBar: true,
-                            showConfirmButton: false
-                        });
-                        console.error(status, error);
-                    },
-                });
-
-
             });
 
-            $('#approveSimilarBtn').on('click', function() {
-                const profileId = $('#modal_1_profileId').val();
-                const firstName = $('#modal_1_firstName').val().trim();
-                const lastName = $('#modal_1_lastName').val().trim();
-                const profileType = $('#modal_1_profileType').val();
-                const profileImg = $('#modal_1_profileImg').attr('src').split('/').pop();
+            // EDIT PICTURE
+            let cropper;
+            let originalImage = null;
+            let croppedImage = null;
 
-                const rfid = $('#modal_1_rfid').val().trim();
+            $('#modal_1_profileImg').on('click', function() {
 
-                // Prepare the RFID display value
-                const rfidDisplay = rfid ? rfid : "N/A";
-                const profileImgDisplay = `/tapnlog/Image/Pending/${profileImg}`;
-
-                // SweetAlert2 confirmation
+                // Open SweetAlert2 with Cropper
                 Swal.fire({
-                    title: 'Do you wish to proceed with the approval confirmation?',
+                    title: 'Edit Profile Picture',
                     html: `
-                            <div style="text-align: center;">
-                                <!-- Responsive image container -->
-                                <div style="width: 80%; max-width: 300px; aspect-ratio: 1; margin: 0 auto; border: 1px solid #ddd; border-radius: 50%; overflow: hidden; margin-bottom: 15px;">
-                                    <img src="${profileImgDisplay}" alt="Profile Image" style="width: 100%; height: 100%; object-fit: cover;">
-                                </div>
-                                
-                                <p><strong>Type:</strong> ${profileType}</p>
-                                <p><strong>Name:</strong> ${firstName} ${lastName}</p>
-                                <p><strong>RFID:</strong> ${rfidDisplay}</p>
-                            </div>
-                        `,
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, Approve',
-                    cancelButtonText: 'No, Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Run the approveProfile function if confirmed
-                        approveProfile(profileId, firstName, lastName, profileType, profileImg, rfid);
-                    }
-                });
-            });
-
-
-            $('#discardSimilarBtn').on('click', function() {
-                const profileId = $('#modal_1_profileId').val(); // Get profile ID from the hidden input in the modal
-                const firstName = $('#modal_1_firstName').val().trim();
-                const lastName = $('#modal_1_lastName').val().trim();
-                const profileType = $('#modal_1_profileType').val();
-                const profileImg = $('#modal_1_profileImg').attr('src').split('/').pop();
-                const rfid = $('#modal_1_rfid').val().trim();
-
-                // Prepare the RFID display value
-                const rfidDisplay = rfid ? rfid : "N/A";
-                const profileImgDisplay = `/tapnlog/Image/Pending/${profileImg}`;
-
-                // SweetAlert2 confirmation dialog with details
-                Swal.fire({
-                    title: 'Are you sure you want to delete this profile?',
-                    html: `
-                        <div style="text-align: center;">
-                            <!-- Responsive image container -->
-                            <div style="width: 80%; max-width: 300px; aspect-ratio: 1; margin: 0 auto; border: 1px solid #ddd; border-radius: 50%; overflow: hidden; margin-bottom: 15px;">
-                                <img src="${profileImgDisplay}" alt="Profile Image" style="width: 100%; height: 100%; object-fit: cover;">
-                            </div>
-                            
-                            <p><strong>Type:</strong> ${profileType}</p>
-                            <p><strong>Name:</strong> ${firstName} ${lastName}</p>
-                            <p><strong>RFID:</strong> ${rfidDisplay}</p>
+                        <input type="file" id="swalFileInput" accept="image/*" class="form-control mb-3">
+                        <div style="max-width: 100%; overflow: hidden;">
+                            <img id="swalImageToCrop" style="display: none; width: 100%; max-height: 70vh;" />
                         </div>
                     `,
                     showCancelButton: true,
-                    confirmButtonText: 'Yes, Delete',
-                    cancelButtonText: 'No, Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // AJAX request to delete the profile
-                        $.ajax({
-                            url: 'delete_profile.php', // URL to the PHP script
-                            type: 'POST',
-                            data: {
-                                profile_id: profileId
-                            },
-                            success: function(response) {
-                                const result = JSON.parse(response);
-
-                                if (result.success) {
-                                    // Show success message
-                                    Swal.fire({
-                                        position: "top",
-                                        title: 'Success!',
-                                        text: result.message,
-                                        icon: 'success',
-                                        timer: 3000,
-                                        timerProgressBar: true,
-                                        showConfirmButton: false
+                    confirmButtonText: 'Save Crop',
+                    didOpen: () => {
+                        // Initialize file input behavior
+                        $('#swalFileInput').change(function() {
+                            const file = this.files[0];
+                            if (file) {
+                                const reader = new FileReader();
+                                reader.onload = function(e) {
+                                    $('#swalImageToCrop').attr('src', e.target.result).show();
+                                    if (cropper) cropper.destroy();
+                                    cropper = new Cropper(document.getElementById('swalImageToCrop'), {
+                                        aspectRatio: 1, // 1:1 aspect ratio
+                                        viewMode: 1,
+                                        movable: true,
+                                        zoomable: true,
+                                        scalable: true,
+                                        rotatable: true,
+                                        cropBoxMovable: true,
+                                        cropBoxResizable: true,
                                     });
-
-                                    // Close the modals and refresh the table or data
-                                    $('#profileDetailsModal, #duplicateProfileModal').modal('hide');
-                                    fetchProfiles();
-                                } else {
-                                    // Show error message
-                                    Swal.fire({
-                                        position: "top",
-                                        title: 'Error!',
-                                        text: result.message,
-                                        icon: 'error',
-                                        timer: 3000,
-                                        timerProgressBar: true,
-                                        showConfirmButton: false
-                                    });
-                                }
-                            },
-                            error: function(xhr, status, error) {
-                                // Handle AJAX error
-                                Swal.fire({
-                                    title: 'Error!',
-                                    text: 'An error occurred while deleting the profile. Please try again.',
-                                    icon: 'error',
-                                    timer: 3000,
-                                    timerProgressBar: true,
-                                    showConfirmButton: false
-                                });
-                                console.error('Error details:', status, error); // Log details for debugging
+                                };
+                                reader.readAsDataURL(file);
                             }
                         });
+                    },
+                    preConfirm: () => {
+                        // Save the cropped image
+                        if (cropper) {
+                            const canvas = cropper.getCroppedCanvas({
+                                width: 600,
+                                height: 600,
+                            });
+                            croppedImage = canvas.toDataURL('image/png');
+                            return croppedImage;
+                        }
+                    },
+                    willClose: () => {
+                        if (cropper) cropper.destroy();
+                    },
+                }).then((result) => {
+                    if (result.isConfirmed && croppedImage) {
+                        // Update the profile picture with the cropped image
+                        $('#revertOriginalBtn_cont').show(); // Show the revert button
+                        $('#modal_1_profileImg').attr('src', croppedImage);
+                        adjustButtonColumns();
                     }
                 });
+
+            });
+
+            function adjustButtonColumns() {
+                if ($('#revertOriginalBtn_cont').is(':visible')) {
+                    // Revert button is visible
+                    $('#cancelEditBtn_cont').removeClass('col-md-6').addClass('col-md-4');
+                    $('#saveEditBtn_cont').removeClass('col-md-6').addClass('col-md-4');
+                } else {
+                    // Revert button is hidden
+                    $('#cancelEditBtn_cont').removeClass('col-md-4').addClass('col-md-6');
+                    $('#saveEditBtn_cont').removeClass('col-md-4').addClass('col-md-6');
+                }
+            }
+
+
+            // Revert to Original Picture
+            $('#revertOriginalBtn').on('click', function() {
+                if (originalImage) {
+                    $('#modal_1_profileImg').attr('src', originalImage); // Reset image to original
+                    croppedImage = null; // Clear the cropped image
+                    $('#revertOriginalBtn_cont').hide(); // Hide the revert button
+                    adjustButtonColumns(); // Adjust button columns
+                }
             });
 
 
 
-            function approveProfile(profileId, firstName, lastName, profileType, profileImg, rfid) {
+            // START
+
+            fetchProfiles();
+            $('#searchTextbox, #status-select, #from_dateInput, #to_dateInput').on('change keyup', fetchProfiles);
+
+            // Function to fetch and display profiles
+            function fetchProfiles() {
+                const search = $('#searchTextbox').val();
+                const status = $('#status-select').val();
+                const fromDate = $('#from_dateInput').val();
+                const toDate = $('#to_dateInput').val();
+
                 $.ajax({
-                    url: 'approve_profile.php', // Endpoint to approve profile
-                    type: 'POST',
+                    url: 'fetch_profiles.php',
+                    type: 'GET',
                     data: {
-                        profile_id: profileId,
-                        first_name: firstName,
-                        last_name: lastName,
-                        type_of_profile: profileType,
-                        profile_img: profileImg,
-                        rfid: rfid, // Include RFID in the request
+                        search,
+                        status,
+                        from_date: fromDate,
+                        to_date: toDate
                     },
-
-                    success: function(response) {
-                        const result = JSON.parse(response);
-                        if (result.success) {
-
-                            Swal.fire({
-                                position: "top",
-                                title: 'Success!',
-                                text: result.message,
-                                icon: "success",
-                                timer: 3000,
-                                timerProgressBar: true,
-                                showConfirmButton: false
-                            });
-
-                            fetchProfiles(); // Refresh the table
-                            $('#profileDetailsModal, #duplicateProfileModal').modal('hide');
-                        } else {
-                            Swal.fire({
-                                position: "top",
-                                title: 'Error!',
-                                text: result.message || "An error occurred.",
-                                icon: "error",
-                                timer: 3000,
-                                timerProgressBar: true,
-                                showConfirmButton: false
-                            });
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        Swal.fire({
-                            position: "top",
-                            title: 'Error!',
-                            text: "Error occurred while approving the profile.",
-                            icon: "error",
-                            timer: 3000,
-                            timerProgressBar: true,
-                            showConfirmButton: false
-                        });
-
-                        console.error("AJAX Error: ", error);
-                        console.log("Raw Response: ", xhr.responseText);
-
+                    success: function(data) {
+                        $('#employee-container').html(data);
                     },
                 });
             }
+
+            // Handle Edit button click
+            $(document).on('click', '.edit-btn', function() {
+                const id = $(this).data('id');
+                const firstName = $(this).data('first-name');
+                const lastName = $(this).data('last-name');
+                const rfid = $(this).data('rfid');
+                const img = $(this).data('img');
+
+                originalImage = img; // Save the original image for reversion
+                croppedImage = null; // Reset cropped image
+
+                // Populate modal fields
+                $('#modal_1_profileId').val(id);
+                $('#modal_1_firstName').val(firstName).attr('data-current', firstName);
+                $('#modal_1_lastName').val(lastName).attr('data-current', lastName);
+                $('#modal_1_rfid').val(rfid).attr('data-current', rfid || '');
+                $('#modal_1_profileImg').attr('src', img);
+
+                // Triggering validations
+                validateFirstName();
+                validateLastName();
+                validateRFID();
+
+                $('#revertOriginalBtn_cont').hide(); // Initially hide the revert button
+                adjustButtonColumns();
+
+                // Show the modal
+                $('#EditProfileDetailsModal').modal('show');
+            });
+
+            $('#saveEditBtn').on('click', function() {
+                if (checksaveEditBtn()) {
+
+                    // Collect data from the form
+                    const profileId = $('#modal_1_profileId').val();
+                    const firstName = $('#modal_1_firstName').val();
+                    const lastName = $('#modal_1_lastName').val();
+                    const rfid = $('#modal_1_rfid').val() || null;
+                    const croppedImageData = croppedImage || null;
+
+                    // Retrieve current values from the `data-current` attributes
+                    const currentFirstName = $('#modal_1_firstName').attr('data-current');
+                    const currentLastName = $('#modal_1_lastName').attr('data-current');
+                    const currentRFID = $('#modal_1_rfid').attr('data-current') || null;
+
+                    console.log('First Name:', firstName, 'Current:', currentFirstName);
+                    console.log('Last Name:', lastName, 'Current:', currentLastName);
+                    console.log('RFID:', rfid, 'Current:', currentRFID);
+                    console.log('Cropped Image:', croppedImageData);
+
+                    // Check if there are any changes
+                    if (
+                        firstName === currentFirstName &&
+                        lastName === currentLastName &&
+                        rfid === currentRFID &&
+                        !croppedImageData
+                    ) {
+                        // No changes detected
+                        Swal.fire({
+                            title: 'No Changes Detected!',
+                            text: "There's nothing to update.",
+                            icon: 'info',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                        });
+                        return;
+                    }
+
+
+                    // Show a confirmation message before proceeding
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "Do you want to save the changes to this profile?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, save it!',
+                        cancelButtonText: 'Cancel',
+                    }).then((result) => {
+
+                        if (result.isConfirmed) {
+
+                            // Show a loading alert while saving
+                            Swal.fire({
+                                title: 'Saving Changes...',
+                                text: 'Please wait while we update the profile.',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                },
+                            });
+
+                            // Send the data using AJAX
+                            $.ajax({
+                                url: 'update_changes.php',
+                                type: 'POST',
+                                data: {
+                                    profileId: profileId,
+                                    firstName: firstName,
+                                    lastName: lastName,
+                                    rfid: rfid,
+                                    croppedImage: croppedImageData,
+                                },
+                                dataType: 'json',
+                                success: function(response) {
+                                    Swal.close(); // Close the loading alert
+
+                                    if (response.success) {
+                                        Swal.fire({
+                                            title: 'Success!',
+                                            text: response.message,
+                                            icon: 'success',
+                                            timer: 3000,
+                                            timerProgressBar: true,
+                                            showConfirmButton: false,
+                                        });
+
+                                        // Refresh the profile list or update the UI
+                                        fetchProfiles();
+                                        $('#EditProfileDetailsModal').modal('hide');
+                                    } else {
+                                        Swal.fire({
+                                            title: 'Error!',
+                                            text: response.message,
+                                            icon: 'error',
+                                            timer: 3000,
+                                            timerProgressBar: true,
+                                            showConfirmButton: false,
+                                        });
+                                    }
+                                },
+                                error: function() {
+                                    Swal.close(); // Close the loading alert
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'An unexpected error occurred while updating the profile.',
+                                        icon: 'error',
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                    });
+                                },
+                            });
+                        }
+                    });
+                }
+            });
+
+
 
         });
     </script>

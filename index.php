@@ -19,7 +19,7 @@ function getLocalIpAddress() {
     }
 }
 
-// Function to get the client's IP address (if accessed via a server)
+// Function to get the client's IP address (if accessed via a server) (Note: this is for future use)
 function getUserIpAddress() {
     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
         $ip = $_SERVER['HTTP_CLIENT_IP'];
@@ -39,13 +39,15 @@ function getUserIpAddress() {
 
 
 // Necessary global variables needed
-
 $_SESSION['directory'] = __DIR__;
 $_SESSION['ip_address'] = getLocalIpAddress();
 $_SESSION['website_link'] = 'http://' . $_SESSION['ip_address'] . '/TAPNLOG';
 
-// echo $_SESSION['directory']; = \
-// echo $_SERVER['DOCUMENT_ROOT']; = /
+
+
+// echo $_SESSION['directory'] .'<br>'; // = \
+// echo $_SERVER['DOCUMENT_ROOT'] . '<br>'; // = /
+// echo $_SESSION['website_link'] . '<br>';
 // exit();
 
 
