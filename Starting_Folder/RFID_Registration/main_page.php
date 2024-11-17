@@ -59,6 +59,36 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
             border: 2px solid red !important;
             /* Add a red border for invalid image */
         }
+
+        .text-color_ {
+            color: #1877f2;
+        }
+
+        /* Style for the Terms and Conditions link */
+        #viewTerms {
+            color: #007bff;
+            /* Bright blue for better visibility */
+            text-decoration: underline;
+            /* Make it clear it's a link */
+            font-weight: bold;
+            /* Emphasize the link */
+            transition: color 0.3s ease;
+            /* Smooth transition on hover */
+        }
+
+        #viewTerms:hover {
+            color: #0056b3;
+            /* Slightly darker blue on hover for contrast */
+            text-decoration: none;
+            /* Remove underline on hover for effect */
+        }
+
+        /* Ensure the SweetAlert2 modal content is scrollable on mobile */
+        .swal2-container .swal2-html-container {
+            max-height: 300px;
+            /* Adjust as necessary */
+            overflow-y: auto;
+        }
     </style>
 
 </head>
@@ -105,6 +135,22 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                             <option value="EMPLOYEE">Employee</option>
                         </select>
                     </div>
+
+                    <!-- Terms and condition -->
+                    <div class="mb-3 form-check">
+                        <div class="container-fluid d-flex justify-content-center p-0 m-0">
+                            <div class="row p-0 m-0">
+                                <div class="col-12 p-0">
+                                    <input type="checkbox" class="form-check-input" id="agreeTerms" disabled>
+                                    <label class="form-check-label" for="agreeTerms">
+                                        I agree to the <a href="#" id="viewTerms">Terms and Conditions</a>.
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <div class="d-flex flex-wrap gap-2">
                         <button type="button" class="btn btn-secondary flex-fill" id="discardBtn">BACK</button>
                         <button type="button" class="btn btn-success flex-fill" id="saveBtn">REGISTER</button>
@@ -250,6 +296,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                 validateFirstName();
                 validateLastName();
                 validateImageUpload();
+                validateTnC();
                 if (checksaveBtn()) {
                     // Trigger the login form
                     $('#profileForm').submit();
@@ -289,8 +336,56 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                     });
 
                 });
-
             });
+
+            $('#viewTerms').click(function(e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Terms and Conditions',
+                    html: ` <div style="text-align: left; -webkit-overflow-scrolling: touch; touch-action: pan-y;">
+                            <p>Welcome to our service! By using this service, you agree to the following terms and conditions:</p>
+                            <ul>
+                                <li>You shall comply with all applicable laws and regulations.</li>
+                                <li>Do not misuse the platform or services.</li>
+                                <li>All content uploaded must be your original work or have proper authorization.</li>
+                                <li>We reserve the right to terminate accounts violating these terms.</li>
+                                <li>Your data will be handled per our privacy policy.</li>
+                            </ul>
+                            <p><strong>Scroll to the bottom to accept.</strong></p>
+                        </div>`,
+                    showCancelButton: true,
+                    confirmButtonText: 'ACCEPT',
+                    cancelButtonText: 'CANCEL',
+                    reverseButtons: true,
+                    didOpen: () => {
+                        const container = document.querySelector('.swal2-html-container');
+                        const confirmButton = Swal.getConfirmButton();
+
+                        // Disable confirm button initially
+                        confirmButton.disabled = true;
+
+                        // Add scroll event listener
+                        container.addEventListener('scroll', () => {
+                            const isScrolledToBottom =
+                                container.scrollHeight - container.scrollTop <= container.clientHeight + 1; // Account for rounding
+
+                            // Enable confirm button if scrolled to the bottom
+                            confirmButton.disabled = !isScrolledToBottom;
+                        });
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#agreeTerms').prop('checked', true); // Enable checkbox if accepted
+                    } else {
+                        $('#agreeTerms').prop('checked', false); // Uncheck if canceled
+                    }
+
+                    // Trigger validation
+                    validateTnC();
+                });
+            });
+
 
             // FEEDBACK MESSAGE FUNCTION FOR NAME
             $('#firstName').on('input', validateFirstName);
@@ -351,13 +446,28 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                 }
             }
 
+            // FEEDBACK MESSAGE FUNCTION FOR TNC
+            function validateTnC() {
+                const isChecked = $('#agreeTerms').is(':checked');
+
+                // Resetting the validation state
+                $('#agreeTerms').removeClass('is-invalid');
+                $('label[for="agreeTerms"]').removeClass('is-invalid');
+
+                if (!isChecked) {
+                    $('#agreeTerms').addClass('is-invalid');
+                    $('label[for="agreeTerms"]').addClass('is-invalid');
+                }
+            }
+
             function checksaveBtn() {
                 let isFnameValid = $('#firstName').val().trim() !== "" && !$('#firstName').hasClass('is-invalid');
                 let isLnameValid = $('#lastName').val().trim() !== "" && !$('#lastName').hasClass('is-invalid');
                 let isImageValid = croppedImage !== null && !$('#profileImg').hasClass('is-invalid-image');
+                let isTnCValid = $('#agreeTerms').is(':checked');
 
                 // If any field is invalid, return false
-                if (!isFnameValid || !isLnameValid || !isImageValid) {
+                if (!isFnameValid || !isLnameValid || !isImageValid || !isTnCValid) {
                     return false;
                 } else {
                     return true;
@@ -369,8 +479,9 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                 let isImageValid = croppedImage !== null; // Check if a cropped image exists
                 let isFirstNameValid = $('#firstName').val().trim() !== "" && !$('#firstName').hasClass('is-invalid');
                 let isLastNameValid = $('#lastName').val().trim() !== "" && !$('#lastName').hasClass('is-invalid');
+                let isTnCValid = $('#agreeTerms').is(':checked');
 
-                if (isImageValid || isFirstNameValid || isLastNameValid) {
+                if (isImageValid || isFirstNameValid || isLastNameValid || !isTnCValid) {
                     // Change the button to "DISCARD" with a confirmation message
                     $('#discardBtn').text('DISCARD');
                     $('#discardBtn').removeClass('btn-secondary').addClass('btn-danger');
