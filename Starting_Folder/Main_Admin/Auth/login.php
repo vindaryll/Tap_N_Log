@@ -448,6 +448,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                 let feedbackMessage = '';
 
                 $('#password-feedback').text('').removeClass('invalid-feedback');
+                
 
                 if (password === "") {
                     feedbackMessage = 'Password cannot be empty.';

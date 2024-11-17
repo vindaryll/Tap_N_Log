@@ -45,8 +45,8 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
     <style>
         #profileImg {
             width: 100%;
-            height: auto;
             max-width: 400px;
+            aspect-ratio: 1 / 1;
             border: 1px solid #ddd;
             object-fit: cover;
         }
@@ -96,66 +96,83 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
 <body>
 
     <div class="container mt-5">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-lg-5 col-md-6 p-0 mb-3 mb-md-4">
+                <div class="row d-flex justify-content-center align-items-center p-0 m-0">
+                    <div class="col-lg-2 col-md-2 col-sm-12 d-flex justify-content-center justify-content-md-end align-items-center">
+                        <img src="/TAPNLOG/Image/LOGO_AND_ICONS/logo_icon.png" id="img_logo" class="img-fluid" alt="Logo" style="max-width: 60px; height: auto;">
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-12 d-flex justify-content-center justify-content-md-start align-items-center p-0 m-0">
+                        <h2>RFID REGISTRATION</h2>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 col-sm-12 text-center">
                 <img id="profileImg" src="../../Image/logo_and_icons/default_avatar.png" alt="Profile Image" class="img-thumbnail">
                 <div id="profileImg-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
                 <div class="row justify-content-center">
                     <div class="col-md-6 col-sm-12 text-center">
-                        <button class="btn btn-primary mt-2 w-100" data-bs-toggle="modal" data-bs-target="#uploadModal">Upload Picture</button>
+                        <button class="btn btn-primary mt-2 w-100" data-bs-toggle="modal" data-bs-target="#uploadModal">UPLOAD IMAGE</button>
                     </div>
                     <div class="col-md-6 col-sm-12 text-center">
-                        <button class="btn btn-danger mt-2 w-100" id="removePicBtn">Remove Picture</button>
+                        <button class="btn btn-danger mt-2 w-100" id="removePicBtn">REMOVE IMAGE</button>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-8 col-md-6 col-sm-12 form-container">
-                <form id="profileForm">
+            <div class="col-lg-8 col-md-6 col-sm-12 form-container d-flex align-items-center">
+                <div class="row p-0 m-0 w-100 h-100">
+                    <form id="profileForm" class="d-flex flex-column justify-content-between">
 
-                    <!-- First Name -->
-                    <div class="mb-3">
-                        <label for="firstName" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="firstName" name="first_name" required>
-                        <div id="firstName-feedback" class="invalid-feedback" style="display: block;"></div>
-                    </div>
+                        <!-- First Name -->
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" name="first_name" required>
+                            <div id="firstName-feedback" class="invalid-feedback" style="display: block;"></div>
+                        </div>
 
-                    <!-- Last Name -->
-                    <div class="mb-3">
-                        <label for="lastName" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="lastName" name="last_name" required>
-                        <div id="lastName-feedback" class="invalid-feedback" style="display: block;"></div>
-                    </div>
+                        <!-- Last Name -->
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" name="last_name" required>
+                            <div id="lastName-feedback" class="invalid-feedback" style="display: block;"></div>
+                        </div>
 
-                    <!-- Type of profile -->
-                    <div class="mb-3">
-                        <label for="profileType" class="form-label">Type of Profile</label>
-                        <select class="form-select" id="profileType" name="type_of_profile" required>
-                            <option value="OJT">On-the-job training</option>
-                            <option value="CFW">Cash for Work</option>
-                            <option value="EMPLOYEE">Employee</option>
-                        </select>
-                    </div>
+                        <!-- Type of profile -->
+                        <div class="mb-3">
+                            <label for="profileType" class="form-label">Type of Profile</label>
+                            <select class="form-select" id="profileType" name="type_of_profile" required>
+                                <option value="OJT">On-the-job training</option>
+                                <option value="CFW">Cash for Work</option>
+                                <option value="EMPLOYEE">Employee</option>
+                            </select>
+                        </div>
 
-                    <!-- Terms and condition -->
-                    <div class="mb-3 form-check">
-                        <div class="container-fluid d-flex justify-content-center p-0 m-0">
-                            <div class="row p-0 m-0">
-                                <div class="col-12 p-0">
-                                    <input type="checkbox" class="form-check-input" id="agreeTerms" disabled>
-                                    <label class="form-check-label" for="agreeTerms">
-                                        I agree to the <a href="#" id="viewTerms">Terms and Conditions</a>.
-                                    </label>
+                        <!-- Terms and condition -->
+                        <div class="mb-3 form-check">
+                            <div class="container-fluid d-flex justify-content-center p-0 m-0">
+                                <div class="row p-0 m-0">
+                                    <div class="col-12 p-0">
+                                        <input type="checkbox" class="form-check-input" id="agreeTerms" disabled>
+                                        <label class="form-check-label" for="agreeTerms">
+                                            I agree to the <a href="#" id="viewTerms">Terms and Conditions</a>.
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
 
-                    <div class="d-flex flex-wrap gap-2">
-                        <button type="button" class="btn btn-secondary flex-fill" id="discardBtn">BACK</button>
-                        <button type="button" class="btn btn-success flex-fill" id="saveBtn">REGISTER</button>
-                    </div>
-                </form>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="button" class="btn btn-secondary flex-fill" id="discardBtn">BACK</button>
+                            <button type="button" class="btn btn-success flex-fill" id="saveBtn">REGISTER</button>
+                        </div>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
@@ -165,7 +182,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="uploadModalLabel">Upload and Crop Picture</h5>
+                    <h5 class="modal-title" id="uploadModalLabel">CROP AND UPLOAD IMAGE</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -177,8 +194,8 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="cancelCrop">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="saveCrop">Save Crop</button>
+                    <button type="button" class="btn btn-secondary" id="cancelCrop">CANCEL</button>
+                    <button type="button" class="btn btn-primary" id="saveCrop">UPLOAD</button>
                 </div>
             </div>
         </div>
@@ -226,7 +243,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                 }
             });
 
-            $('#saveCrop').click(function() {
+            $('#saveCrop').on('click', function() {
                 if (cropper) {
                     const canvas = cropper.getCroppedCanvas({
                         width: 600,
@@ -247,14 +264,14 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                 }
             });
 
-            $('#discardBtn').click(function() {
+            $('#discardBtn').on('click', function() {
                 showAlert("Thank you!", "success"); // Show success message
                 setTimeout(() => {
                     window.location.href = '/TAPNLOG/Starting_Folder/Landing_page/index.php';
                 }, 1000);
             });
 
-            $('#cancelCrop').click(function() {
+            $('#cancelCrop').on('click', function() {
 
                 $('#uploadModal').modal('hide');
 
@@ -267,7 +284,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                 }
             });
 
-            $('#removePicBtn').click(function() {
+            $('#removePicBtn').on('click',function() {
                 // go back to landing page
                 if (croppedImage) {
                     Swal.fire({
@@ -282,6 +299,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                             $('#profileImg').attr('src', '../../Image/logo_and_icons/default_avatar.png');
                             croppedImage = null;
                             showAlert("Image removed successfully!", "success");
+                            checkDiscardBtn();
                         }
                     });
                 } else {
@@ -290,7 +308,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
             });
 
 
-            $('#saveBtn').click(function() {
+            $('#saveBtn').on('click', function() {
 
                 // Check feedback messages
                 validateFirstName();
@@ -338,7 +356,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                 });
             });
 
-            $('#viewTerms').click(function(e) {
+            $('#viewTerms').on('click', function(e) {
                 e.preventDefault();
 
                 Swal.fire({
@@ -383,6 +401,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
 
                     // Trigger validation
                     validateTnC();
+                    checkDiscardBtn();
                 });
             });
 
@@ -481,11 +500,11 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                 let isLastNameValid = $('#lastName').val().trim() !== "" && !$('#lastName').hasClass('is-invalid');
                 let isTnCValid = $('#agreeTerms').is(':checked');
 
-                if (isImageValid || isFirstNameValid || isLastNameValid || !isTnCValid) {
+                if (isImageValid || isFirstNameValid || isLastNameValid || isTnCValid) {
                     // Change the button to "DISCARD" with a confirmation message
                     $('#discardBtn').text('DISCARD');
                     $('#discardBtn').removeClass('btn-secondary').addClass('btn-danger');
-                    $('#discardBtn').off('click').on('click', function() {
+                    $('#discardBtn').on('click', function() {
                         Swal.fire({
                             title: 'Unsaved Changes Detected',
                             text: 'You have unsaved changes. Are you sure you want to DISCARD the changes?',
@@ -508,7 +527,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                     // Change the button to "BACK" without a confirmation message
                     $('#discardBtn').text('BACK');
                     $('#discardBtn').removeClass('btn-danger').addClass('btn-secondary');
-                    $('#discardBtn').off('click').on('click', function() {
+                    $('#discardBtn').on('click', function() {
                         showAlert("Thank you!", "success"); // Show success message
                         setTimeout(() => {
                             window.location.href = '/TAPNLOG/Starting_Folder/Landing_page/index.php';
@@ -519,7 +538,6 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
 
 
             $('#firstName, #lastName').on('input change', checkDiscardBtn);
-            $('#removePicBtn').on('click', checkDiscardBtn);
             $('#saveCrop').on('click', checkDiscardBtn);
             $('#cancelCrop').on('click', checkDiscardBtn);
             $('#saveBtn').on('click', checkDiscardBtn);

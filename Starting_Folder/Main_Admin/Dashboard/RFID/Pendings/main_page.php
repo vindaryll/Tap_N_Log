@@ -156,15 +156,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Date</th>
-                                    <th>Name</th>
+                                    <th>DATE</th>
+                                    <th>NAME</th>
                                     <th>
                                         <div class="container-fluid text-center d-flex justify-content-center" style="min-width: 200px;">
                                             <select id="profileType" class="form-select form-select-sm">
-                                                <option value="">Type of Profiles</option>
-                                                <option value="OJT">On the job Trainees</option>
-                                                <option value="CFW">Cash for Work Staff</option>
-                                                <option value="EMPLOYEE">Employees</option>
+                                                <option value="">TYPE OF PROFILES</option>
+                                                <option value="OJT">ON THE JOB TRAINEES</option>
+                                                <option value="CFW">CASH FOR WORK</option>
+                                                <option value="EMPLOYEE">EMPLOYEES</option>
                                             </select>
                                         </div>
                                     </th>
@@ -209,31 +209,31 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
                                 <!-- Type of profile -->
                                 <div class="mb-3">
-                                    <label for="modal_1_profileType" class="form-label">Type of Profile</label>
+                                    <label for="modal_1_profileType" class="form-label"><strong>TYPE OF PROFILE</strong></label>
                                     <select class="form-select" id="modal_1_profileType" name="type_of_profile" required disabled>
-                                        <option value="OJT">On-the-job training</option>
-                                        <option value="CFW">Cash for Work</option>
-                                        <option value="EMPLOYEE">Employee</option>
+                                        <option value="OJT">ON THE JOB TRAINEE</option>
+                                        <option value="CFW">CASH FOR WORK</option>
+                                        <option value="EMPLOYEE">EMPLOYEES</option>
                                     </select>
                                 </div>
 
                                 <!-- First name -->
                                 <div class="mb-3">
-                                    <label for="modal_1_firstName" class="form-label">First Name</label>
+                                    <label for="modal_1_firstName" class="form-label"><strong>FIRST NAME</strong></label>
                                     <input type="text" class="form-control" id="modal_1_firstName" name="firstName" disabled>
                                     <div id="firstName-feedback" class="invalid-feedback"></div>
                                 </div>
 
                                 <!-- Last name -->
                                 <div class="mb-3">
-                                    <label for="modal_1_lastName" class="form-label">Last Name</label>
+                                    <label for="modal_1_lastName" class="form-label"><strong>LAST NAME</strong></label>
                                     <input type="text" class="form-control" id="modal_1_lastName" name="lastName" disabled>
                                     <div id="lastName-feedback" class="invalid-feedback"></div>
                                 </div>
 
                                 <!-- RFID number -->
                                 <div class="mb-3">
-                                    <label for="modal_1_rfid" class="form-label">RFID Number</label>
+                                    <label for="modal_1_rfid" class="form-label"><strong>RFID NUMBER</strong></label>
                                     <input type="text" class="form-control" id="modal_1_rfid" name="rfid">
                                     <div id="rfid-feedback" class="invalid-feedback"></div>
                                 </div>
@@ -518,11 +518,11 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     // Show confirmation dialog if there are changes
                     Swal.fire({
                         title: 'Unsaved Changes Detected',
-                        text: 'You have unsaved changes. Are you sure you want to cancel and revert the values?',
+                        text: 'You have unsaved changes. Are you sure you want to DISCARD the changes?',
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonText: 'Yes, Revert Changes',
-                        cancelButtonText: 'No, Stay Here',
+                        confirmButtonText: 'YES, DISCARD CHANGES',
+                        cancelButtonText: 'NO, KEEP EDITING',
                         reverseButtons: true,
                     }).then((result) => {
                         if (result.isConfirmed) {
@@ -611,8 +611,8 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         text: "Do you want to save the changes?",
                         icon: 'question',
                         showCancelButton: true,
-                        confirmButtonText: 'Yes, Save',
-                        cancelButtonText: 'No, Cancel',
+                        confirmButtonText: 'YES',
+                        cancelButtonText: 'NO',
                         reverseButtons: true // Optional: Switch button positions
                     }).then((result) => {
                         if (result.isConfirmed) {
@@ -705,11 +705,11 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: 'Do you want to delete this profile? This action cannot be undone.',
+                    text: 'Do you want to DELETE this profile? This action cannot be undone.',
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Yes, Delete',
-                    cancelButtonText: 'No, Cancel',
+                    confirmButtonText: 'YES',
+                    cancelButtonText: 'NO',
                     reverseButtons: true // Optional: Switch button positions
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -958,11 +958,11 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
                             Swal.fire({
                                 title: 'Are you sure?',
-                                text: "Do you want to approve this profile?",
+                                text: "Do you want to APPROVE this profile?",
                                 icon: 'question',
                                 showCancelButton: true,
-                                confirmButtonText: 'Yes, Approve',
-                                cancelButtonText: 'No, Cancel',
+                                confirmButtonText: 'YES',
+                                cancelButtonText: 'NO',
                                 reverseButtons: true // Optional: Switch button positions
                             }).then((result) => {
                                 if (result.isConfirmed) {
@@ -1012,14 +1012,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                     <img src="${profileImgDisplay}" alt="Profile Image" style="width: 100%; height: 100%; object-fit: cover;">
                                 </div>
                                 
-                                <p><strong>Type:</strong> ${profileType}</p>
+                                <p><strong>Profile Type:</strong> ${profileType}</p>
                                 <p><strong>Name:</strong> ${firstName} ${lastName}</p>
-                                <p><strong>RFID:</strong> ${rfidDisplay}</p>
+                                <p><strong>RFID Number:</strong> ${rfidDisplay}</p>
                             </div>
                         `,
                     showCancelButton: true,
-                    confirmButtonText: 'Yes, Approve',
-                    cancelButtonText: 'No, Cancel'
+                    confirmButtonText: 'YES',
+                    cancelButtonText: 'NO',
+                    reverseButtons: true 
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Run the approveProfile function if confirmed
@@ -1051,14 +1052,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                 <img src="${profileImgDisplay}" alt="Profile Image" style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
                             
-                            <p><strong>Type:</strong> ${profileType}</p>
+                            <p><strong>Profile Type:</strong> ${profileType}</p>
                             <p><strong>Name:</strong> ${firstName} ${lastName}</p>
-                            <p><strong>RFID:</strong> ${rfidDisplay}</p>
+                            <p><strong>RFID Number:</strong> ${rfidDisplay}</p>
                         </div>
                     `,
                     showCancelButton: true,
-                    confirmButtonText: 'Yes, Delete',
-                    cancelButtonText: 'No, Cancel'
+                    confirmButtonText: 'YES',
+                    cancelButtonText: 'NO',
+                    reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // AJAX request to delete the profile
@@ -1102,6 +1104,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             error: function(xhr, status, error) {
                                 // Handle AJAX error
                                 Swal.fire({
+                                    position: "top",
                                     title: 'Error!',
                                     text: 'An error occurred while deleting the profile. Please try again.',
                                     icon: 'error',

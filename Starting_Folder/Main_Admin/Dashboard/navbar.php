@@ -65,8 +65,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <button type="button" class="btn btn-primary w-100 mb-2" id="nav_sendCodeBtn1">Change Email</button>
-                <button type="button" class="btn btn-secondary w-100" id="nav_changePasswordBtn">Change Password</button>
+                <button type="button" class="btn btn-primary w-100 mb-2" id="nav_sendCodeBtn1">CHANGE EMAIL</button>
+                <button type="button" class="btn btn-secondary w-100" id="nav_changePasswordBtn">CHANGE PASSWORD</button>
             </div>
         </div>
     </div>
@@ -86,9 +86,9 @@
                     <div id="nav_otpCode1-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
                 </div>
 
-                <button id="nav_submitOtpBtn1" class="btn btn-primary mt-3">Submit</button>
-                <button id="nav_resendCodeBtn1" class="btn btn-warning mt-3" disabled>Resend Code</button>
-                <button id="nav_backBtn1" class="btn btn-secondary mt-3">Back</button>
+                <button id="nav_submitOtpBtn1" class="btn btn-primary mt-3">SUBMIT</button>
+                <button id="nav_resendCodeBtn1" class="btn btn-warning mt-3" disabled>RESEND CODE</button>
+                <button id="nav_backBtn1" class="btn btn-secondary mt-3">BACK</button>
             </div>
         </div>
     </div>
@@ -109,7 +109,7 @@
                     <div id="nav_newEmail-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
                 </div>
 
-                <button id="nav_sendCodeBtn2" class="btn btn-primary mt-3">Send Code</button>
+                <button id="nav_sendCodeBtn2" class="btn btn-primary mt-3">SEND CODE</button>
             </div>
         </div>
     </div>
@@ -129,9 +129,9 @@
                     <div id="nav_otpCode2-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
                 </div>
 
-                <button id="nav_submitOtpBtn2" class="btn btn-primary mt-3">Submit</button>
-                <button id="nav_resendCodeBtn2" class="btn btn-warning mt-3" disabled>Resend Code</button>
-                <button id="nav_backBtn2" class="btn btn-secondary mt-3">Back</button>
+                <button id="nav_submitOtpBtn2" class="btn btn-primary mt-3">SUBMIT</button>
+                <button id="nav_resendCodeBtn2" class="btn btn-warning mt-3" disabled>RESEND CODE</button>
+                <button id="nav_backBtn2" class="btn btn-secondary mt-3">BACK</button>
             </div>
         </div>
     </div>
@@ -176,8 +176,8 @@
                     <div id="nav_confirm_password-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
                 </div>
 
-                <button id="nav_submitChangePasswordBtn" class="btn btn-primary mt-3">Submit</button>
-                <button id="nav_discardChangePasswordBtn" class="btn btn-secondary mt-3">Discard</button>
+                <button id="nav_submitChangePasswordBtn" class="btn btn-primary mt-3">SUBMIT</button>
+                <button id="nav_discardChangePasswordBtn" class="btn btn-secondary mt-3">DISCARD</button>
             </div>
         </div>
     </div>
@@ -498,7 +498,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     clearInterval(resendTimeout1);
-                    $('#nav_resendCodeBtn1').prop('disabled', false).text('Resend Code');
+                    $('#nav_resendCodeBtn1').prop('disabled', false).text('RESEND CODE');
                     $('#nav_modalOTP1').modal('hide');
                     $('#nav_profileModal').modal('show');
                 }
@@ -589,11 +589,11 @@
         function nav_startResendTimer1() {
             let timeLeft = 30;
             resendTimeout1 = setInterval(function() {
-                $('#nav_resendCodeBtn1').prop('disabled', true).text('Resend Code at ' + timeLeft + 's');
+                $('#nav_resendCodeBtn1').prop('disabled', true).text('RESEND CODE AT ' + timeLeft + 's');
                 timeLeft--;
                 if (timeLeft <= 0) {
                     clearInterval(resendTimeout1);
-                    $('#nav_resendCodeBtn1').prop('disabled', false).text('Resend Code');
+                    $('#nav_resendCodeBtn1').prop('disabled', false).text('RESEND CODE');
                 }
             }, 1000);
         }
@@ -648,7 +648,7 @@
                         });
 
                         clearInterval(resendTimeout1);
-                        $('#nav_resendCodeBtn1').prop('disabled', false).text('Resend Code');
+                        $('#nav_resendCodeBtn1').prop('disabled', false).text('RESEND CODE');
                     }
                 },
                 error: function() {
@@ -665,7 +665,7 @@
                     });
 
                     clearInterval(resendTimeout1);
-                    $('#nav_resendCodeBtn1').prop('disabled', false).text('Resend Code');
+                    $('#nav_resendCodeBtn1').prop('disabled', false).text('RESEND CODE');
                 }
             });
         });
@@ -701,7 +701,7 @@
                 timeLeft--;
                 if (timeLeft <= 0) {
                     clearInterval(sendTimeout2);
-                    $('#nav_sendCodeBtn2').prop('disabled', false).text('Send Code');
+                    $('#nav_sendCodeBtn2').prop('disabled', false).text('SEND CODE');
                 }
             }, 1000);
         }
@@ -777,7 +777,7 @@
                             });
 
                             clearInterval(sendTimeout2);
-                            $('#nav_sendCodeBtn2').prop('disabled', false).text('Send Code');
+                            $('#nav_sendCodeBtn2').prop('disabled', false).text('SEND CODE');
                         }
                     },
                     error: function() {
@@ -794,7 +794,7 @@
                         });
 
                         clearInterval(sendTimeout2);
-                        $('#nav_sendCodeBtn2').prop('disabled', false).text('Send Code');
+                        $('#nav_sendCodeBtn2').prop('disabled', false).text('SEND CODE');
                     }
                 });
             }
@@ -817,7 +817,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     clearInterval(resendTimeout2);
-                    $('#nav_resendCodeBtn2').prop('disabled', false).text('Resend Code');
+                    $('#nav_resendCodeBtn2').prop('disabled', false).text('RESEND CODE');
                     $('#nav_modalOTP2').modal('hide');
                     $('#nav_modalNewEmail').modal('show');
                 }
@@ -830,11 +830,11 @@
         function startResendTimer2() {
             let timeLeft = 30;
             resendTimeout2 = setInterval(function() {
-                $('#nav_resendCodeBtn2').prop('disabled', true).text('Resend Code at ' + timeLeft + 's');
+                $('#nav_resendCodeBtn2').prop('disabled', true).text('RESEND CODE AT ' + timeLeft + 's');
                 timeLeft--;
                 if (timeLeft <= 0) {
                     clearInterval(resendTimeout2);
-                    $('#nav_resendCodeBtn2').prop('disabled', false).text('Resend Code');
+                    $('#nav_resendCodeBtn2').prop('disabled', false).text('RESEND CODE');
                 }
             }, 1000);
         }
@@ -892,7 +892,7 @@
                         });
 
                         clearInterval(resendTimeout2);
-                        $('#nav_resendCodeBtn2').prop('disabled', false).text('Resend Code');
+                        $('#nav_resendCodeBtn2').prop('disabled', false).text('RESEND CODE');
                     }
                 },
                 error: function() {
@@ -908,7 +908,7 @@
                     });
 
                     clearInterval(resendTimeout2);
-                    $('#nav_resendCodeBtn2').prop('disabled', false).text('Resend Code');
+                    $('#nav_resendCodeBtn2').prop('disabled', false).text('RESEND CODE');
                 }
             });
         });

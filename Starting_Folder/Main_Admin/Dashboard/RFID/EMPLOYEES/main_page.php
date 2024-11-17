@@ -479,7 +479,8 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         </div>
                     `,
                     showCancelButton: true,
-                    confirmButtonText: 'Save Crop',
+                    confirmButtonText: 'UPLOAD',
+                    cancelButtonText: 'CANCEL',
                     reverseButtons: true,
                     didOpen: () => {
                         // Initialize file input behavior
@@ -651,12 +652,13 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     Swal.fire({
                         title: 'Are you sure?',
                         text: "Do you want to save the changes to this profile?",
-                        icon: 'warning',
+                        icon: 'question',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, save it!',
-                        cancelButtonText: 'Cancel',
+                        confirmButtonText: 'YES',
+                        cancelButtonText: 'NO',
+                        reverseButtons: true
                     }).then((result) => {
 
                         if (result.isConfirmed) {
@@ -777,8 +779,8 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     text: `Do you want to ${actionText} this employee?`,
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: `YES, ${actionText}`,
-                    cancelButtonText: 'NO, CANCEL',
+                    confirmButtonText: 'YES',
+                    cancelButtonText: 'NO',
                     reverseButtons: true
                 }).then((result) => {
 
@@ -838,16 +840,17 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             // Show Deactivate Modal
             function showDeactivateModal(employeeId) {
                 Swal.fire({
-                    title: 'Deactivate Employee',
+                    title: 'Deactivate Profile',
                     html: `
                             <p>Does the employee return the RFID?</p>
                             <input type="text" id="returnedRFID" class="form-control mb-2" placeholder="Enter returned RFID">
                             <div id="rfid-feedback_deactivate" class="invalid-feedback d-none">RFID validation feedback.</div>
                         `,
                     showCancelButton: false,
-                    confirmButtonText: 'Yes',
+                    confirmButtonText: 'YES',
                     showDenyButton: true,
-                    denyButtonText: 'Lost RFID',
+                    denyButtonText: 'LOST RFID',
+                    reverseButtons: true,
                     didOpen: () => {
                         const inputElement = $('#returnedRFID');
 
@@ -1011,15 +1014,14 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             // Show Reactivate Modal
             function showReactivateModal(employeeId) {
                 Swal.fire({
-                    title: 'Reactivate Employee',
+                    title: 'Reactivate Profile',
                     html: `
                             <label class="mb-2" for="rfidInput">Enter RFID (optional):</label>
                             <input type="text" id="rfidInput" class="form-control mb-2" placeholder="Enter RFID Number">
                             <div id="rfid-feedback_reactivate" class="invalid-feedback d-none">RFID validation feedback.</div>
                         `,
-                    showCancelButton: true,
                     confirmButtonText: 'Reactivate',
-                    cancelButtonText: 'Cancel',
+                    showCancelButton: false,
                     didOpen: () => {
                         const inputElement = $('#rfidInput');
 
