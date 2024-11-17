@@ -6,6 +6,16 @@ function sanitizeInput($data) {
     return htmlspecialchars(stripslashes(trim($data)));
 }
 
+// Function to map type abbreviations to full forms
+function getProfileTypeFullForm($type) {
+    $typeMapping = [
+        'CFW' => 'CASH FOR WORK',
+        'OJT' => 'ON THE JOB TRAINEE',
+        'EMPLOYEE' => 'EMPLOYEE',
+    ];
+    return $typeMapping[$type] ?? $type; // Return full form if it exists, else return original type
+}
+
 // Get and sanitize filter parameters
 $type = sanitizeInput($_GET['type'] ?? '');
 $search = sanitizeInput($_GET['search'] ?? '');
@@ -40,12 +50,15 @@ $result = $conn->query($sql);
 // Check and output results
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+
         $formattedDate = date('F d, Y', strtotime($row['date_att'])); // Format the date
+        $typeFullForm = getProfileTypeFullForm($row['type_of_profile']); // Display type name
+
         echo "<tr>";
         echo "<td>" . htmlspecialchars($row['profile_id']) . "</td>";
         echo "<td>" . htmlspecialchars($formattedDate) . "</td>";
         echo "<td>" . htmlspecialchars($row['name']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['type_of_profile']) . "</td>";
+        echo "<td>" . htmlspecialchars($typeFullForm) . "</td>";
         echo "<td><button class='btn btn-info' onclick='viewDetails(" . $row['profile_id'] . ")'>View Details</button></td>";
         echo "</tr>";
     }

@@ -281,6 +281,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <script>
         $(document).ready(function() {
 
+            $('#modal_1_firstName').on('input', function() {
+                $(this).val($(this).val().toUpperCase()); // Convert to uppercase
+            });
+
+            // Add event listener for the last name input
+            $('#modal_1_lastName').on('input', function() {
+                $(this).val($(this).val().toUpperCase()); // Convert to uppercase
+            });
+
             // VALIDATE DATE INPUTS
 
             // Get today's date in local time (correcting for time zone)
@@ -416,7 +425,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             title: 'Error!',
                             text: 'An error occurred while validating RFID.',
                             icon: "error",
-                            timer: 3000,
+                            timer: 1500,
                             timerProgressBar: true,
                             showConfirmButton: false,
                         });
@@ -630,7 +639,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             title: 'No Changes Detected!',
                             text: "You have not made any changes to the profile.",
                             icon: 'info',
-                            timer: 3000,
+                            timer: 1500,
                             timerProgressBar: true,
                             showConfirmButton: false,
                         });
@@ -682,7 +691,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                             title: 'Success!',
                                             text: response.message,
                                             icon: 'success',
-                                            timer: 3000,
+                                            timer: 1500,
                                             timerProgressBar: true,
                                             showConfirmButton: false,
                                         });
@@ -695,7 +704,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                             title: 'Error!',
                                             text: response.message,
                                             icon: 'error',
-                                            timer: 3000,
+                                            timer: 1500,
                                             timerProgressBar: true,
                                             showConfirmButton: false,
                                         });
@@ -707,7 +716,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                         title: 'Error!',
                                         text: 'An unexpected error occurred while updating the profile.',
                                         icon: 'error',
-                                        timer: 3000,
+                                        timer: 1500,
                                         timerProgressBar: true,
                                         showConfirmButton: false,
                                     });
@@ -798,7 +807,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                             title: 'Error!',
                                             text: response.message || 'Unable to fetch RFID details.',
                                             icon: 'error',
-                                            timer: 3000,
+                                            timer: 1500,
                                             timerProgressBar: true,
                                             showConfirmButton: false,
                                         });
@@ -809,7 +818,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                         title: 'Error!',
                                         text: 'An error occurred while checking RFID.',
                                         icon: 'error',
-                                        timer: 3000,
+                                        timer: 1500,
                                         timerProgressBar: true,
                                         showConfirmButton: false,
                                     });
@@ -905,7 +914,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             title: result.success ? 'Success!' : 'Error!',
                             text: result.message,
                             icon: result.success ? 'success' : 'error',
-                            timer: 3000,
+                            timer: 1500,
                             timerProgressBar: true,
                             showConfirmButton: false,
                         });
@@ -920,7 +929,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             title: 'Error!',
                             text: 'An error occurred while deactivating the employee.',
                             icon: 'error',
-                            timer: 3000,
+                            timer: 1500,
                             timerProgressBar: true,
                             showConfirmButton: false,
                         });
@@ -1054,7 +1063,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                     title: result.success ? 'Success!' : 'Error!',
                                     text: result.message,
                                     icon: result.success ? 'success' : 'error',
-                                    timer: 3000,
+                                    timer: 1500,
                                     timerProgressBar: true,
                                     showConfirmButton: false
                                 });
@@ -1068,7 +1077,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                     title: 'Error!',
                                     text: 'An error occurred while reactivating the employee.',
                                     icon: 'error',
-                                    timer: 3000,
+                                    timer: 1500,
                                     timerProgressBar: true,
                                     showConfirmButton: false
                                 });

@@ -21,7 +21,7 @@
                     </a>
                 </li>
 
-                
+
                 <!-- Profile Icon with Modal Trigger (Visible on Large Screens) -->
                 <li class="nav-item d-none d-lg-block">
                     <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#nav_profileModal">
@@ -100,7 +100,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="nav_modalNewEmailLabel">CHANGE EMAIL</h5>
-                <button type="button" class="btn-close" id="closeNewEmailBtn"></button>
+                <button type="button" class="btn-close" id="Nav_closeNewEmailBtn"></button>
             </div>
             <div class="modal-body">
 
@@ -259,16 +259,37 @@
 
         $('#logout-link, #logout-link2').on('click', function(event) {
             event.preventDefault();
-            if (confirm('Are you sure you want to logout?')) {
-                window.location.href = '/tapnlog/Starting_Folder/Main_Admin/Auth/logout.php';
-            }
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you really want to logout?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'YES',
+                cancelButtonText: 'NO',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/tapnlog/Starting_Folder/Main_Admin/Auth/logout.php';
+                }
+            });
         });
 
         $('#dashboard-link').on('click', function(event) {
             event.preventDefault();
-            if (confirm('Are you sure you want to go to the main dashboard?')) {
-                window.location.href = '/tapnlog/Starting_Folder/Main_Admin/Dashboard/dashboard_home.php';
-            }
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you want to redirect to the main dashboard?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'YES',
+                cancelButtonText: 'NO',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/tapnlog/Starting_Folder/Main_Admin/Dashboard/dashboard_home.php';
+                }
+            });
         });
 
         // Handle click events to add active class
@@ -299,7 +320,7 @@
                         }, function(error, url) {
                             if (!error) {
                                 Swal.fire({
-                                    title: 'Scan this QR Code to Access the Website',
+                                    title: 'Scan this QR Code',
                                     html: `
                                             <div style="text-align: center;">
                                                 <img src="${url}" alt="QR Code" style="width: 200px; height: 200px; margin-bottom: 15px;">
@@ -312,14 +333,14 @@
                                     showClass: {
                                         popup: `
                                                 animate__animated
-                                                animate__bounceIn
+                                                animate__zoomIn
                                                 animate__faster
                                                 `
                                     },
                                     hideClass: {
                                         popup: `
                                                 animate__animated
-                                                animate__bounceOut
+                                                animate__zoomOut
                                                 animate__faster
                                                 `
                                     }
@@ -327,28 +348,34 @@
                             } else {
                                 console.error("QR Code generation error:", error);
                                 Swal.fire({
-                                    title: 'Error',
+                                    title: 'Error!',
                                     text: 'Failed to generate QR Code.',
                                     icon: 'error',
-                                    confirmButtonText: 'Close',
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
                                 });
                             }
                         });
                     } else {
                         Swal.fire({
-                            title: 'Error',
+                            title: 'Error!',
                             text: response.message || 'Failed to fetch website link.',
                             icon: 'error',
-                            confirmButtonText: 'Close',
+                            timer: 1500,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
                         });
                     }
                 },
                 error: function() {
                     Swal.fire({
-                        title: 'Error',
+                        title: 'Error!',
                         text: 'Error occurred while fetching the website link.',
                         icon: 'error',
-                        confirmButtonText: 'Close',
+                        timer: 1500,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
                     });
                 }
             });
@@ -375,18 +402,42 @@
         // Send OTP Code on button click
         $('#nav_sendCodeBtn1').click(function() {
 
-            nav_startSendTimer1(); // Start timer to prevent multiple requests
+            // Show a loading indicator
+            Swal.fire({
+                title: 'Sending OTP...',
+                text: 'Please wait while we process your request.',
+                icon: 'info',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading(); // Show loading animation
+                }
+            });
+
+
 
             $.ajax({
                 url: '/TAPNLOG/Starting_Folder/Main_Admin/Dashboard/send_otp1.php',
                 type: 'POST',
                 dataType: 'json',
                 success: function(response) {
+                    // close loading
+                    Swal.close();
+                    nav_startResendTimer1();
+
                     if (response.success) {
 
-                        startResendTimer1();
+                        nav_startSendTimer1(); // Start timer to prevent multiple requests
 
-                        alert(response.message); // Success message
+                        // Success Message
+                        Swal.fire({
+                            title: 'Success!',
+                            text: response.message,
+                            icon: 'success',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                        });
 
                         $('#nav_modalOTP1').modal('show'); // Show OTP modal
 
@@ -398,13 +449,32 @@
                         $('#nav_profileModal').modal('hide');
 
                     } else {
-                        alert(response.message); // Display error message
+
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.message,
+                            icon: 'error',
+                            timer: 1500,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                        });
+
                         clearInterval(nav_sendTimeout1);
                         $('#nav_sendCodeBtn1').prop('disabled', false).text('Change Email');
                     }
                 },
                 error: function() {
-                    alert('An error occurred while processing your request.');
+                    Swal.close();
+
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'An error occurred while processing your request.',
+                        icon: 'error',
+                        timer: 1500,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                    });
+
                     clearInterval(nav_sendTimeout1);
                     $('#nav_sendCodeBtn1').prop('disabled', false).text('Change Email');
                 }
@@ -416,12 +486,23 @@
         // MODAL OTP 1 BUTTONS
 
         $('#nav_backBtn1').click(function() {
-            if (confirm('You may lost the OTP code. Do you want to proceed?')) {
-                clearInterval(resendTimeout1);
-                $('#nav_resendCodeBtn1').prop('disabled', false).text('Resend Code');
-                $('#nav_modalOTP1').modal('hide');
-                $('#nav_profileModal').modal('show');
-            }
+
+            Swal.fire({
+                title: 'Warning!',
+                text: 'You may lose the OTP code. Do you want to proceed?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'YES',
+                cancelButtonText: 'NO',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    clearInterval(resendTimeout1);
+                    $('#nav_resendCodeBtn1').prop('disabled', false).text('Resend Code');
+                    $('#nav_modalOTP1').modal('hide');
+                    $('#nav_profileModal').modal('show');
+                }
+            });
         });
 
         let nav_otpAttemptCounter1 = 0;
@@ -462,11 +543,25 @@
                                 let attemptsLeft = 5 - nav_otpAttemptCounter1;
                                 nav_otpAttemptCounter1++;
 
-                                alert(response.message + " You have " + attemptsLeft + " attempts left.");
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: response.message + " You have " + attemptsLeft + " attempts left.",
+                                    icon: 'error',
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                });
                             }
                         },
                         error: function() {
-                            alert('An error occurred while verifying OTP.');
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'An error occurred while verifying OTP.',
+                                icon: 'error',
+                                timer: 1500,
+                                timerProgressBar: true,
+                                showConfirmButton: false,
+                            });
                         }
 
                     });
@@ -474,7 +569,14 @@
                 } else {
                     // If attempts reach 5, reset counter and switch to the previous modal
                     nav_otpAttemptCounter1 = 0;
-                    alert('Maximum OTP attempts reached. Returning to get a new code.');
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Maximum OTP attempts reached. Returning to get a new code.',
+                        icon: 'error',
+                        timer: 1500,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                    });
 
                     $('#nav_modalOTP1').modal('hide');
                     $('#nav_profileModal').modal('show');
@@ -484,7 +586,7 @@
 
         let resendTimeout1;
         // Function to start timer for resend code
-        function startResendTimer1() {
+        function nav_startResendTimer1() {
             let timeLeft = 30;
             resendTimeout1 = setInterval(function() {
                 $('#nav_resendCodeBtn1').prop('disabled', true).text('Resend Code at ' + timeLeft + 's');
@@ -499,26 +601,69 @@
         // Resend OTP Code on button click
         $('#nav_resendCodeBtn1').click(function() {
 
-            startResendTimer1(); // Start timer to prevent multiple requests
+            // Show a loading indicator
+            Swal.fire({
+                title: 'Resending OTP...',
+                text: 'Please wait while we process your request.',
+                icon: 'info',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading(); // Show loading animation
+                }
+            });
 
             $.ajax({
                 url: '/TAPNLOG/Starting_Folder/Main_Admin/Dashboard/resend_otp1.php',
                 type: 'POST',
                 dataType: 'json',
                 success: function(response) {
+                    Swal.close();
+                    nav_startResendTimer1();
+
                     if (response.success) {
 
                         nav_startSendTimer1();
 
-                        alert(response.message); // Success message
+                        // Success Message
+                        Swal.fire({
+                            title: 'Success!',
+                            text: response.message,
+                            icon: 'success',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                        });
+
                     } else {
-                        alert(response.message); // Display error message
+
+                        // Display error message
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.message,
+                            icon: 'error',
+                            timer: 1500,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                        });
+
                         clearInterval(resendTimeout1);
                         $('#nav_resendCodeBtn1').prop('disabled', false).text('Resend Code');
                     }
                 },
                 error: function() {
-                    alert('An error occurred while processing your request.');
+
+                    Swal.close();
+
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'An error occurred while processing your request.',
+                        icon: 'error',
+                        timer: 1500,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                    });
+
                     clearInterval(resendTimeout1);
                     $('#nav_resendCodeBtn1').prop('disabled', false).text('Resend Code');
                 }
@@ -529,17 +674,27 @@
 
         // MODAL 2: NEW EMAIL BUTTONS
 
-        $('#closeNewEmailBtn').click(function() {
-            if (confirm('Do you want to cancel changing email?')) {
-                $('#nav_modalNewEmail').modal('hide');
-                $('#nav_profileModal').modal('show');
-            }
+        $('#Nav_closeNewEmailBtn').click(function() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you want to cancel changing your email?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'YES',
+                cancelButtonText: 'NO',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#nav_modalNewEmail').modal('hide');
+                    $('#nav_profileModal').modal('show');
+                }
+            });
         });
 
         // Function to start timer
         let sendTimeout2;
 
-        function startSendTimer2() {
+        function nav_startSendTimer2() {
             let timeLeft = 30;
             sendTimeout2 = setInterval(function() {
                 $('#nav_sendCodeBtn2').prop('disabled', true).text('Try again in ' + timeLeft + 's');
@@ -560,7 +715,17 @@
 
             if (nav_checksendCodeBtn2()) {
 
-                startSendTimer2(); // Start timer to prevent multiple requests
+                // Show a loading indicator
+                Swal.fire({
+                    title: 'Sending OTP...',
+                    text: 'Please wait while we process your request.',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading(); // Show loading animation
+                    }
+                });
 
                 nav_current = {
                     nav_newEmail: _newEmail
@@ -574,11 +739,22 @@
                     },
                     dataType: 'json',
                     success: function(response) {
+                        Swal.close();
+                        nav_startSendTimer2();
+
                         if (response.success) {
 
                             startResendTimer2();
 
-                            alert(response.message); // Success message
+                            // Success Message
+                            Swal.fire({
+                                title: 'Success!',
+                                text: response.message,
+                                icon: 'success',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false,
+                            });
 
                             // Initially clear the feedback message and value
                             $('#nav_otpCode2').val('');
@@ -590,13 +766,33 @@
                             $('#nav_modalNewEmail').modal('hide');
 
                         } else {
-                            alert(response.message); // Display error message
+                            // Display error message
+                            Swal.fire({
+                                title: 'Error!',
+                                text: response.message,
+                                icon: 'error',
+                                timer: 1500,
+                                timerProgressBar: true,
+                                showConfirmButton: false,
+                            });
+
                             clearInterval(sendTimeout2);
                             $('#nav_sendCodeBtn2').prop('disabled', false).text('Send Code');
                         }
                     },
                     error: function() {
-                        alert('An error occurred while processing your request.');
+
+                        Swal.close();
+
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'An error occurred while processing your request.',
+                            icon: 'error',
+                            timer: 1500,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                        });
+
                         clearInterval(sendTimeout2);
                         $('#nav_sendCodeBtn2').prop('disabled', false).text('Send Code');
                     }
@@ -610,12 +806,22 @@
 
         // back button
         $('#nav_backBtn2').click(function() {
-            if (confirm('You may lost the OTP code. Do you want to proceed?')) {
-                clearInterval(resendTimeout2);
-                $('#nav_resendCodeBtn2').prop('disabled', false).text('Resend Code');
-                $('#nav_modalOTP2').modal('hide');
-                $('#nav_modalNewEmail').modal('show');
-            }
+            Swal.fire({
+                title: 'Warning!',
+                text: 'You may lose the OTP code. Do you want to proceed?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'YES',
+                cancelButtonText: 'NO',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    clearInterval(resendTimeout2);
+                    $('#nav_resendCodeBtn2').prop('disabled', false).text('Resend Code');
+                    $('#nav_modalOTP2').modal('hide');
+                    $('#nav_modalNewEmail').modal('show');
+                }
+            });
         });
 
         // Function to start timer
@@ -636,7 +842,17 @@
         // Resend OTP Code on button click
         $('#nav_resendCodeBtn2').click(function() {
 
-            startResendTimer2(); // Start timer to prevent multiple requests
+            // Show a loading indicator
+            Swal.fire({
+                title: 'Resending OTP...',
+                text: 'Please wait while we process your request.',
+                icon: 'info',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading(); // Show loading animation
+                }
+            });
 
             $.ajax({
                 url: '/TAPNLOG/Starting_Folder/Main_Admin/Dashboard/resend_otp2.php',
@@ -646,28 +862,57 @@
                 },
                 dataType: 'json',
                 success: function(response) {
+                    Swal.close();
+                    startResendTimer2();
+
                     if (response.success) {
 
-                        startSendTimer2();
+                        nav_startSendTimer2();
 
-                        alert(response.message); // Success message
+                        // Success Message
+                        Swal.fire({
+                            title: 'Success!',
+                            text: response.message,
+                            icon: 'success',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                        });
+
                     } else {
-                        alert(response.message); // Display error message
+
+                        // Error Message
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.message,
+                            icon: 'error',
+                            timer: 1500,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                        });
+
                         clearInterval(resendTimeout2);
                         $('#nav_resendCodeBtn2').prop('disabled', false).text('Resend Code');
                     }
                 },
                 error: function() {
-                    alert('An error occurred while processing your request.');
+                    Swal.close();
+
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'An error occurred while processing your request.',
+                        icon: 'error',
+                        timer: 1500,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                    });
+
                     clearInterval(resendTimeout2);
                     $('#nav_resendCodeBtn2').prop('disabled', false).text('Resend Code');
                 }
             });
         });
 
-
-        let nav_otpAttemptCounter2 = 0;
-        // OTP submit button for updating email
         $('#nav_submitOtpBtn2').click(function() {
             let otpCode = $('#nav_otpCode2').val();
 
@@ -689,58 +934,128 @@
                                 nav_otpAttemptCounter2 = 0;
 
                                 // Prompt for confirmation before updating the email
-                                if (confirm("OTP verified successfully! Do you want to update your email address?")) {
-                                    // Get the new email from a previously set variable or input
-                                    let nav_newEmail = nav_current.nav_newEmail;
+                                Swal.fire({
+                                    title: 'OTP Verified Successfully!',
+                                    text: 'Do you want to update your email address?',
+                                    icon: 'question',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Yes, Update Email',
+                                    cancelButtonText: 'No, Cancel',
+                                    reverseButtons: true,
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
 
-                                    $.ajax({
-                                        url: '/TAPNLOG/Starting_Folder/Main_Admin/Dashboard/change_email.php',
-                                        type: 'POST',
-                                        data: {
-                                            nav_newEmail: nav_newEmail
-                                        },
-                                        dataType: 'json',
-                                        success: function(updateResponse) {
-                                            if (updateResponse.success) {
-                                                alert(updateResponse.message); // Confirm email update success
-                                                $('#nav_modalOTP2').modal('hide');
-                                                $('#nav_profileModal').modal('show');
+                                        // Get the new email from a previously set variable or input
+                                        let nav_newEmail = nav_current.nav_newEmail;
 
-                                            } else {
-                                                alert(updateResponse.message); // Show error message if email update failed
+                                        $.ajax({
+                                            url: '/TAPNLOG/Starting_Folder/Main_Admin/Dashboard/change_email.php',
+                                            type: 'POST',
+                                            data: {
+                                                nav_newEmail: nav_newEmail
+                                            },
+                                            dataType: 'json',
+                                            success: function(updateResponse) {
+                                                if (updateResponse.success) {
+
+                                                    // Success Message
+                                                    Swal.fire({
+                                                        title: 'Success!',
+                                                        text: updateResponse.message,
+                                                        icon: 'success',
+                                                        timer: 1500,
+                                                        timerProgressBar: true,
+                                                        showConfirmButton: false,
+                                                    });
+
+                                                    $('#nav_modalOTP2').modal('hide');
+                                                    $('#nav_profileModal').modal('show');
+
+                                                } else {
+
+                                                    // Show error message if email update failed
+                                                    Swal.fire({
+                                                        title: 'Error!',
+                                                        text: updateResponse.message,
+                                                        icon: 'error',
+                                                        timer: 1500,
+                                                        timerProgressBar: true,
+                                                        showConfirmButton: false,
+                                                    });
+                                                }
+                                            },
+                                            error: function() {
+
+                                                Swal.fire({
+                                                    title: 'Error!',
+                                                    text: 'An error occurred while updating your email.',
+                                                    icon: 'error',
+                                                    timer: 1500,
+                                                    timerProgressBar: true,
+                                                    showConfirmButton: false,
+                                                });
                                             }
-                                        },
-                                        error: function() {
-                                            alert('An error occurred while updating your email.');
-                                        }
-                                    });
-                                } else {
-                                    alert("Email update canceled.");
-                                    $('#nav_modalOTP2').modal('hide');
-                                    $('#nav_profileModal').modal('show');
-                                }
+                                        });
+
+                                    } else {
+                                        Swal.fire({
+                                            title: 'Update Canceled',
+                                            text: 'Your email address has not been updated.',
+                                            icon: 'info',
+                                            timer: 1500,
+                                            timerProgressBar: true,
+                                            showConfirmButton: false,
+                                        });
+
+                                        $('#nav_modalOTP2').modal('hide');
+                                        $('#nav_profileModal').modal('show');
+                                    }
+                                });
+
                             } else {
                                 let attemptsLeft = 5 - nav_otpAttemptCounter2;
                                 nav_otpAttemptCounter2++;
 
-                                alert(response.message + " You have " + attemptsLeft + " attempts left.");
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: response.message + " You have " + attemptsLeft + " attempts left.",
+                                    icon: 'error',
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                });
                             }
                         },
                         error: function() {
-                            alert('An error occurred while verifying OTP.');
+
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'An error occurred while verifying OTP.',
+                                icon: 'error',
+                                timer: 1500,
+                                timerProgressBar: true,
+                                showConfirmButton: false,
+                            });
                         }
                     });
                 } else {
                     // If attempts reach 5, reset counter and switch to the previous modal
                     nav_otpAttemptCounter2 = 0;
-                    alert('Maximum OTP attempts reached. Returning to get a new code.');
+
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Maximum OTP attempts reached. Returning to get a new code.',
+                        icon: 'error',
+                        timer: 1500,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                    });
 
                     $('#nav_modalOTP2').modal('hide');
                     $('#nav_modalNewEmail').modal('show');
                 }
             }
         });
-
 
 
 
@@ -901,34 +1216,69 @@
                 const confirmPassword = $('#nav_confirm_password').val().trim();
 
                 // Make the AJAX request
-                if (confirm('You are about to change your password. Do you want to proceed?')) {
-                    $.ajax({
-                        url: '/TAPNLOG/Starting_Folder/Main_Admin/Dashboard/change_password.php',
-                        type: 'POST',
-                        data: {
-                            nav_current_password: currentPassword,
-                            nav_new_password: newPassword,
-                            confirm_new_password: confirmPassword
-                        },
-                        dataType: 'json',
-                        success: function(response) {
-                            // Handle the response from the server
-                            if (response.success) {
-                                alert(response.message); // Show success message
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You are about to change your password. Do you want to proceed?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Proceed',
+                    cancelButtonText: 'No, Cancel',
+                    reverseButtons: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/TAPNLOG/Starting_Folder/Main_Admin/Dashboard/change_password.php',
+                            type: 'POST',
+                            data: {
+                                nav_current_password: currentPassword,
+                                nav_new_password: newPassword,
+                                confirm_new_password: confirmPassword
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                // Handle the response from the server
+                                if (response.success) {
 
-                                $('#nav_modalChangePassword').modal('hide');
-                                $('#nav_profileModal').modal('show');
+                                    // Success Message
+                                    Swal.fire({
+                                        title: 'Success!',
+                                        text: response.message,
+                                        icon: 'success',
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                    });
 
-                            } else {
-                                alert(response.message); // Show error message
+                                    $('#nav_modalChangePassword').modal('hide');
+                                    $('#nav_profileModal').modal('show');
+
+                                } else {
+
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: response.message,
+                                        icon: 'error',
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                    });
+                                }
+                            },
+                            error: function(xhr, status, error) {
+
+                                // Handle any errors
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'An error occurred: ' + error,
+                                    icon: 'error',
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                });
                             }
-                        },
-                        error: function(xhr, status, error) {
-                            // Handle any errors
-                            alert('An error occurred: ' + error);
-                        }
-                    });
-                }
+                        });
+                    }
+                });
             }
 
         });
@@ -936,11 +1286,20 @@
         $('#nav_discardChangePasswordBtn').on('click', function(e) {
 
             e.preventDefault();
-
-            if (confirm('You are about to cancel the reset password. Do you want to proceed?')) {
-                $('#nav_modalChangePassword').modal('hide');
-                $('#nav_profileModal').modal('show');
-            }
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You are about to cancel the password reset process. Do you want to proceed?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'YES',
+                cancelButtonText: 'NO',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#nav_modalChangePassword').modal('hide');
+                    $('#nav_profileModal').modal('show');
+                }
+            });
 
         });
 

@@ -15,21 +15,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = sanitizeInput($_POST['password']);
     $captchaAnswer = sanitizeInput($_POST['captcha']);
 
+    // Include SweetAlert2 script
+    echo "<script src=\"https://cdn.jsdelivr.net/npm/sweetalert2@11\"></script>";
+
     // Check if the CAPTCHA answer is correct
     if ($captchaAnswer != $_SESSION['captcha_answer']) {
-        echo "<script>alert(\"Incorrect CAPTCHA answer!\"); window.location.href='login.php';</script>";
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    position: 'top',
+                    title: 'Error!',
+                    text: 'Incorrect CAPTCHA answer! Please try again.',
+                    icon: 'error',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then(() => {
+                    window.location.href = 'login.php';
+                });
+            });
+        </script>";
         exit();
     }
 
-    // Prepare SQL query using bind parameters
     $sql = "SELECT g.*, ga.*
-   FROM guards g
-       JOIN guard_accounts ga ON g.guard_id = ga.guard_id
-       JOIN stations s ON g.station_id = s.station_id
-   WHERE (ga.username = ? OR ga.email = ?)
-   AND ga.status = 'ACTIVE'
-   AND s.station_id = 2
-   LIMIT 1";
+            FROM guards g
+            JOIN guard_accounts ga ON g.guard_id = ga.guard_id
+            JOIN stations s ON g.station_id = s.station_id
+            WHERE (ga.username = ? OR ga.email = ?)
+            AND ga.status = 'ACTIVE'
+            AND s.station_id = 2
+            LIMIT 1";
 
     // Prepare and execute statement
     $stmt = $conn->prepare($sql);
@@ -47,24 +66,93 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['vehicle_guard_logged'] = true;
             $_SESSION['guard_id'] = $row['guard_id'];
             $_SESSION['station_id'] = $row['station_id'];
-            header("Location: ../Dashboard/dashboard_home.php");
+
+            echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        position: 'top',
+                        title: 'Success!',
+                        text: 'Login successfully! Redirecting...',
+                        icon: 'success',
+                        timer: 1500,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(() => {
+                        window.location.href = '../Dashboard/dashboard_home.php';
+                    });
+                });
+            </script>";
             exit();
         } else {
             // Invalid password
-            echo "<script>alert(\"Invalid Username or Password!\"); window.location.href='login.php';</script>";
+            echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        position: 'top',
+                        title: 'Error!',
+                        text: 'Invalid Username or Password! Please try again.',
+                        icon: 'error',
+                        timer: 1500,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(() => {
+                        window.location.href = 'login.php';
+                    });
+                });
+            </script>";
             exit();
         }
     } else {
         // No user found with that username or email
-        echo "<script>alert(\"Invalid Username or Password!\");window.location.href='login.php';</script>";
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    position: 'top',
+                    title: 'Error!',
+                    text: 'Invalid Username or Password!',
+                    icon: 'error',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then(() => {
+                    window.location.href = 'login.php';
+                });
+            });
+        </script>";
         exit();
     }
 
     // Close the database connection
     mysqli_close($conn);
 } else {
-
     // Redirect back to login if accessed directly
-    header("Location: login.php");
+    echo "
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                position: 'top',
+                title: 'Error!',
+                text: 'Unauthorized access!',
+                icon: 'error',
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            }).then(() => {
+                window.location.href = 'login.php';
+            });
+        });
+    </script>";
     exit();
 }
+?>

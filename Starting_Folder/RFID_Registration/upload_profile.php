@@ -46,7 +46,7 @@ if (isset($_POST['first_name'], $_POST['last_name'], $_POST['type_of_profile'], 
                 
                 if ($stmt->execute()) {
                     $response['success'] = true;
-                    $response['message'] = "Profile registered! Please inform the main admin now.";
+                    $response['message'] = "Profile awaiting approval. Please notify the main admin.";
                 } else {
                     $response['message'] = "Failed to register the profile: " . $stmt->error;
                 }

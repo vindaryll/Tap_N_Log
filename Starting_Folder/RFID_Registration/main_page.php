@@ -144,6 +144,15 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
     <script>
         $(document).ready(function() {
 
+            $('#firstName').on('input', function() {
+                $(this).val($(this).val().toUpperCase()); // Convert to uppercase
+            });
+
+            // Add event listener for the last name input
+            $('#lastName').on('input', function() {
+                $(this).val($(this).val().toUpperCase()); // Convert to uppercase
+            });
+
             let cropper;
             let croppedImage = null;
 
@@ -193,8 +202,10 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
             });
 
             $('#discardBtn').click(function() {
-
-                window.location.href = '../Landing_page/index.php';
+                showAlert("Thank you!", "success"); // Show success message
+                setTimeout(() => {
+                    window.location.href = '/TAPNLOG/Starting_Folder/Landing_page/index.php';
+                }, 1000);
             });
 
             $('#cancelCrop').click(function() {
@@ -213,10 +224,22 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
             $('#removePicBtn').click(function() {
                 // go back to landing page
                 if (croppedImage) {
-                    if (confirm('Are you sure you want to remove the image?')) {
-                        $('#profileImg').attr('src', '../../Image/logo_and_icons/default_avatar.png');
-                        croppedImage = null;
-                    }
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'Do you want to remove the uploaded image?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, remove it!',
+                        cancelButtonText: 'Cancel',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#profileImg').attr('src', '../../Image/logo_and_icons/default_avatar.png');
+                            croppedImage = null;
+                            showAlert("Image removed successfully!", "success");
+                        }
+                    });
+                } else {
+                    showAlert("No image to remove.", "info");
                 }
             });
 
@@ -235,7 +258,8 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
 
             $('#profileForm').submit(function(e) {
                 e.preventDefault(); // Prevent the default form submission
-                if (confirm('Are you sure you want to save this profile?')) {
+
+                showConfirmation('Do you want to register this profile?', function() {
                     $.ajax({
                         url: 'upload_profile.php', // The server endpoint to handle the request
                         type: 'POST', // Method type
@@ -247,27 +271,25 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                         },
                         dataType: 'json', // Expecting a JSON response
                         success: function(response) {
-                            // Check if the response indicates success
+
                             if (response.success) {
-                                alert(response.message); // Show success message
 
-                                // Head to main menu to avoid double sending the request
-                                window.location.href = '/TAPNLOG/Starting_Folder/Landing_page/index.php';
-
-                                // $('#profileForm')[0].reset(); // Reset the form fields
-                                // $('#profileImg').attr('src', '../../Image/logo_and_icons/default_avatar.png'); // Reset the profile image
-                                // croppedImage = null;
-
+                                showAlert(response.message, "success"); // Show success message
+                                setTimeout(() => {
+                                    window.location.href = '/TAPNLOG/Starting_Folder/Landing_page/index.php';
+                                }, 1000);
 
                             } else {
-                                alert(response.message); // Show error message
+                                showAlert(response.message, "error");
                             }
                         },
                         error: function() {
-                            alert("An error occurred while saving the profile."); // General error message
+                            showAlert("An error occurred while saving the profile.", "error");
                         }
                     });
-                }
+
+                });
+
             });
 
             // FEEDBACK MESSAGE FUNCTION FOR NAME
@@ -353,16 +375,33 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                     $('#discardBtn').text('DISCARD');
                     $('#discardBtn').removeClass('btn-secondary').addClass('btn-danger');
                     $('#discardBtn').off('click').on('click', function() {
-                        if (confirm('Are you sure you want to discard changes?')) {
-                            window.location.href = '../Landing_page/index.php';
-                        }
+                        Swal.fire({
+                            title: 'Unsaved Changes Detected',
+                            text: 'You have unsaved changes. Are you sure you want to DISCARD the changes?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'YES, DISCARD CHANGES',
+                            cancelButtonText: 'NO, KEEP EDITING',
+                            reverseButtons: true,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                showAlert("Thank you!", "success"); // Show success message
+                                setTimeout(() => {
+                                    window.location.href = '/TAPNLOG/Starting_Folder/Landing_page/index.php';
+                                }, 1000);
+                            }
+                        });
+
                     });
                 } else {
                     // Change the button to "BACK" without a confirmation message
                     $('#discardBtn').text('BACK');
                     $('#discardBtn').removeClass('btn-danger').addClass('btn-secondary');
                     $('#discardBtn').off('click').on('click', function() {
-                        window.location.href = '../Landing_page/index.php';
+                        showAlert("Thank you!", "success"); // Show success message
+                        setTimeout(() => {
+                            window.location.href = '/TAPNLOG/Starting_Folder/Landing_page/index.php';
+                        }, 1000);
                     });
                 }
             }
@@ -374,6 +413,34 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
             $('#cancelCrop').on('click', checkDiscardBtn);
             $('#saveBtn').on('click', checkDiscardBtn);
 
+
+            function showAlert(message, type = "error") {
+                Swal.fire({
+                    position: "top",
+                    title: type === "success" ? 'Success!' : 'Error!',
+                    text: message,
+                    icon: type,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            }
+
+            function showConfirmation(message, callback, _icon = 'question', confirmText = 'YES', cancelText = 'NO') {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: message,
+                    icon: _icon,
+                    showCancelButton: true,
+                    confirmButtonText: confirmText,
+                    cancelButtonText: cancelText,
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        callback(); // Execute the callback function if confirmed
+                    }
+                });
+            }
 
         });
     </script>

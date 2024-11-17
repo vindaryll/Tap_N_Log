@@ -433,6 +433,16 @@ $stationsResult = $conn->query($stationsSql);
 
         $(document).ready(function() {
 
+            $('#guard_name').on('input', function() {
+                $(this).val($(this).val().toUpperCase()); // Convert to uppercase
+            });
+
+            // Add event listener for the last name input
+            $('#modalGuardName').on('input', function() {
+                $(this).val($(this).val().toUpperCase()); // Convert to uppercase
+            });
+
+
             // Initial fetch to populate the table
             fetchActiveGuards();
 

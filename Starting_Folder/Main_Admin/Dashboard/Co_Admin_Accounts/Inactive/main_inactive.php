@@ -54,11 +54,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
         <div class="container row col-sm-12">
 
-            <div class="container col-sm-12 mb-3">
-                <button type="button" class="btn btn-primary" id="backbtn">Go back to Active Accounts</button>
-            </div>
-
-            <div class="container col-sm-12">
+            <div class="container col-sm-12 text-center">
                 <h2>Inactive Co-Admin Accounts</h2>
                 <input type="text" id="search" class="form-control" placeholder="Search by guard name...">
                 <table class="table table-bordered mt-3">
@@ -90,6 +86,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
                     </tbody>
                 </table>
+                <div class="row mt-3">
+                    <button type="button" class="btn btn-primary" id="backbtn">Go back to Active Accounts</button>
+                </div>
             </div>
         </div>
     </div>
@@ -168,28 +167,60 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
         // Function to reactivate guard
         function reactivateGuard(guardId) {
-            if (confirm("Do you want to reactivate guard no: " + guardId + "?")) {
-                $.ajax({
-                    url: 'reactivate_guard.php',
-                    type: 'POST',
-                    data: {
-                        guard_id: guardId
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            alert(response.message);
+            showConfirmation(
+                "Do you want to reactivate guard no: " + guardId + "?",
+                function() { // Callback to execute on confirmation
+                    $.ajax({
+                        url: 'reactivate_guard.php',
+                        type: 'POST',
+                        data: {
+                            guard_id: guardId
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
 
-                            fetchInactiveGuards(); // Reload the table to show updated data
-                        } else {
-                            alert(response.message); // Show error message
+                                showAlert(response.message, "success");
+
+                                fetchInactiveGuards(); // Reload the table to show updated data
+                            } else {
+                                showAlert(response.message, "error");
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            showAlert("An unexpected error occurred: " + error, "error");
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        alert("An unexpected error occurred: " + error);
-                    }
-                });
-            }
+                    });
+                }
+            );
+        }
+
+        function showAlert(message, type = "error") {
+            Swal.fire({
+                position: "top",
+                title: type === "success" ? 'Success!' : 'Error!',
+                text: message,
+                icon: type,
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        }
+
+        function showConfirmation(message, callback, _icon = 'question', confirmText = 'YES', cancelText = 'NO') {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: message,
+                icon: _icon,
+                showCancelButton: true,
+                confirmButtonText: confirmText,
+                cancelButtonText: cancelText,
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    callback(); // Execute the callback function if confirmed
+                }
+            });
         }
     </script>
 

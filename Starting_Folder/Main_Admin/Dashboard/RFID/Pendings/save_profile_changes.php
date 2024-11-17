@@ -16,7 +16,8 @@ if (!isset($_POST['profile_id'], $_POST['first_name'], $_POST['last_name'], $_PO
     exit();
 }
 
-function sanitizeInput($data) {
+function sanitizeInput($data)
+{
     return htmlspecialchars(stripslashes(trim($data)));
 }
 
@@ -25,7 +26,6 @@ $profile_id = intval($_POST['profile_id']);
 $first_name = sanitizeInput($_POST['first_name']);
 $last_name = sanitizeInput($_POST['last_name']);
 $type_of_profile = sanitizeInput($_POST['type_of_profile']);
-
 
 // Validate inputs
 if (empty($first_name) || !preg_match("/^[A-Za-z.\-'\s]+$/", $first_name)) {

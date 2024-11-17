@@ -311,6 +311,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <script>
         $(document).ready(function() {
 
+            $('#modal_1_firstName').on('input', function() {
+                $(this).val($(this).val().toUpperCase()); // Convert to uppercase
+            });
+
+            // Add event listener for the last name input
+            $('#modal_1_lastName').on('input', function() {
+                $(this).val($(this).val().toUpperCase()); // Convert to uppercase
+            });
+
             // Get today's date in local time (correcting for time zone)
             const today = new Date();
             const year = today.getFullYear();

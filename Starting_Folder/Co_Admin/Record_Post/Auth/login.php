@@ -27,6 +27,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
 
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,32 +46,223 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-    <title>Record Login Page</title>
+    <title>Record Post Login Page</title>
 
     <style>
+        /* Style for password inputs */
         .input-group {
             position: relative;
         }
+
         .toggle-password {
             cursor: pointer;
+        }
+
+        /* Style for login container */
+
+        /* General Facebook theme */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .back-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #1877f2;
+            font-size: 40px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .back-icon:hover {
+            color: #145dbf;
+            transform: scale(1.1);
+        }
+
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .logo-container img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .logo-container h1 {
+            color: #1877f2;
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #1877f2;
+            border: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #145dbf;
+            transform: scale(1.02);
+        }
+
+        .input-group-text {
+            background-color: #f0f2f5;
+            border: none;
+        }
+
+        .input-field {
+            animation: slideInUp 1s ease-in-out;
+        }
+
+        .invalid-feedback {
+            display: none;
+            animation: shake 0.3s ease-in-out;
+        }
+
+        .invalid-feedback.active {
+            display: block;
+            color: red;
+            animation: shake 0.3s ease-in-out;
+        }
+
+
+        .forgot-password-link {
+            display: block;
+            margin-top: 15px;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-5px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .login-container {
+                margin: 10px;
+                box-shadow: none;
+            }
+
+            .back-icon {
+                font-size: 25px;
+                top: 30px;
+                left: 20px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<a href="../../../Landing_page/index.php">back button</a>
+    <!-- Back Icon -->
+    <a href="../../../Landing_page/index.php" class="back-icon">
+        <i class="bi bi-arrow-left"></i>
+    </a>
 
-    <div class="container mt-5">
-        <form id="loginForm" action="validate_login.php" method="post">
+    <div class="login-container">
+
+        <!-- Logo Section -->
+        <div class="logo-container">
+            <img src="/tapnlog/image/logo_and_icons/logo_icon.png" alt="Tap-N-Log Logo">
+            <h1>Record Post</h1>
+        </div>
+
+        <!-- Login Form -->
+        <form class="w-100" id="loginForm" action="validate_login.php" method="post">
             <div class="mb-3">
-                <label for="usernameOrEmail" class="form-label">Guard Username or Email: </label>
+                <label for="usernameOrEmail" class="form-label">Username or Email</label>
                 <input type="text" class="form-control" id="usernameOrEmail" name="usernameOrEmail" required>
-                <div id="usernameOrEmail-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
+                <div id="usernameOrEmail-feedback" class="invalid-feedback"></div>
             </div>
 
             <div class="mb-3">
-                <label for="password" class="form-label">Password: </label>
+                <label for="password" class="form-label">Password</label>
                 <div class="input-group">
                     <input type="password" id="password" name="password" class="form-control" required>
                     <span class="input-group-text toggle-password">
@@ -83,15 +275,13 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
             <div class="mb-3">
                 <label for="captcha" class="form-label">What is <?php echo $number1 . " " . $operation . " " . $number2; ?>?</label>
                 <input type="text" class="form-control" id="captcha" name="captcha" required>
-                <div id="captcha-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
+                <div id="captcha-feedback" class="invalid-feedback"></div>
             </div>
-        </form>
-            <button type="button" id="loginBtn" class="btn btn-primary">Login</button>
 
-            <div class="mb-3">
-                <!-- Forgot password button -->
-                <button class="btn btn-primary" id="forgotPasswordButton" data-bs-toggle="modal" data-bs-target="#modalForgotPassword">Forgot Password</button>
-            </div>
+            <button type="button" id="loginBtn" class="btn btn-primary w-100">Login</button>
+        </form>
+
+        <a href="#" class="forgot-password-link" id="forgotPasswordButton" data-bs-toggle="modal" data-bs-target="#modalForgotPassword">Forgot Password?</a>
     </div>
 
     <!-- Modal 1: Enter Email/Username -->
@@ -103,7 +293,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    
+
                     <div class="mb-3">
                         <input type="text" id="emailOrUsername" class="form-control" placeholder="Enter Email or Username">
                         <div id="emailOrUsername-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
@@ -122,16 +312,16 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalOTPLabel">Enter OTP Code</h5>
                 </div>
-                <div class="modal-body">    
+                <div class="modal-body">
 
                     <div class="mb-3">
                         <input type="text" id="otpCode" class="form-control" placeholder="Enter OTP">
                         <div id="otpCode-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
                     </div>
 
-                    <button id="backBtn" class="btn btn-secondary mt-3">Back</button>
-                    <button id="resendCodeBtn" class="btn btn-warning mt-3" disabled>Resend Code</button>
                     <button id="submitOtpBtn" class="btn btn-primary mt-3">Submit</button>
+                    <button id="resendCodeBtn" class="btn btn-warning mt-3" disabled>Resend Code</button>
+                    <button id="backBtn" class="btn btn-secondary mt-3">Back</button>
                 </div>
             </div>
         </div>
@@ -151,7 +341,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                         <div class="mb-3">
                             <div class="input-group">
                                 <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="New Password" required>
-                                <span class="input-group-text toggle-password">
+                                <span class="input-group-text toggle-password change_toggle-password">
                                     <i class="bi bi-eye-fill"></i>
                                 </span>
                             </div>
@@ -161,7 +351,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                         <div class="mb-3">
                             <div class="input-group">
                                 <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm Password" required>
-                                <span class="input-group-text toggle-password">
+                                <span class="input-group-text toggle-password change_toggle-password">
                                     <i class="bi bi-eye-fill"></i>
                                 </span>
                             </div>
@@ -172,7 +362,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                         <button id="discardBtn" class="btn btn-secondary mt-3">Discard</button>
 
                     </form>
-                   
+
                 </div>
             </div>
         </div>
@@ -181,7 +371,6 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
 
 
     <script>
-
         $(document).ready(function() {
 
             // Toggle password visibility
@@ -202,17 +391,24 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
 
             // LOGIN FUNCTIONS
 
-            $('#loginBtn').click(function () {
+            $('#loginBtn').on('click', function() {
 
                 // Check feedback messages
                 validateLoginTextBox1();
                 validateLoginTextBox2();
                 validateLoginTextBox3();
 
-                if(checkLoginButton()){
+                if (checkLoginButton()) {
                     // Trigger the login form
                     $('#loginForm').submit();
                 }
+            });
+
+            // Add hover effect on login button
+            $('#loginBtn').hover(function() {
+                $(this).addClass('animate__animated animate__pulse');
+            }, function() {
+                $(this).removeClass('animate__animated animate__pulse');
             });
 
 
@@ -247,8 +443,8 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                 $('#password-feedback').text('').removeClass('invalid-feedback');
 
                 if (password === "") {
-                    feedbackMessage = 'password cannot be empty.';
-                }else if (password.length < 8) {
+                    feedbackMessage = 'Password cannot be empty.';
+                } else if (password.length < 8) {
                     feedbackMessage = 'Password must be at least 8 characters long.';
                 }
 
@@ -268,7 +464,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                 $('#captcha-feedback').text('').removeClass('invalid-feedback');
 
                 if (captcha === "") {
-                    feedbackMessage = 'captcha cannot be empty.';
+                    feedbackMessage = 'Captcha cannot be empty.';
                 }
 
                 if (feedbackMessage) {
@@ -296,7 +492,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
 
 
             // FORGOT PASSWORD FUNCTIONS
-            $('#forgotPasswordButton').click(function () {
+            $('#forgotPasswordButton').on('click', function() {
 
                 // Setting the value to empty initially
                 $('#emailOrUsername').val('');
@@ -307,9 +503,10 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
 
             // Handle the timer of send code
             let sendTimeout;
+
             function startSendTimer() {
                 let timeLeft = 30;
-                sendTimeout = setInterval(function () {
+                sendTimeout = setInterval(function() {
                     $('#sendCodeBtn').prop('disabled', true).text('Try again at ' + timeLeft + 's');
                     timeLeft--;
                     if (timeLeft <= 0) {
@@ -320,16 +517,24 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
             }
 
             // Handle Send Code button click
-            $('#sendCodeBtn').click(function () {
+            $('#sendCodeBtn').on('click', function() {
                 let _emailOrUsername = $('#emailOrUsername').val();
 
                 // Check feedback messages
                 validateEmailOrUsername();
-                
-                if(checksendCodeBtn()){
 
-                    // Disable the button with timer to prevent spam
-                    startSendTimer(); 
+                if (checksendCodeBtn()) {
+
+                    Swal.fire({
+                        title: 'Sending OTP...',
+                        text: 'Please wait while we process your request.',
+                        icon: 'info',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            Swal.showLoading(); // Show loading animation
+                        }
+                    });
 
                     current = {
                         emailOrUsername: _emailOrUsername
@@ -338,16 +543,22 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                     $.ajax({
                         url: 'check_user.php',
                         type: 'POST',
-                        data: { emailOrUsername: current.emailOrUsername},
+                        data: {
+                            emailOrUsername: current.emailOrUsername
+                        },
                         dataType: 'json',
-                        success: function (response) {
+                        success: function(response) {
+
+                            Swal.close();
+                            startSendTimer();
+
                             if (response.success) {
 
                                 // Start the resend button timer initially
                                 startResendTimer();
 
                                 // Alert message
-                                alert(response.message);  
+                                showAlert(response.message, "success");
 
                                 // If OTP is sent successfully, hide this modal
                                 $('#modalForgotPassword').modal('hide');
@@ -359,26 +570,31 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
 
                                 $('#modalOTP').modal('show');
                             } else {
-                                alert(response.message); // Show error message if user not found
+                                // Show error message if user not found
+                                showAlert(response.message, "error");
 
                                 clearInterval(sendTimeout);
                                 $('#sendCodeBtn').prop('disabled', false).text('Send Code');
                             }
                         },
-                        error: function () {
-                            alert('An error occurred while processing your request.');
+                        error: function() {
+                            Swal.close();
+
+                            console.log('Error on #sendCodebtn');
+                            showAlert('An error occurred while processing your request.', "error");
                         }
                     });
                 }
- 
+
             });
 
 
             // Handle Resend Code button click
             let resendTimeout;
+
             function startResendTimer() {
                 let timeLeft = 30;
-                resendTimeout = setInterval(function () {
+                resendTimeout = setInterval(function() {
                     $('#resendCodeBtn').prop('disabled', true).text('Resend Code at ' + timeLeft + 's');
                     timeLeft--;
                     if (timeLeft <= 0) {
@@ -389,54 +605,71 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
             }
 
             // Handle Resend Code button click
-            $('#resendCodeBtn').click(function () {
+            $('#resendCodeBtn').on('click', function() {
 
-                startResendTimer();
+                Swal.fire({
+                    title: 'Resending OTP...',
+                    text: 'Please wait while we process your request.',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading(); // Show loading animation
+                    }
+                });
 
                 $.ajax({
                     url: 'resend_otp.php', // PHP script to handle OTP resending
                     type: 'POST',
-                    data: { emailOrUsername: current.emailOrUsername },
+                    data: {
+                        emailOrUsername: current.emailOrUsername
+                    },
                     dataType: 'json',
-                    success: function (response) {
+                    success: function(response) {
+
+                        Swal.close();
+                        startResendTimer();
+
                         if (response.success) {
                             startSendTimer();
-                            alert(response.message);
-                            
+                            showAlert(response.message, "success");
+
                         } else {
-                            alert(response.message);
+                            showAlert(response.message, "error");
                             clearInterval(resendTimeout);
                             $('#resendCodeBtn').prop('disabled', false).text('Resend Code');
                         }
                     },
-                    error: function () {
-                        alert('An error occurred while processing your request.');
+                    error: function() {
+                        Swal.close();
+                        showAlert('An error occurred while processing your request.', "error");
                     }
                 });
             });
 
 
             // Handle Back button click in OTP modal
-            $('#backBtn').click(function () {
-                if(confirm('You may lost the OTP code. Do you want to proceed?')){
+            $('#backBtn').on('click', function() {
+                showConfirmation('You may lost the OTP code. Do you want to proceed?', function() {
                     clearInterval(resendTimeout); // Stop the timer
                     $('#resendCodeBtn').prop('disabled', false).text('Resend Code');
+
                     $('#modalOTP').modal('hide'); // Hide OTP modal
                     $('#modalForgotPassword').modal('show'); // Show the forgot password modal
-                }
+                });
             });
 
             // Variable to count OTP submission attempts
             let otpAttemptCounter = 0;
 
             // Handle Submit OTP button click
-            $('#submitOtpBtn').click(function () {
+            $('#submitOtpBtn').on('click', function() {
                 let otpCode = $('#otpCode').val();
 
                 // Check feedback message
                 validateOTP();
 
-                if (checksubmitOtpBtn()){
+                if (checksubmitOtpBtn()) {
 
                     // Check if attempts are within the limit
                     if (otpAttemptCounter < 5) {
@@ -444,9 +677,11 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                         $.ajax({
                             url: 'verify_otp.php',
                             type: 'POST',
-                            data: { otpCode: otpCode },
+                            data: {
+                                otpCode: otpCode
+                            },
                             dataType: 'json',
-                            success: function (response) {
+                            success: function(response) {
                                 if (response.success) {
 
                                     // Reset the counter upon successful verification
@@ -465,52 +700,51 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                                     // Set input types to password and reset the eye icon
                                     $('#newPassword').attr('type', 'password');
                                     $('#confirmPassword').attr('type', 'password');
-                                    $('.toggle-password i').removeClass('bi-eye-slash-fill').addClass('bi-eye-fill');
+                                    $('.change_toggle-password i').removeClass('bi-eye-slash-fill').addClass('bi-eye-fill');
 
                                     // Open modal 3
                                     $('#modalResetPassword').modal('show');
                                 } else {
                                     let attemptsLeft = 5 - otpAttemptCounter;
                                     otpAttemptCounter++;
-
-                                    alert(response.message + " You have " + attemptsLeft + " attempts left.");
+                                    showAlert(response.message + " You have " + attemptsLeft + " attempts left.", "error");
                                 }
                             },
-                            error: function () {
-                                alert('An error occurred while verifying OTP.');
+                            error: function() {
+                                showAlert('An error occurred while verifying OTP.', "error");
                             }
-                            
+
                         });
 
                     } else {
                         // If attempts reach 5, reset counter and switch to the first modal
                         otpAttemptCounter = 0;
-                        alert('Maximum OTP attempts reached. Returning to get a new code.');
+                        showAlert('Maximum OTP attempts reached. Returning to get a new code.', "error");
 
                         $('#modalOTP').modal('hide'); // Hide OTP modal
                         $('#modalForgotPassword').modal('show'); // Show the forgot password modal
                     }
                 }
-                
+
             });
 
             // Handle Discard button click in Reset Password modal
-            $('#discardBtn').click(function (e) {
-                e.preventDefault();  
-                if(confirm('You are about to cancel the reset password. Do you want to proceed?')){
+            $('#discardBtn').on('click', function(e) {
+                e.preventDefault();
+                showConfirmation('You are about to cancel the reset password. Do you want to proceed?', function() {
                     $('#modalResetPassword').modal('hide');
-                }
+                }, 'warning');
 
             });
 
             // Password Reset Submit
-            $('#submitResetBtn').click(function(e) {  
+            $('#submitResetBtn').on('click', function(e) {
                 e.preventDefault(); // Prevents default form submission
 
                 validateNewPassword();
                 validateConfirmNewPassword();
-                
-                if(checkChangePasswordButton()){
+
+                if (checkChangePasswordButton()) {
                     $('#changePasswordForm').submit();
                 }
             });
@@ -522,7 +756,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                 const newPassword = $('#newPassword').val();
                 const confirmNewPassword = $('#confirmPassword').val();
 
-                if (confirm('Do you want to save changes?')) {
+                showConfirmation('Do you want to save changes?', function() {
                     $.ajax({
                         url: 'reset_password.php',
                         type: 'POST',
@@ -534,22 +768,26 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                         dataType: 'json',
                         success: function(response) {
                             if (response.success) {
-                                alert(response.message); // Show success message
+
+                                // Success message
+                                showAlert(response.message, "success");
 
                                 $('#modalResetPassword').modal('hide');
 
                             } else {
-                                alert(response.message); // Show error message if unsuccessful
+                                // Error message
+                                showAlert(response.message, "error");
                             }
                         },
                         error: function(xhr, status, error) {
                             console.error("AJAX Error: ", status, error); // Log the error for debugging
                             console.error("Response Text: ", xhr.responseText); // Log the response text for debugging
                             console.error(error); // Log the error for debugging
-                            alert('An error occurred. Please try again.');
+                            // Error message
+                            showAlert('An error occurred. Please try again.', "error");
                         }
                     });
-                }
+                });
             });
 
 
@@ -587,7 +825,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                 }
             }
 
-            
+
             // FEEDBACK MESSAGE FUNCTION FOR MODAL 2: OTP
 
             $('#otpCode').on('input', validateOTP);
@@ -621,8 +859,6 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                     return true;
                 }
             }
-
-
 
 
             // FEEDBACK MESSAGE FUNCTIONS FOR MODAL 3: CHANGE PASSWORD
@@ -685,13 +921,40 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                 }
             }
 
+
+            // ALERTS AND CONFIRMATION MESSAGE
+            function showAlert(message, type = "error") {
+                Swal.fire({
+                    position: "top",
+                    title: type === "success" ? 'Success!' : 'Error!',
+                    text: message,
+                    icon: type,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            }
+
+            function showConfirmation(message, callback, _icon = 'question', confirmText = 'YES', cancelText = 'NO') {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: message,
+                    icon: _icon,
+                    showCancelButton: true,
+                    confirmButtonText: confirmText,
+                    cancelButtonText: cancelText,
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        callback(); // Execute the callback function if confirmed
+                    }
+                });
+            }
+
         });
-
-        
-
-
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
+
 </html>
