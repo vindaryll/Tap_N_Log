@@ -8,18 +8,18 @@ function sanitizeInput($data)
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $employeeId = intval(sanitizeInput($_POST['employee_id']));
+    $profileId = intval(sanitizeInput($_POST['ojt_id']));
     $rfid = isset($_POST['rfid']) ? sanitizeInput($_POST['rfid']) : null;
 
     try {
-        $query = $conn->prepare("SELECT employee_rfid FROM employees_profile WHERE employee_id = ?");
-        $query->bind_param("i", $employeeId);
+        $query = $conn->prepare("SELECT ojt_rfid FROM ojt_profile WHERE ojt_id = ?");
+        $query->bind_param("i", $profileId);
         $query->execute();
         $result = $query->get_result();
-        $employee = $result->fetch_assoc();
+        $profile = $result->fetch_assoc();
 
-        if ($employee) {
-            $assignedRFID = trim($employee['employee_rfid']); // Clean assigned RFID from DB
+        if ($profile) {
+            $assignedRFID = trim($profile['ojt_rfid']); // Clean assigned RFID from DB
 
             if (!empty($assignedRFID)) {
                 if ($rfid && $assignedRFID === $rfid) {
@@ -38,11 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ]);
                 }
             } else {
-                // Employee has no RFID assigned
+                // Trainee has no RFID assigned
                 echo json_encode(['success' => true, 'hasRFID' => false]);
             }
         } else {
-            // Employee not found
+            // Trainee not found
             echo json_encode(['success' => false, 'message' => 'Profile not found.']);
         }
     } catch (Exception $e) {

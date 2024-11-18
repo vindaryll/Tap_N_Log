@@ -2,9 +2,9 @@
 session_start();
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-// Get the RFID and employee ID from the POST request
+// Get the RFID and profile ID from the POST request
 $rfid = trim($_POST['rfid']);
-$currentProfileId = trim($_POST['employee_id']); // ID of the employee being edited
+$currentProfileId = trim($_POST['ojt_id']); // ID of the trainee being edited
 
 // Return valid if the RFID is empty
 if (empty($rfid)) {
@@ -13,8 +13,8 @@ if (empty($rfid)) {
 }
 
 try {
-    // Check if the RFID exists in the table excluding the current employee's record
-    $sql = "SELECT COUNT(*) AS count FROM employees_profile WHERE employee_rfid = ? AND employee_id != ?";
+    // Check if the RFID exists in the table excluding the current profile's record
+    $sql = "SELECT COUNT(*) AS count FROM ojt_profile WHERE ojt_rfid = ? AND ojt_id != ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('si', $rfid, $currentProfileId);
     $stmt->execute();

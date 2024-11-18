@@ -16,10 +16,10 @@ $from_date = isset($_GET['from_date']) ? sanitizeInput($_GET['from_date']) : '';
 $to_date = isset($_GET['to_date']) ? sanitizeInput($_GET['to_date']) : '';
 
 // SQL Query with optional filters
-$query = "SELECT * FROM employees_profile WHERE 1=1";
+$query = "SELECT * FROM ojt_profile WHERE 1=1";
 
 if (!empty($search)) {
-    $query .= " AND (first_name LIKE '%$search%' OR last_name LIKE '%$search%' OR employee_rfid LIKE '%$search%')";
+    $query .= " AND (first_name LIKE '%$search%' OR last_name LIKE '%$search%' OR ojt_rfid LIKE '%$search%')";
 }
 if (!empty($status)) {
     $query .= " AND status = '$status'";
@@ -34,32 +34,32 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         
         // If RFID is null, set it to an empty string for the modal
-        $rfidForModal = $row['employee_rfid'] ?? '';
+        $rfidForModal = $row['ojt_rfid'] ?? '';
 
         // Display "None" for RFID in the card view
-        $rfidDisplay = $row['employee_rfid'] ?? 'None';
+        $rfidDisplay = $row['ojt_rfid'] ?? 'None';
 
         $buttonHtml = $row['status'] === 'ACTIVE' ? "
             <div class='col-6'>
                 <button type='button' class='btn btn-warning w-100 edit-btn'
-                    data-id='{$row['employee_id']}'
+                    data-id='{$row['ojt_id']}'
                     data-first-name='{$row['first_name']}'
                     data-last-name='{$row['last_name']}'
                     data-rfid='{$rfidForModal}'
-                    data-img='/TAPNLOG/Image/EMPLOYEES/{$row['employee_img']}'>
+                    data-img='/TAPNLOG/Image/OJT/{$row['ojt_img']}'>
                     EDIT
                 </button>
             </div>
             <div class='col-6'>
                 <button type='button' class='btn btn-danger w-100 status-btn'
-                    data-id='{$row['employee_id']}' data-status='INACTIVE'>
+                    data-id='{$row['ojt_id']}' data-status='INACTIVE'>
                     DEACTIVATE
                 </button>
             </div>
         " : "
             <div class='col-12'>
                 <button type='button' class='btn btn-success w-100 status-btn'
-                    data-id='{$row['employee_id']}' data-status='ACTIVE'>
+                    data-id='{$row['ojt_id']}' data-status='ACTIVE'>
                     REACTIVATE
                 </button>
             </div>
@@ -69,7 +69,7 @@ if ($result->num_rows > 0) {
             <div class='col-xl-3 col-lg-4 col-md-6 card-container'>
                 <div class='card'>
                     <div class='profile-image-container'>
-                        <img src='/TAPNLOG/Image/EMPLOYEES/{$row['employee_img']}' class='card-img-top' alt='Profile Image'>
+                        <img src='/TAPNLOG/Image/OJT/{$row['ojt_img']}' class='card-img-top' alt='Profile Image'>
                     </div>
                     <div class='card-body'>
                         <h6 class='card-title'><strong>{$row['first_name']} {$row['last_name']}</strong></h6>

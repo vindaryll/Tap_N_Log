@@ -7,10 +7,10 @@ function sanitizeInput($data) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $profileId = intval(sanitizeInput($_POST['employee_id']));
+    $profileId = intval(sanitizeInput($_POST['cfw_id']));
     $rfid = sanitizeInput($_POST['rfid']);
 
-    $query = $conn->prepare("SELECT employee_rfid FROM employees_profile WHERE employee_id = ? AND employee_rfid = ?");
+    $query = $conn->prepare("SELECT cfw_rfid FROM cfw_profile WHERE cfw_id = ? AND cfw_rfid = ?");
     $query->bind_param("is", $profileId, $rfid);
     $query->execute();
     $result = $query->get_result();

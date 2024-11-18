@@ -405,7 +405,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     type: 'POST',
                     data: {
                         rfid: rfid,
-                        ojt_id: profileId // Include the current profile ID
+                        cfw_id: profileId // Include the current profile ID
                     },
                     dataType: 'json',
                     success: function(response) {
@@ -791,7 +791,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                 url: 'check_rfid_status.php',
                                 type: 'POST',
                                 data: {
-                                    ojt_id: profileId
+                                    cfw_id: profileId
                                 },
                                 dataType: 'json',
                                 success: function(response) {
@@ -842,7 +842,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 Swal.fire({
                     title: 'Deactivate Profile',
                     html: `
-                            <p>Does the trainee return the RFID?</p>
+                            <p>Does the staff return the RFID?</p>
                             <input type="text" id="returnedRFID" class="form-control mb-2" placeholder="Enter returned RFID">
                             <div id="rfid-feedback_deactivate" class="invalid-feedback d-none">RFID validation feedback.</div>
                         `,
@@ -905,7 +905,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     url: 'deactivate.php',
                     type: 'POST',
                     data: {
-                        ojt_id: profileId,
+                        cfw_id: profileId,
                         rfid,
                         type,
                     },
@@ -970,7 +970,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     url: 'check_rfid_status.php', // Endpoint to validate RFID
                     type: 'POST',
                     data: {
-                        ojt_id: profileId,
+                        cfw_id: profileId,
                         rfid: rfid
                     },
                     dataType: 'json',
@@ -984,12 +984,12 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                 inputElement.removeClass('is-invalid');
                                 checkDeactivateButtonState(inputElement);
                             } else {
-                                feedback.removeClass('d-none').text('RFID does not match the trainee\'s record.');
+                                feedback.removeClass('d-none').text('RFID does not match the staff\'s record.');
                                 inputElement.addClass('is-invalid');
                                 checkDeactivateButtonState(inputElement);
                             }
                         } else if (response.success && !response.hasRFID) {
-                            feedback.removeClass('d-none').text('No RFID found for this trainee.');
+                            feedback.removeClass('d-none').text('No RFID found for this staff.');
                             inputElement.addClass('is-invalid');
                             checkDeactivateButtonState(inputElement);
                         }
@@ -1056,7 +1056,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             url: 'reactivate.php',
                             type: 'POST',
                             data: {
-                                ojt_id: profileId,
+                                cfw_id: profileId,
                                 rfid
                             },
                             success: function(response) {
@@ -1118,7 +1118,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     type: 'POST',
                     data: {
                         rfid: rfid,
-                        ojt_id: profileId // Current profile ID for context
+                        cfw_id: profileId // Current profile ID for context
                     },
                     dataType: 'json',
                     success: function(response) {
@@ -1127,7 +1127,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             $('.swal2-confirm').prop('disabled', false); // Enable Reactivate button
                         } else {
                             // RFID already exists
-                            feedback.removeClass('d-none').text('RFID already exists for another trainee.');
+                            feedback.removeClass('d-none').text('RFID already exists for another staff.');
                             inputElement.addClass('is-invalid');
                             checkReactivateButtonState(inputElement); // Recheck button state
                         }

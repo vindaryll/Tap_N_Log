@@ -922,8 +922,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             modalBody.empty();
 
                             response.duplicates.forEach((profile) => {
-                                // Ensure the correct folder name for the image path
-                                const folderName = profile.type.toUpperCase() === "EMPLOYEE" ? "EMPLOYEES" : profile.type.toUpperCase();
+
+                                // Use image_folder from the response for folder path
+                                const folderName = profile.image_folder;
 
                                 // Construct the image path or fallback to default avatar
                                 const imgPath = profile.img && profile.img.trim() !== "" ?
@@ -1004,7 +1005,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
                 // SweetAlert2 confirmation
                 Swal.fire({
-                    title: 'Do you wish to proceed with the approval confirmation?',
+                    title: 'Are you sure you want to APPROVE this profile?',
                     html: `
                             <div style="text-align: center;">
                                 <!-- Responsive image container -->
@@ -1020,7 +1021,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     showCancelButton: true,
                     confirmButtonText: 'YES',
                     cancelButtonText: 'NO',
-                    reverseButtons: true 
+                    reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Run the approveProfile function if confirmed
@@ -1044,7 +1045,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
                 // SweetAlert2 confirmation dialog with details
                 Swal.fire({
-                    title: 'Are you sure you want to delete this profile?',
+                    title: 'Are you sure you want to DELETE this profile?',
                     html: `
                         <div style="text-align: center;">
                             <!-- Responsive image container -->
