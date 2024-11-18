@@ -10,24 +10,54 @@ function sanitizeInput($data) {
     return htmlspecialchars(stripslashes(trim($data)));
 }
 
-$search = isset($_GET['search']) ? sanitizeInput($_GET['search']) : '';
-$status = isset($_GET['status']) ? sanitizeInput($_GET['status']) : '';
-$from_date = isset($_GET['from_date']) ? sanitizeInput($_GET['from_date']) : '';
-$to_date = isset($_GET['to_date']) ? sanitizeInput($_GET['to_date']) : '';
+// Retrieve filters, sort, and search parameters from POST request
+$filters = $_POST['filters'] ?? [];
+$sort = $_POST['sort'] ?? [];
+$search = sanitizeInput($_POST['search'] ?? '');
 
-// SQL Query with optional filters
+// Base SQL query
 $query = "SELECT * FROM cfw_profile WHERE 1=1";
 
-if (!empty($search)) {
-    $query .= " AND (first_name LIKE '%$search%' OR last_name LIKE '%$search%' OR cfw_rfid LIKE '%$search%')";
+// Apply filters
+if (!empty($filters['from_date'])) {
+    $from_date = $conn->real_escape_string($filters['from_date']);
+    $query .= " AND date_approved >= '$from_date'";
 }
-if (!empty($status)) {
+if (!empty($filters['to_date'])) {
+    $to_date = $conn->real_escape_string($filters['to_date']);
+    $query .= " AND date_approved <= '$to_date'";
+}
+if (!empty($filters['status'])) {
+    $status = $conn->real_escape_string($filters['status']);
     $query .= " AND status = '$status'";
 }
-if (!empty($from_date) && !empty($to_date)) {
-    $query .= " AND date_approved BETWEEN '$from_date' AND '$to_date'";
+if (!empty($filters['rfid_filter'])) {
+    if ($filters['rfid_filter'] === 'with_rfid') {
+        $query .= " AND cfw_rfid IS NOT NULL";
+    } elseif ($filters['rfid_filter'] === 'without_rfid') {
+        $query .= " AND cfw_rfid IS NULL";
+    }
 }
 
+// Apply search functionality
+if (!empty($search)) {
+    $search = $conn->real_escape_string($search);
+    $query .= " AND (first_name LIKE '%$search%' OR last_name LIKE '%$search%' OR cfw_rfid LIKE '%$search%')";
+}
+
+// Apply sorting
+$order_by = [];
+if (!empty($sort['date'])) {
+    $order_by[] = "date_approved " . strtoupper($sort['date']);
+}
+if (!empty($sort['name'])) {
+    $order_by[] = "first_name " . strtoupper($sort['name']);
+}
+if (!empty($order_by)) {
+    $query .= " ORDER BY " . implode(", ", $order_by);
+}
+
+// Execute query
 $result = $conn->query($query);
 
 if ($result->num_rows > 0) {

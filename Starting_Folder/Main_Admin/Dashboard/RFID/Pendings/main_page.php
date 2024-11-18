@@ -197,14 +197,14 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     <div>
                         <label class="form-label">Sort by Date:</label>
                         <div>
-                            <input type="radio" name="sortDate" value="asc" checked> Ascending<br>
+                            <input type="radio" name="sortDate" value="asc"> Ascending<br>
                             <input type="radio" name="sortDate" value="desc"> Descending
                         </div>
                     </div>
                     <div class="mt-3">
                         <label class="form-label">Sort by Name:</label>
                         <div>
-                            <input type="radio" name="sortName" value="asc" checked> A-Z<br>
+                            <input type="radio" name="sortName" value="asc"> A-Z<br>
                             <input type="radio" name="sortName" value="desc"> Z-A
                         </div>
                     </div>
@@ -495,13 +495,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             $('#resetSort').on('click', function() {
                 sort = {};
 
-                // Reset the sorting radio buttons to default (asc)
+                // Reset the sorting radio buttons to default
                 $('input[name="sortDate"]').prop('checked', false);
                 $('input[name="sortName"]').prop('checked', false);
-
-                // Set default checked value (ascending order)
-                $('input[name="sortDate"][value="asc"]').prop('checked', true);
-                $('input[name="sortName"][value="asc"]').prop('checked', true);
 
                 fetchProfiles();
             });

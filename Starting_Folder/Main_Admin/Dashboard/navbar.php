@@ -303,60 +303,55 @@
         $('#nav-showQRButton, #nav-showQRButton2').click(function() {
             // Fetch the website link from the backend
             $.ajax({
-                url: '/tapnlog/fetch_link.php',
+                url: '/tapnlog/fetch_link.php', // Ensure this endpoint is correct
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    if (response.success) {
+                    if (response.success && response.website_link) {
                         const websiteLink = response.website_link;
 
                         // Generate QR code dynamically
-                        QRCode.toDataURL(websiteLink, {
-                            width: 200,
-                            color: {
-                                dark: "#1877f2", // QR code color
-                                light: "#ffffff" // Background color
+                        QRCode.toDataURL(
+                            websiteLink, {
+                                width: 200,
+                                color: {
+                                    dark: "#1877f2", // QR code color
+                                    light: "#ffffff", // Background color
+                                },
+                            },
+                            function(error, url) {
+                                if (!error) {
+                                    Swal.fire({
+                                        title: 'Scan this QR Code',
+                                        html: `
+                                    <div style="text-align: center;">
+                                        <img src="${url}" alt="QR Code" style="width: 200px; height: 200px; margin-bottom: 15px;">
+                                        <p style="margin-top: 10px;">Or type this link:</p>
+                                        <a href="${websiteLink}" target="_blank" style="color: #1877f2; font-weight: bold;">${websiteLink}</a>
+                                    </div>
+                                `,
+                                        showConfirmButton: true,
+                                        confirmButtonText: 'Close',
+                                        showClass: {
+                                            popup: 'animate__animated animate__zoomIn animate__faster',
+                                        },
+                                        hideClass: {
+                                            popup: 'animate__animated animate__zoomOut animate__faster',
+                                        },
+                                    });
+                                } else {
+                                    console.error("QR Code generation error:", error);
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'Failed to generate QR Code.',
+                                        icon: 'error',
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                    });
+                                }
                             }
-                        }, function(error, url) {
-                            if (!error) {
-                                Swal.fire({
-                                    title: 'Scan this QR Code',
-                                    html: `
-                                            <div style="text-align: center;">
-                                                <img src="${url}" alt="QR Code" style="width: 200px; height: 200px; margin-bottom: 15px;">
-                                                <p style="margin-top: 10px;">Or type this link:</p>
-                                                <a href="${websiteLink}" target="_blank" style="color: #1877f2; font-weight: bold;">${websiteLink}</a>
-                                            </div>
-                                        `,
-                                    showConfirmButton: true,
-                                    confirmButtonText: 'Close',
-                                    showClass: {
-                                        popup: `
-                                                animate__animated
-                                                animate__zoomIn
-                                                animate__faster
-                                                `
-                                    },
-                                    hideClass: {
-                                        popup: `
-                                                animate__animated
-                                                animate__zoomOut
-                                                animate__faster
-                                                `
-                                    }
-                                });
-                            } else {
-                                console.error("QR Code generation error:", error);
-                                Swal.fire({
-                                    title: 'Error!',
-                                    text: 'Failed to generate QR Code.',
-                                    icon: 'error',
-                                    timer: 1500,
-                                    timerProgressBar: true,
-                                    showConfirmButton: false,
-                                });
-                            }
-                        });
+                        );
                     } else {
                         Swal.fire({
                             title: 'Error!',
@@ -377,7 +372,7 @@
                         timerProgressBar: true,
                         showConfirmButton: false,
                     });
-                }
+                },
             });
         });
 

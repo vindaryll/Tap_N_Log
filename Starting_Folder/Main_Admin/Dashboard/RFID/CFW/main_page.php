@@ -140,52 +140,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 <div class="container mt-3 p-0">
 
                     <div class="mb-3">
-                        <input type="text" id="searchTextbox" class="form-control" placeholder="Search by name or ID">
+                        <input type="text" id="searchTextbox" class="form-control" placeholder="Search by name or RFID">
                     </div>
 
                     <div class="row">
-                        <div class="container col-lg-6">
-                            <div class="row">
-
-                                <div class="container col-md-4">
-                                    <div class="mb-3 text-start">
-                                        <div class="input-group">
-                                            <span class="input-group-text">
-                                                Status
-                                            </span>
-                                            <select id="status-select" class="form-select">
-                                                <option value="">Active or Inactive</option>
-                                                <option value="ACTIVE">Active</option>
-                                                <option value="INACTIVE">Inactive</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="container col-md-4">
-                                    <div class="mb-3 text-start">
-                                        <div class="input-group">
-                                            <span class="input-group-text">
-                                                From
-                                            </span>
-                                            <input type="date" class="form-control" id="from_dateInput">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="container col-md-4 text-start">
-                                    <div class="mb-3">
-                                        <div class="input-group">
-                                            <span class="input-group-text">
-                                                To
-                                            </span>
-                                            <input type="date" class="form-control" id="to_dateInput">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <!-- Add Filter and Sort Buttons -->
+                        <div class="d-flex justify-content-start mb-3">
+                            <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
+                            <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#sortModal">Sort</button>
                         </div>
-                        <div class="col-lg-6"></div>
                     </div>
 
                     <div class="row d-flex justify-content-center">
@@ -200,6 +163,88 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             </div>
         </div>
 
+    </div>
+
+    <!-- Filter Modal -->
+    <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="filterModalLabel">Filter Profiles</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="filterForm">
+                        <div class="mb-3">
+                            <label for="from_dateInput" class="form-label">From</label>
+                            <input type="date" id="from_dateInput" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="to_dateInput" class="form-label">To</label>
+                            <input type="date" id="to_dateInput" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select id="status" class="form-select">
+                                <option value="">ALL</option>
+                                <option value="ACTIVE">ACTIVE</option>
+                                <option value="INACTIVE">INACTIVE</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rfidFilter" class="form-label">RFID Status</label>
+                            <select id="rfidFilter" class="form-select">
+                                <option value="">BOTH</option>
+                                <option value="with_rfid">WITH RFID</option>
+                                <option value="without_rfid">WITHOUT RFID</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="resetFilters">Reset</button>
+                    <button type="button" class="btn btn-primary" id="applyFilters">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sort Modal -->
+    <div class="modal fade" id="sortModal" tabindex="-1" aria-labelledby="sortModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sortModalLabel">Sort Profiles</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label class="form-label">Sort by Date Approved:</label>
+                        <div>
+                            <input type="radio" id="sortDateAsc" name="sortDate" value="asc">
+                            <label for="sortDateAsc">Ascending</label><br>
+
+                            <input type="radio" id="sortDateDesc" name="sortDate" value="desc">
+                            <label for="sortDateDesc">Descending</label>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <label class="form-label">Sort by Name:</label>
+                        <div>
+                            <input type="radio" id="sortNameAsc" name="sortName" value="asc">
+                            <label for="sortNameAsc">A-Z</label><br>
+
+                            <input type="radio" id="sortNameDesc" name="sortName" value="desc">
+                            <label for="sortNameDesc">Z-A</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="resetSort">Reset</button>
+                    <button type="button" class="btn btn-primary" id="applySort">Apply</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Edit Profile Details Modal-->
@@ -299,38 +344,59 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             const day = String(today.getDate()).padStart(2, '0'); // Ensures the day is two digits
             const todayFormatted = `${year}-${month}-${day}`; // Format as YYYY-MM-DD
 
-            // Set initial value and max attribute for both inputs
+            // Set max attribute for both inputs
             $('#from_dateInput, #to_dateInput').attr('max', todayFormatted);
-            $('#from_dateInput, #to_dateInput').on('input change', validateDateInputs);
 
-            function validateDateInputs() {
+            // VALIDATION OF DATE INPUTS
+            function validateDateInput1() {
                 const fromDate = $('#from_dateInput').val();
                 const toDate = $('#to_dateInput').val();
 
-                if (toDate) {
-                    // If to_date exceeds today's date, set it to today's date
-                    if (new Date(toDate) > new Date(todayFormatted)) {
-                        $('#to_dateInput').val(todayFormatted);
-                    }
-                }
-
+                // Convert dates only if both fields have values
                 if (fromDate && toDate) {
                     const fromDateValue = new Date(fromDate);
                     const toDateValue = new Date(toDate);
+                    const todayDate = new Date(todayFormatted);
 
-                    // If from_date is greater than to_date, set from_date to to_date
+                    // Check if from exceeds today's date
+                    if (fromDateValue > todayDate) {
+                        $('#from_dateInput').val(todayFormatted);
+                    }
+
+                    // Check if fromDate is greater than
                     if (fromDateValue > toDateValue) {
-                        $('#from_dateInput').val(toDate);
+                        $('#to_dateInput').val('');
                     }
 
-                    // If to_date is less than from_date, set to_date to from_date
-                    if (toDateValue < fromDateValue) {
-                        $('#to_dateInput').val(fromDate);
-                    }
                 }
-
-                fetchProfiles();
             }
+
+            function validateDateInput2() {
+                const fromDate = $('#from_dateInput').val();
+                const toDate = $('#to_dateInput').val();
+
+                // Convert dates only if both fields have values
+                if (fromDate && toDate) {
+                    const fromDateValue = new Date(fromDate);
+                    const toDateValue = new Date(toDate);
+                    const todayDate = new Date(todayFormatted);
+
+                    // Check if toDate exceeds today's date
+                    if (toDateValue > todayDate) {
+                        $('#to_dateInput').val(todayFormatted);
+                    }
+
+                    // Check if fromDate is after toDate
+                    if (fromDateValue > toDateValue) {
+                        $('#from_dateInput').val('');
+                    }
+
+                }
+            }
+
+
+            $('#from_dateInput').on('input change', validateDateInput1);
+            $('#to_dateInput').on('input change', validateDateInput2);
 
             // VALIDATE EDIT MODAL INPUTS
 
@@ -558,30 +624,75 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
             // START
 
-            fetchProfiles();
-            $('#searchTextbox, #status-select, #from_dateInput, #to_dateInput').on('change keyup', fetchProfiles);
+            let filters = {};
+            let sort = {};
+            let search = '';
 
-            // Function to fetch and display profiles
             function fetchProfiles() {
-                const search = $('#searchTextbox').val();
-                const status = $('#status-select').val();
-                const fromDate = $('#from_dateInput').val();
-                const toDate = $('#to_dateInput').val();
-
                 $.ajax({
                     url: 'fetch_profiles.php',
-                    type: 'GET',
+                    method: 'POST',
                     data: {
-                        search,
-                        status,
-                        from_date: fromDate,
-                        to_date: toDate
+                        filters: filters,
+                        sort: sort,
+                        search: search,
                     },
                     success: function(data) {
                         $('#profile-container').html(data);
                     },
+                    error: function(xhr, status, error) {
+                        console.error("Error fetching profiles:", error);
+                    },
                 });
             }
+
+            // Live Search
+            $('#searchTextbox').on('keyup', function() {
+                search = $(this).val().trim();
+                fetchProfiles();
+            });
+
+            // Apply Filters
+            $('#applyFilters').on('click', function() {
+                filters = {
+                    from_date: $('#from_dateInput').val(),
+                    to_date: $('#to_dateInput').val(),
+                    status: $('#status').val(),
+                    rfid_filter: $('#rfidFilter').val(),
+                };
+                fetchProfiles();
+                $('#filterModal').modal('hide');
+            });
+
+            // Reset Filters
+            $('#resetFilters').on('click', function() {
+                filters = {};
+                $('#filterForm')[0].reset();
+                fetchProfiles();
+            });
+
+            // Apply Sort
+            $('#applySort').on('click', function() {
+                sort = {
+                    date: $('input[name="sortDate"]:checked').val(),
+                    name: $('input[name="sortName"]:checked').val(),
+                };
+                fetchProfiles();
+                $('#sortModal').modal('hide');
+            });
+
+            // Reset Sort
+            $('#resetSort').on('click', function() {
+                sort = {};
+                $('input[name="sortDate"]').prop('checked', false);
+                $('input[name="sortName"]').prop('checked', false);
+                fetchProfiles();
+            });
+
+            // Initial Fetch
+            fetchProfiles();
+
+
 
             // Handle Edit button click
             $(document).on('click', '.edit-btn', function() {
