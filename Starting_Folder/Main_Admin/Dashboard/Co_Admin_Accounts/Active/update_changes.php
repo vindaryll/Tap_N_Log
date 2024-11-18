@@ -45,21 +45,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stationQuery->execute();
         $stationResult = $stationQuery->get_result();
         $currentStationData = $stationResult->fetch_assoc();
-        $currentStationName = $currentStationData['station_name'] ?? 'Unknown'; // Default to 'Unknown' if not found
+        $currentStationName = $currentStationData['station_name'] ?? 'Unknown';
 
         $updatesGuards = [];
         $updatesAccounts = [];
-        $logEntries = [];
+        $logDetails = [];
+
+        // Build log header
+        $logHeader = "Update Guard Details\n\nGuard ID: $guard_id\nGuard Name: $guard_name\n\n";
 
         // Check and prepare updates for guards table
         if ($currentGuardData['guard_name'] !== $guard_name) {
             $updatesGuards[] = "guard_name = '$guard_name'";
-            $logEntries[] = [
-                'section' => 'GUARDS',
-                'details' => "Update Guard\n\nId: $guard_id\nGuard name: $guard_name\n\nSet Name:\nFrom: {$currentGuardData['guard_name']}\nTo: $guard_name",
-                'category' => 'UPDATE',
-                'admin_id' => $admin_id
-            ];
+            $logDetails[] = "Set Guard Name\nFrom: {$currentGuardData['guard_name']}\nTo: $guard_name";
         }
         if ($currentGuardData['station_id'] != $station_id) {
             // Fetch new station name
@@ -68,35 +66,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $newStationQuery->execute();
             $newStationResult = $newStationQuery->get_result();
             $newStationData = $newStationResult->fetch_assoc();
-            $newStationName = $newStationData['station_name'] ?? 'Unknown'; // Default to 'Unknown' if not found
+            $newStationName = $newStationData['station_name'] ?? 'Unknown';
 
             $updatesGuards[] = "station_id = $station_id";
-            $logEntries[] = [
-                'section' => 'GUARDS',
-                'details' => "Update Guard\n\nId: $guard_id\nGuard name: $guard_name\n\nSet Station:\nFrom: $currentStationName\nTo: $newStationName",
-                'category' => 'UPDATE',
-                'admin_id' => $admin_id
-            ];
+            $logDetails[] = "Set Station\nFrom: $currentStationName\nTo: $newStationName";
         }
 
         // Check and prepare updates for guard_accounts table
         if ($currentAccountData['username'] !== $username) {
             $updatesAccounts[] = "username = '$username'";
-            $logEntries[] = [
-                'section' => 'GUARDS',
-                'details' => "Update Guard\n\nId: $guard_id\nGuard name: $guard_name\n\nSet Username:\nFrom: {$currentAccountData['username']}\nTo: $username",
-                'category' => 'UPDATE',
-                'admin_id' => $admin_id
-            ];
+            $logDetails[] = "Set Username\nFrom: {$currentAccountData['username']}\nTo: $username";
         }
         if ($currentAccountData['email'] !== $email) {
             $updatesAccounts[] = "email = '$email'";
-            $logEntries[] = [
-                'section' => 'GUARDS',
-                'details' => "Update Guard\n\nId: $guard_id\nGuard name: $guard_name\n\nSet Email:\nFrom: {$currentAccountData['email']}\nTo: $email",
-                'category' => 'UPDATE',
-                'admin_id' => $admin_id
-            ];
+            $logDetails[] = "Set Email\nFrom: {$currentAccountData['email']}\nTo: $email";
         }
 
         // Check if there are any updates to be made
@@ -117,11 +100,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $conn->query($updateAccountsSQL);
         }
 
-        // Insert log entries into admin_activity_log
-        foreach ($logEntries as $entry) {
+        // Insert a single log entry into admin_activity_log
+        if (!empty($logDetails)) {
+            $logDetailsText = $logHeader . implode("\n\n", $logDetails);
             $logSQL = "INSERT INTO admin_activity_log (section, details, category, admin_id) VALUES (?, ?, ?, ?)";
             $logStmt = $conn->prepare($logSQL);
-            $logStmt->bind_param("sssi", $entry['section'], $entry['details'], $entry['category'], $entry['admin_id']);
+            $section = 'GUARDS';
+            $category = 'UPDATE';
+            $logStmt->bind_param("sssi", $section, $logDetailsText, $category, $admin_id);
             $logStmt->execute();
         }
 
@@ -136,4 +122,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request!']);
 }
-?>

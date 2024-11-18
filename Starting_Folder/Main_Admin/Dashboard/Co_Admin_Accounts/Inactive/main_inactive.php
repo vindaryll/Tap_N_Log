@@ -56,11 +56,12 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
             <div class="container col-sm-12 text-center">
                 <h2>Inactive Co-Admin Accounts</h2>
-                <input type="text" id="search" class="form-control" placeholder="Search by guard name...">
+                <input type="text" id="search" class="form-control" placeholder="Search by guard name or ID">
                 <table class="table table-bordered mt-3">
-                    <thead>
+                    <thead class="table-dark">
                         <tr>
                             <th>ID</th>
+                            <th>DATE</th>
                             <th>Guard Name</th>
                             <th class="text-center d-flex justify-content-center">
                                 <!-- Dropdown for station selection inside the table header -->

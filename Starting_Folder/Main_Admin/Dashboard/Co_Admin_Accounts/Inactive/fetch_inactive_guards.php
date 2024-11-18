@@ -12,7 +12,7 @@ $stationId = isset($_GET['station_id']) ? $conn->real_escape_string($_GET['stati
 $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
 
 // Build the SQL query based on filters
-$sql = "SELECT g.guard_id, g.guard_name, g.station_id, s.station_name, ga.username, ga.email, ga.status
+$sql = "SELECT g.guard_id, g.guard_name, g.station_id, s.station_name, ga.username, ga.email, ga.status, ga.date_created
         FROM guards g
         JOIN stations s ON g.station_id = s.station_id
         JOIN guard_accounts ga ON ga.guard_id = g.guard_id
@@ -23,15 +23,18 @@ if ($stationId != '') {
 }
 
 if ($search != '') {
-    $sql .= " AND g.guard_name LIKE '%$search%'";
+    $sql .= " AND (g.guard_name LIKE '%$search%' OR g.guard_id LIKE '%$search%')";
 }
 
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+        $formattedDate = date("F j, Y", strtotime($row['date_created']));
+
         echo "<tr>";
         echo "<td>" . $row['guard_id'] . "</td>";
+        echo "<td>" . $formattedDate . "</td>";
         echo "<td>" . $row['guard_name'] . "</td>";
         echo "<td>" . $row['station_name'] . "</td>";
         echo "<td>

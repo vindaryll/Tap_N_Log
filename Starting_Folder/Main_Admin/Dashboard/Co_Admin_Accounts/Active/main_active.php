@@ -74,18 +74,19 @@ $stationsResult = $conn->query($stationsSql);
                 <button type="button" class="btn btn-primary" id="backbtn">Back</button>
             </div>
 
-            <div class="container col-sm-12">
+            <div class="container col-sm-12 text-center">
                 <h2>Active Co-Admin Accounts</h2>
 
                 <!-- Textbox for search -->
-                <input type="text" id="search" class="form-control" placeholder="Search by guard name...">
+                <input type="text" id="search" class="form-control" placeholder="Search by guard name or ID">
 
                 <table class="table table-bordered mt-3">
-                    <thead>
+                    <thead class="table-dark">
                         <tr>
                             <th>ID</th>
-                            <th>Guard Name</th>
-                            <th class="text-center d-flex justify-content-center">
+                            <th>DATE</th>
+                            <th>GUARD NAME</th>
+                            <th class="text-center">
                                 <!-- Dropdown for station selection inside the table header -->
                                 <select id="stationSelect" class="form-select form-select-sm">
                                     <option value="">ALL STATIONS</option>

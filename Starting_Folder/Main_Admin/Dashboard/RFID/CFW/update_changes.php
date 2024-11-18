@@ -17,6 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $croppedImage = $_POST['croppedImage'] ?? null; // Base64 string
     $adminId = $_SESSION['admin_id']; // Assume this is set when admin is logged in
 
+    // Convert empty RFID to NULL
+    $rfid = $rfid === '' ? null : $rfid;
+
     if (empty($profileId) || empty($firstName) || empty($lastName)) {
         echo json_encode(['success' => false, 'message' => 'Please fill all required fields.']);
         exit();
@@ -42,56 +45,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $currentLastName = $currentData['last_name'];
         $currentImageName = $currentData['cfw_img'];
         $imageDirectory = $_SESSION['directory'] . '/Image/CFW/';
-        $logEntries = [];
         $updates = [];
+        $logDetails = [];
+
+        // Build log header
+        $updatedName = "$firstName $lastName"; // Reflect updated name
+        $logHeader = "Update Cash for Work Staff Profile\n\nId: $profileId\nName: $updatedName\n\n";
 
         // Merge activity log for name changes
-        $nameChanges = [];
         if ($currentFirstName !== $firstName) {
             $updates[] = "first_name = '$firstName'";
-            $nameChanges[] = "First Name\n\nFrom: $currentFirstName\nTo: $firstName";
+            $logDetails[] = "Set First Name\nFrom: $currentFirstName\nTo: $firstName";
         }
         if ($currentLastName !== $lastName) {
             $updates[] = "last_name = '$lastName'";
-            $nameChanges[] = "Last Name\n\nFrom: $currentLastName\nTo: $lastName";
-        }
-        if (!empty($nameChanges)) {
-            // Updated name should reflect the new changes
-            $updatedName = "$firstName $lastName";
-            $logEntries[] = [
-                'section' => 'RFID',
-                'details' => "Update Cash for Work Staff Profile\n\nId: $profileId\nName: $updatedName\n\n" . implode("\n\n", $nameChanges),
-                'category' => 'UPDATE',
-                'admin_id' => $adminId
-            ];
+            $logDetails[] = "Set Last Name\nFrom: $currentLastName\nTo: $lastName";
         }
 
         // Handle RFID changes
         if ($currentRFID !== $rfid) {
             if ($currentRFID === null) {
-                // Log for adding RFID
-                $rfidDetails = "Add RFID\n\nFrom: None\nTo: $rfid";
+                $logDetails[] = "Add RFID\nFrom: None\nTo: $rfid";
             } elseif ($rfid === null) {
-                // Log for removing RFID
-                $rfidDetails = "Remove RFID\n\nFrom: $currentRFID\nTo: None";
+                $logDetails[] = "Remove RFID\nFrom: $currentRFID\nTo: None";
             } else {
-                // Log for changing RFID
-                $rfidDetails = "Change RFID\n\nFrom: $currentRFID\nTo: $rfid";
+                $logDetails[] = "Change RFID\nFrom: $currentRFID\nTo: $rfid";
             }
-
-            $updatedName = "$firstName $lastName"; // Reflect updated name
-            $logEntries[] = [
-                'section' => 'RFID',
-                'details' => "Update Cash for Work Staff Profile\n\nId: $profileId\nName: $updatedName\n\n$rfidDetails",
-                'category' => 'UPDATE',
-                'admin_id' => $adminId
-            ];
             $updates[] = "cfw_rfid = " . ($rfid ? "'$rfid'" : "NULL");
         }
 
         // Handle cropped image
         if ($croppedImage) {
-            // Generate unique name for the new file
             $uniqueName = uniqid("IMG-", true) . '.png';
 
             // Delete old image if it exists
@@ -105,15 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             file_put_contents($imagePath, $croppedImage);
 
             $updates[] = "cfw_img = '$uniqueName'";
-
-            // Log the profile picture change
-            $updatedName = "$firstName $lastName"; // Reflect updated name
-            $logEntries[] = [
-                'section' => 'RFID',
-                'details' => "Update Cash for Work Staff Profile\n\nId: $profileId\nName: $updatedName\n\nChange Profile Picture",
-                'category' => 'UPDATE',
-                'admin_id' => $adminId
-            ];
+            $logDetails[] = "Change Profile Picture";
         }
 
         // Update the database
@@ -122,11 +98,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $conn->query($updateSQL);
         }
 
-        // Insert activity logs
-        foreach ($logEntries as $entry) {
+        // Insert a single activity log
+        if (!empty($logDetails)) {
+            $logDetailsText = $logHeader . implode("\n\n", $logDetails);
             $logSQL = "INSERT INTO admin_activity_log (section, details, category, admin_id) VALUES (?, ?, ?, ?)";
             $logStmt = $conn->prepare($logSQL);
-            $logStmt->bind_param("sssi", $entry['section'], $entry['details'], $entry['category'], $entry['admin_id']);
+            $section = 'RFID';
+            $category = 'UPDATE';
+            $logStmt->bind_param("sssi", $section, $logDetailsText, $category, $adminId);
             $logStmt->execute();
         }
 
