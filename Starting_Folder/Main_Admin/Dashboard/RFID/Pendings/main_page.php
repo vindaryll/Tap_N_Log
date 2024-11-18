@@ -120,54 +120,20 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         <input type="text" id="searchTextbox" class="form-control" placeholder="Search by name or ID">
                     </div>
 
-                    <div class="row">
-                        <div class="container col-lg-6">
-                            <div class="row">
-
-                                <div class="container col-md-6">
-                                    <div class="mb-3 text-start">
-                                        <div class="input-group">
-                                            <span class="input-group-text">
-                                                From
-                                            </span>
-                                            <input type="date" class="form-control" id="from_dateInput">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="container col-md-6">
-                                    <div class="mb-3">
-                                        <div class="input-group">
-                                            <span class="input-group-text">
-                                                To
-                                            </span>
-                                            <input type="date" class="form-control" id="to_dateInput">
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col-lg-6"></div>
+                    <!-- Filter and Sort Buttons -->
+                    <div class="d-flex justify-content-start mb-3">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
+                        <button class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#sortModal">Sort</button>
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table table-bordered mt-4">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>DATE</th>
                                     <th>NAME</th>
-                                    <th>
-                                        <div class="container-fluid text-center d-flex justify-content-center" style="min-width: 200px;">
-                                            <select id="profileType" class="form-select form-select-sm">
-                                                <option value="">TYPE OF PROFILES</option>
-                                                <option value="OJT">ON THE JOB TRAINEES</option>
-                                                <option value="CFW">CASH FOR WORK</option>
-                                                <option value="EMPLOYEE">EMPLOYEES</option>
-                                            </select>
-                                        </div>
-                                    </th>
+                                    <th>TYPE OF PROFILE</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -180,7 +146,75 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 </div>
             </div>
         </div>
+    </div>
 
+    <!-- Filter Modal -->
+    <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="filterModalLabel">Filter Profiles</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="filterForm">
+                        <div class="mb-3">
+                            <label for="from_dateInput" class="form-label">From</label>
+                            <input type="date" id="from_dateInput" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="to_dateInput" class="form-label">To</label>
+                            <input type="date" id="to_dateInput" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="profileType" class="form-label">Profile Type</label>
+                            <select id="profileType" class="form-select">
+                                <option value="">All</option>
+                                <option value="OJT">OJT</option>
+                                <option value="CFW">CFW</option>
+                                <option value="EMPLOYEE">EMPLOYEE</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="resetFilters">Reset</button>
+                    <button type="button" class="btn btn-primary" id="applyFilters">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sort Modal -->
+    <div class="modal fade" id="sortModal" tabindex="-1" aria-labelledby="sortModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sortModalLabel">Sort Profiles</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label class="form-label">Sort by Date:</label>
+                        <div>
+                            <input type="radio" name="sortDate" value="asc" checked> Ascending<br>
+                            <input type="radio" name="sortDate" value="desc"> Descending
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <label class="form-label">Sort by Name:</label>
+                        <div>
+                            <input type="radio" name="sortName" value="asc" checked> A-Z<br>
+                            <input type="radio" name="sortName" value="desc"> Z-A
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="resetSort">Reset</button>
+                    <button type="button" class="btn btn-primary" id="applySort">Apply</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Profile Details Modal 1 -->
@@ -328,12 +362,34 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             const todayFormatted = `${year}-${month}-${day}`; // Format as YYYY-MM-DD
 
             // Set initial value and max attribute for both inputs
-            $('#from_dateInput, #to_dateInput').val(todayFormatted).attr('max', todayFormatted);
+            $('#from_dateInput, #to_dateInput').attr('max', todayFormatted);
 
 
             // VALIDATION OF DATE INPUTS
-            // Main validation function to check dates
-            function validateDateInputs() {
+            function validateDateInput1() {
+                const fromDate = $('#from_dateInput').val();
+                const toDate = $('#to_dateInput').val();
+
+                // Convert dates only if both fields have values
+                if (fromDate && toDate) {
+                    const fromDateValue = new Date(fromDate);
+                    const toDateValue = new Date(toDate);
+                    const todayDate = new Date(todayFormatted);
+
+                    // Check if from exceeds today's date
+                    if (fromDateValue > todayDate) {
+                        $('#from_dateInput').val(todayFormatted);
+                    }
+
+                    // Check if fromDate is greater than
+                    if (fromDateValue > toDateValue) {
+                        $('#to_dateInput').val('');
+                    }
+
+                }
+            }
+            
+            function validateDateInput2() {
                 const fromDate = $('#from_dateInput').val();
                 const toDate = $('#to_dateInput').val();
 
@@ -350,42 +406,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
                     // Check if fromDate is after toDate
                     if (fromDateValue > toDateValue) {
-                        $('#from_dateInput').val(toDate);
+                        $('#from_dateInput').val('');
                     }
+
                 }
             }
 
-            // Event handlers for input and change events
-            $('#from_dateInput').on('input change', function() {
-                const fromDate = $(this).val();
-                const toDate = $('#to_dateInput').val();
 
-                if (!fromDate) {
-                    // Default to either toDate or today if fromDate is empty
-                    $(this).val(toDate || todayFormatted);
-                } else if (toDate && new Date(fromDate) > new Date(toDate)) {
-                    // Set fromDate to toDate if it's greater than toDate
-                    $(this).val(toDate);
-                }
-                validateDateInputs();
-            });
-
-            $('#to_dateInput').on('input change', function() {
-                const fromDate = $('#from_dateInput').val();
-                const toDate = $(this).val();
-
-                if (!toDate) {
-                    // Default to today's date if toDate is empty
-                    $(this).val(todayFormatted);
-                } else if (new Date(toDate) > new Date(todayFormatted)) {
-                    // Set toDate to today if it exceeds today's date
-                    $(this).val(todayFormatted);
-                } else if (fromDate && new Date(fromDate) > new Date(toDate)) {
-                    // Reset fromDate if it is greater than the updated toDate
-                    $('#from_dateInput').val(toDate);
-                }
-                validateDateInputs();
-            });
+            $('#from_dateInput').on('input change', validateDateInput1);
+            $('#to_dateInput').on('input change', validateDateInput2);
 
 
             // BACK BUTTON
@@ -405,33 +434,80 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
 
             // START
-            fetchProfiles();
 
-            // LIVE SEARCH
-            $('#searchTextbox, #profileType, #from_dateInput, #to_dateInput').on('change keyup', function() {
-                fetchProfiles();
-            });
+            let filters = {};
+            let sort = {};
+            let search = '';
 
             function fetchProfiles() {
-                var search = $('#searchTextbox').val();
-                var type = $('#profileType').val();
-                var fromDate = $('#from_dateInput').val();
-                var toDate = $('#to_dateInput').val();
-
                 $.ajax({
                     url: 'fetch_profiles.php',
-                    type: 'GET',
+                    method: 'POST',
                     data: {
-                        search: search,
-                        type: type,
-                        from_date: fromDate,
-                        to_date: toDate
+                        filters: filters,
+                        sort: sort,
+                        search: search
                     },
                     success: function(data) {
                         $('#resultTableBody').html(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error fetching profiles:", error);
                     }
                 });
             }
+
+            // Live Search
+            $('#searchTextbox').on('keyup', function() {
+                search = $(this).val().trim();
+                fetchProfiles();
+            });
+
+            // Apply Filters
+            $('#applyFilters').on('click', function() {
+                filters = {
+                    from_date: $('#from_dateInput').val(),
+                    to_date: $('#to_dateInput').val(),
+                    type_of_profile: $('#profileType').val()
+                };
+                fetchProfiles();
+                $('#filterModal').modal('hide');
+            });
+
+            // Apply Sort
+            $('#applySort').on('click', function() {
+                sort = {
+                    date: $('input[name="sortDate"]:checked').val(),
+                    name: $('input[name="sortName"]:checked').val()
+                };
+                fetchProfiles();
+                $('#sortModal').modal('hide');
+            });
+
+            // Reset Filters
+            $('#resetFilters').on('click', function() {
+                filters = {};
+                $('#filterForm')[0].reset();
+                fetchProfiles();
+            });
+
+            // Reset Sort
+            $('#resetSort').on('click', function() {
+                sort = {};
+
+                // Reset the sorting radio buttons to default (asc)
+                $('input[name="sortDate"]').prop('checked', false);
+                $('input[name="sortName"]').prop('checked', false);
+
+                // Set default checked value (ascending order)
+                $('input[name="sortDate"][value="asc"]').prop('checked', true);
+                $('input[name="sortName"][value="asc"]').prop('checked', true);
+
+                fetchProfiles();
+            });
+
+            // Initial Fetch
+            fetchProfiles();
 
             // PROFILE DETAILS MODAL 1
 

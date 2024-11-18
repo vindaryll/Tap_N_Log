@@ -2,12 +2,14 @@
 session_start();
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-function sanitizeInput($data) {
+function sanitizeInput($data)
+{
     return htmlspecialchars(stripslashes(trim($data)));
 }
 
 // Function to map type abbreviations to full forms
-function getProfileTypeFullForm($type) {
+function getProfileTypeFullForm($type)
+{
     $typeMapping = [
         'CFW' => 'CASH FOR WORK',
         'OJT' => 'ON THE JOB TRAINEE',
@@ -16,36 +18,49 @@ function getProfileTypeFullForm($type) {
     return $typeMapping[$type] ?? $type; // Return full form if it exists, else return original type
 }
 
-// Get and sanitize filter parameters
-$type = sanitizeInput($_GET['type'] ?? '');
-$search = sanitizeInput($_GET['search'] ?? '');
-$from_date = sanitizeInput($_GET['from_date'] ?? '');
-$to_date = sanitizeInput($_GET['to_date'] ?? '');
 
-// Build the base SQL query
-$sql = "SELECT profile_id, date_att, CONCAT(first_name, ' ', last_name) AS name, type_of_profile
-        FROM profile_registration WHERE 1";
+// Get input data
+$filters = $_POST['filters'] ?? [];
+$sort = $_POST['sort'] ?? [];
+$search = $_POST['search'] ?? '';
 
-// Add type filtering if provided
-if (!empty($type)) {
-    $sql .= " AND type_of_profile = '" . $conn->real_escape_string($type) . "'";
+$query = "SELECT profile_id, date_att, CONCAT(first_name, ' ', last_name) AS name, type_of_profile FROM profile_registration WHERE 1=1";
+
+// Apply Filters
+if (!empty($filters['from_date'])) {
+    $from_date = $conn->real_escape_string($filters['from_date']);
+    $query .= " AND date_att >= '$from_date'";
+}
+if (!empty($filters['to_date'])) {
+    $to_date = $conn->real_escape_string($filters['to_date']);
+    $query .= " AND date_att <= '$to_date'";
+}
+if (!empty($filters['type_of_profile'])) {
+    $type_of_profile = $conn->real_escape_string($filters['type_of_profile']);
+    $query .= " AND type_of_profile = '$type_of_profile'";
 }
 
-// Add search filtering if provided
+// Apply Search
 if (!empty($search)) {
-    $sql .= " AND (first_name LIKE '%" . $conn->real_escape_string($search) . "%' 
-                  OR last_name LIKE '%" . $conn->real_escape_string($search) . "%')
-                  OR profile_id = '". $conn->real_escape_string($search) ."'";
+    $search = $conn->real_escape_string($search);
+    $query .= " AND (first_name LIKE '%$search%' OR last_name LIKE '%$search%' OR profile_id = '$search')";
 }
 
-// Add date filtering if both dates are provided
-if (!empty($from_date) && !empty($to_date)) {
-    $sql .= " AND date_att BETWEEN '" . $conn->real_escape_string($from_date) . "' 
-                               AND '" . $conn->real_escape_string($to_date) . "'";
+// Apply Sorting
+$order_by = [];
+if (!empty($sort['date'])) {
+    $order_by[] = "date_att " . strtoupper($sort['date']);
+}
+if (!empty($sort['name'])) {
+    $order_by[] = "name " . strtoupper($sort['name']);
+}
+if (!empty($order_by)) {
+    $query .= " ORDER BY " . implode(", ", $order_by);
 }
 
 // Execute the query
-$result = $conn->query($sql);
+$result = $conn->query($query);
+
 
 // Check and output results
 if ($result->num_rows > 0) {
@@ -67,4 +82,3 @@ if ($result->num_rows > 0) {
 }
 
 $conn->close();
-?>
