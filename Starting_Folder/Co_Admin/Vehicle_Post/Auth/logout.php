@@ -37,7 +37,7 @@ echo "
             allowOutsideClick: false,
             allowEscapeKey: false
         }).then(() => {
-            window.location.href = '../../Landing_page/index.php';
+            window.location.href = '../../../Landing_page/index.php';
         });
     });
 </script>";

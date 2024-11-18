@@ -42,7 +42,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-    <title>Co-Admin Account | Main Admin</title>
+    <title>Pending RFID Profiles  | Main Admin</title>
     <style>
         /* Profile Image with 1:1 Ratio */
         .profile-image-container {

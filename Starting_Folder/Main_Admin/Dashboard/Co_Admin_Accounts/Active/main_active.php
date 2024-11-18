@@ -47,7 +47,7 @@ $stationsResult = $conn->query($stationsSql);
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-    <title>Active Guards | Main Admin</title>
+    <title>Active Co-Admin Accounts | Main Admin</title>
 
     <style>
         .input-group {
@@ -56,6 +56,18 @@ $stationsResult = $conn->query($stationsSql);
 
         .toggle-password {
             cursor: pointer;
+        }
+
+        .table-responsive {
+            height: 400px;
+            overflow-y: auto;
+        }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #343a40;
+            color: white;
         }
     </style>
 
@@ -78,38 +90,32 @@ $stationsResult = $conn->query($stationsSql);
                 <h2>Active Co-Admin Accounts</h2>
 
                 <!-- Textbox for search -->
-                <input type="text" id="search" class="form-control" placeholder="Search by guard name or ID">
+                <input type="text" id="search" class="form-control mb-3" placeholder="Search by guard name or ID">
 
-                <table class="table table-bordered mt-3">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>DATE</th>
-                            <th>GUARD NAME</th>
-                            <th class="text-center">
-                                <!-- Dropdown for station selection inside the table header -->
-                                <select id="stationSelect" class="form-select form-select-sm">
-                                    <option value="">ALL STATIONS</option>
-                                    <?php
-                                    // Fetching stations to populate the dropdown
-                                    $stationsSql = "SELECT station_id, station_name FROM stations";
-                                    $stationsResult = $conn->query($stationsSql);
-                                    if ($stationsResult->num_rows > 0) {
-                                        while ($station = $stationsResult->fetch_assoc()) {
-                                            echo "<option value='" . $station['station_id'] . "'>" . $station['station_name'] . "</option>";
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="guardTableBody">
-                        <!-- Results will be inserted here -->
+                <!-- Filter and Sort Buttons -->
+                <div class="d-flex justify-content-start mb-3">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
+                    <button class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#sortModal">Sort</button>
+                </div>
 
-                    </tbody>
-                </table>
+                <div class="table-responsive" style="max-height: 300px;">
+                    <table class="table table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>DATE</th>
+                                <th>GUARD NAME</th>
+                                <th>STATION</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="guardTableBody">
+                            <!-- Results will be inserted here -->
+
+                        </tbody>
+                    </table>
+                </div>
+
 
                 <div class="row mb-2">
                     <!-- Add Guard Button -->
@@ -122,6 +128,78 @@ $stationsResult = $conn->query($stationsSql);
 
             </div>
 
+        </div>
+
+        <!-- Filter Modal -->
+        <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filterModalLabel">Filter Guards</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="filterForm">
+                            <div class="mb-3">
+                                <label for="from_dateInput" class="form-label">From</label>
+                                <input type="date" id="from_dateInput" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="to_dateInput" class="form-label">To</label>
+                                <input type="date" id="to_dateInput" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="filterStationSelect" class="form-label">Station</label>
+                                <select id="filterStationSelect" class="form-select">
+                                    <option value="">All Stations</option>
+                                    <?php
+                                    $stationsResult->data_seek(0);
+                                    while ($station = $stationsResult->fetch_assoc()) {
+                                        echo "<option value='" . $station['station_id'] . "'>" . htmlspecialchars($station['station_name']) . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="resetFilters" class="btn btn-danger">Reset</button>
+                        <button type="button" id="applyFilters" class="btn btn-primary">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sort Modal -->
+        <div class="modal fade" id="sortModal" tabindex="-1" aria-labelledby="sortModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="sortModalLabel">Sort Guards</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <label class="form-label">Sort by Date:</label>
+                            <div>
+                                <input type="radio" name="sortDate" value="asc"> Ascending<br>
+                                <input type="radio" name="sortDate" value="desc"> Descending
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <label class="form-label">Sort by Name:</label>
+                            <div>
+                                <input type="radio" name="sortName" value="asc"> A-Z<br>
+                                <input type="radio" name="sortName" value="desc"> Z-A
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="resetSort" class="btn btn-danger">Reset</button>
+                        <button type="button" id="applySort" class="btn btn-primary">Apply</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
 
@@ -244,10 +322,6 @@ $stationsResult = $conn->query($stationsSql);
                                 <div id="editEmail-feedback" class="invalid-feedback"> <!-- Message will display here --> </div>
                             </div>
 
-                            <div class="mb-3">
-                                <p><strong>Status:</strong> <span id="modalStatus"></span></p>
-                            </div>
-
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -316,23 +390,6 @@ $stationsResult = $conn->query($stationsSql);
 
 
     <script>
-        function fetchActiveGuards() {
-            var stationId = $('#stationSelect').val();
-            var searchQuery = $('#search').val();
-
-            $.ajax({
-                url: 'fetch_active_guards.php',
-                type: 'GET',
-                data: {
-                    station_id: stationId,
-                    search: searchQuery
-                }, // Sending station ID and search query
-                success: function(data) {
-                    $('#guardTableBody').html(data); // Populate the table with the fetched data
-                }
-            });
-        }
-
         // Function to open details modal and populate data
         function openDetailsModal(guard) {
 
@@ -373,7 +430,6 @@ $stationsResult = $conn->query($stationsSql);
             $('#modalStationName').val(guard.station_id);
             $('#modalUsername').val(guard.username);
             $('#modalEmail').val(guard.email);
-            $('#modalStatus').text(guard.status);
         }
 
         // Function to deactivate guard
@@ -383,8 +439,8 @@ $stationsResult = $conn->query($stationsSql);
                 text: `Do you want to deactivate guard no: ${guardId}?`,
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Yes, Deactivate',
-                cancelButtonText: 'No, Cancel',
+                confirmButtonText: 'YES',
+                cancelButtonText: 'NO',
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -422,11 +478,32 @@ $stationsResult = $conn->query($stationsSql);
                                 title: 'Error!',
                                 text: `An unexpected error occurred: ${error}`,
                                 icon: 'error',
-                                confirmButtonText: 'OK'
+                                timer: 1500,
+                                timerProgressBar: true,
+                                showConfirmButton: false,
                             });
                         }
                     });
                 }
+            });
+        }
+
+        let filters = {};
+        let sort = {};
+        let search = '';
+
+        function fetchActiveGuards() {
+            $.ajax({
+                url: 'fetch_active_guards.php',
+                type: 'POST',
+                data: {
+                    search: search,
+                    filters: filters,
+                    sort: sort,
+                },
+                success: function(data) {
+                    $('#guardTableBody').html(data);
+                },
             });
         }
 
@@ -443,14 +520,111 @@ $stationsResult = $conn->query($stationsSql);
                 $(this).val($(this).val().toUpperCase()); // Convert to uppercase
             });
 
+            // VALIDATE DATE INPUTS
+
+            // Get today's date in local time (correcting for time zone)
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+            const day = String(today.getDate()).padStart(2, '0'); // Ensures the day is two digits
+            const todayFormatted = `${year}-${month}-${day}`; // Format as YYYY-MM-DD
+
+            // Set max attribute for both inputs
+            $('#from_dateInput, #to_dateInput').attr('max', todayFormatted);
+
+            // VALIDATION OF DATE INPUTS
+            function validateDateInput1() {
+                const fromDate = $('#from_dateInput').val();
+                const toDate = $('#to_dateInput').val();
+
+                // Convert dates only if both fields have values
+                if (fromDate && toDate) {
+                    const fromDateValue = new Date(fromDate);
+                    const toDateValue = new Date(toDate);
+                    const todayDate = new Date(todayFormatted);
+
+                    // Check if from exceeds today's date
+                    if (fromDateValue > todayDate) {
+                        $('#from_dateInput').val(todayFormatted);
+                    }
+
+                    // Check if fromDate is greater than
+                    if (fromDateValue > toDateValue) {
+                        $('#to_dateInput').val('');
+                    }
+
+                }
+            }
+
+            function validateDateInput2() {
+                const fromDate = $('#from_dateInput').val();
+                const toDate = $('#to_dateInput').val();
+
+                // Convert dates only if both fields have values
+                if (fromDate && toDate) {
+                    const fromDateValue = new Date(fromDate);
+                    const toDateValue = new Date(toDate);
+                    const todayDate = new Date(todayFormatted);
+
+                    // Check if toDate exceeds today's date
+                    if (toDateValue > todayDate) {
+                        $('#to_dateInput').val(todayFormatted);
+                    }
+
+                    // Check if fromDate is after toDate
+                    if (fromDateValue > toDateValue) {
+                        $('#from_dateInput').val('');
+                    }
+
+                }
+            }
+
+
+            $('#from_dateInput').on('input change', validateDateInput1);
+            $('#to_dateInput').on('input change', validateDateInput2);
+
+            // START
+            $('#applyFilters').on('click', function() {
+                filters = {
+                    fromDate: $('#from_dateInput').val(),
+                    toDate: $('#to_dateInput').val(),
+                    station: $('#filterStationSelect').val(),
+                };
+                fetchActiveGuards();
+                $('#filterModal').modal('hide');
+            });
+
+            $('#resetFilters').on('click', function() {
+                filters = {};
+                $('#filterForm')[0].reset();
+                fetchActiveGuards();
+            });
+
+            $('#search').on('input', function() {
+                search = $(this).val().trim();
+                fetchActiveGuards();
+            });
+
+            $('#applySort').on('click', function() {
+                sort = {
+                    date: $('input[name="sortDate"]:checked').val(),
+                    name: $('input[name="sortName"]:checked').val(),
+                };
+                fetchActiveGuards();
+                $('#sortModal').modal('hide');
+            });
+
+            $('#resetSort').on('click', function() {
+                sort = {};
+                $('input[name="sortDate"]').prop('checked', false);
+                $('input[name="sortName"]').prop('checked', false);
+                fetchActiveGuards();
+            });
+
+            fetchActiveGuards();
 
             // Initial fetch to populate the table
             fetchActiveGuards();
-
-            // Event listener for station filter
-            $('#stationSelect').change(function() {
-                fetchActiveGuards(); // Fetch based on selected station and current search input
-            });
 
             // Using jQuery with onInput event to achieve live search
             $('#search').on('input', function() {
@@ -527,8 +701,8 @@ $stationsResult = $conn->query($stationsSql);
                         text: 'Do you want to add this guard?',
                         icon: 'question',
                         showCancelButton: true,
-                        confirmButtonText: 'Yes, Add',
-                        cancelButtonText: 'No, Cancel',
+                        confirmButtonText: 'YES',
+                        cancelButtonText: 'NO',
                         reverseButtons: true
                     }).then((result) => {
                         if (result.isConfirmed) {
@@ -574,12 +748,16 @@ $stationsResult = $conn->query($stationsSql);
                         }
                     },
                     error: function(xhr, status, error) {
+
                         Swal.fire({
                             title: 'Error!',
                             text: `An error occurred while adding the guard: ${error}`,
                             icon: 'error',
-                            confirmButtonText: 'OK'
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
                         });
+
                     },
                     complete: function() {
                         $('#addGuardModal').modal('hide'); // Optionally hide the modal
@@ -625,8 +803,8 @@ $stationsResult = $conn->query($stationsSql);
                         text: 'You have unsaved changes. Are you sure you want to discard them?',
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonText: 'Yes, Discard Changes',
-                        cancelButtonText: 'No, Keep Editing',
+                        confirmButtonText: 'YES, DISCARD CHANGES',
+                        cancelButtonText: 'NO, KEEP EDITING',
                         reverseButtons: true,
                     }).then((result) => {
                         if (result.isConfirmed) {
@@ -704,10 +882,12 @@ $stationsResult = $conn->query($stationsSql);
 
                     if (!isChanged) {
                         Swal.fire({
-                            title: 'No Changes Detected',
-                            text: 'You have not made any changes to the guard details.',
+                            title: 'No Changes Detected!',
+                            text: "You have not made any changes to the profile.",
                             icon: 'info',
-                            confirmButtonText: 'OK',
+                            timer: 1500,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
                         });
                         return;
                     }
@@ -718,8 +898,8 @@ $stationsResult = $conn->query($stationsSql);
                         text: 'Do you want to save the changes?',
                         icon: 'question',
                         showCancelButton: true,
-                        confirmButtonText: 'Yes, Save',
-                        cancelButtonText: 'No, Cancel',
+                        confirmButtonText: 'YES',
+                        cancelButtonText: 'NO',
                         reverseButtons: true, // Optional: Switch button positions
                     }).then((result) => {
                         if (result.isConfirmed) {
@@ -790,7 +970,14 @@ $stationsResult = $conn->query($stationsSql);
                     },
                     error: function(xhr, status, error) {
                         console.error(error); // Log the error for debugging
-                        alert('An error occurred. Please try again.');
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'An error occurred. Please try again.',
+                            icon: 'error',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                        });
                     }
                 });
             });
@@ -849,54 +1036,70 @@ $stationsResult = $conn->query($stationsSql);
                 const newPassword = $('#new_password').val();
                 const confirmNewPassword = $('#confirm_new_password').val();
                 const passwordGuardName = $('#password_guard_name').val();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: `Do you want to change the password of guard no: ${passwordGuardId}?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'YES',
+                    cancelButtonText: 'NO',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: 'update_password.php',
+                            type: 'POST',
+                            data: {
+                                guard_id: passwordGuardId,
+                                new_password: newPassword,
+                                confirm_new_password: confirmNewPassword,
+                                password_guard_name: passwordGuardName
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                if (response.success) {
+                                    // Handle success message
+                                    Swal.fire({
+                                        title: 'Success!',
+                                        text: response.message,
+                                        icon: 'success',
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false
+                                    });
 
-                if (confirm('Are you sure you want change the password of guard no: ' + passwordGuardId + '?')) {
-                    $.ajax({
-                        url: 'update_password.php',
-                        type: 'POST',
-                        data: {
-                            guard_id: passwordGuardId,
-                            new_password: newPassword,
-                            confirm_new_password: confirmNewPassword,
-                            password_guard_name: passwordGuardName
-                        },
-                        dataType: 'json',
-                        success: function(response) {
-                            if (response.success) {
-                                // Handle success message
-                                Swal.fire({
-                                    title: 'Success!',
-                                    text: response.message,
-                                    icon: 'success',
-                                    timer: 3000,
-                                    timerProgressBar: true,
-                                    showConfirmButton: false
-                                });
+                                    fetchActiveGuards();
 
-                                fetchActiveGuards();
+                                    // Hide the password modal and open the current guard details modal
+                                    $('#passwordChangeModal').modal('hide');
+                                    openDetailsModal(current);
 
-                                // Hide the password modal and open the current guard details modal
-                                $('#passwordChangeModal').modal('hide');
-                                openDetailsModal(current);
-
-                            } else {
-                                // Show error message if unsuccessful
+                                } else {
+                                    // Show error message if unsuccessful
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: response.message,
+                                        icon: 'error',
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                    });
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error); // Log the error for debugging
                                 Swal.fire({
                                     title: 'Error!',
-                                    text: response.message,
+                                    text: 'An error occurred. Please try again.',
                                     icon: 'error',
                                     timer: 3000,
                                     timerProgressBar: true,
                                     showConfirmButton: false,
                                 });
                             }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(error); // Log the error for debugging
-                            alert('An error occurred. Please try again.');
-                        }
-                    });
-                }
+                        });
+                    }
+                });
             });
 
 

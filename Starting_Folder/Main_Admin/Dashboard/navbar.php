@@ -191,6 +191,14 @@
     .navbar {
         background-color: white;
         /* Background color */
+        position: sticky;
+        /* Makes the navbar sticky */
+        top: 0;
+        /* Sticks to the top of the viewport */
+        z-index: 1030;
+        /* Ensures it stays above other elements */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        /* Optional shadow for better visual hierarchy */
     }
 
     .navbar-nav .nav-link {

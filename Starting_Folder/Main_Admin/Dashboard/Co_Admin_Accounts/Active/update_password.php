@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $logStmt = $conn->prepare($logSql);   
 
             $section = 'GUARDS';
-            $details = "Update Guard\n\nId: $guard_id\nGuard name: $guardName\n\nChange password";
+            $details = "Update Guard\n\nId: $guard_id\nGuard name: $guardName\n\nChanged password";
             $category = 'UPDATE';
             $adminId = $_SESSION['admin_id'];
 

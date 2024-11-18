@@ -41,7 +41,22 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-    <title>Inactive | Main Admin</title>
+    <title>Inactive Co-admin Accounts | Main Admin</title>
+
+    <style>
+        .table-responsive {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #343a40;
+            color: white;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -56,39 +71,106 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
             <div class="container col-sm-12 text-center">
                 <h2>Inactive Co-Admin Accounts</h2>
-                <input type="text" id="search" class="form-control" placeholder="Search by guard name or ID">
-                <table class="table table-bordered mt-3">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>DATE</th>
-                            <th>Guard Name</th>
-                            <th class="text-center d-flex justify-content-center">
-                                <!-- Dropdown for station selection inside the table header -->
-                                <select id="stationSelect" class="form-select form-select-sm">
-                                    <option value="">ALL STATIONS</option>
-                                    <?php
-                                    // Fetching stations to populate the dropdown
-                                    $stationsSql = "SELECT station_id, station_name FROM stations";
-                                    $stationsResult = $conn->query($stationsSql);
-                                    if ($stationsResult->num_rows > 0) {
-                                        while ($station = $stationsResult->fetch_assoc()) {
-                                            echo "<option value='" . $station['station_id'] . "'>" . $station['station_name'] . "</option>";
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="guardTableBody">
-                        <!-- Results will be inserted here -->
+                <!-- Search, Filter, and Sort Buttons -->
+                <input type="text" id="search" class="form-control mb-3" placeholder="Search by guard name or ID">
+                <div class="d-flex justify-content-start mb-3">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
+                    <button class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#sortModal">Sort</button>
+                </div>
 
-                    </tbody>
-                </table>
+                <!-- Table -->
+                <div class="table-responsive" style="max-height: 300px;">
+                    <table class="table table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>DATE</th>
+                                <th>GUARD NAME</th>
+                                <th>STATION</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="guardTableBody">
+                            <!-- Results will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+
                 <div class="row mt-3">
                     <button type="button" class="btn btn-primary" id="backbtn">Go back to Active Accounts</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Modal -->
+    <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="filterModalLabel">Filter Guards</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="filterForm">
+                        <div class="mb-3">
+                            <label for="from_dateInput" class="form-label">From</label>
+                            <input type="date" id="from_dateInput" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="to_dateInput" class="form-label">To</label>
+                            <input type="date" id="to_dateInput" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="filterStationSelect" class="form-label">Station</label>
+                            <select id="filterStationSelect" class="form-select">
+                                <option value="">All Stations</option>
+                                <?php
+                                $stationsSql = "SELECT station_id, station_name FROM stations";
+                                $stationsResult = $conn->query($stationsSql);
+                                while ($station = $stationsResult->fetch_assoc()) {
+                                    echo "<option value='" . $station['station_id'] . "'>" . htmlspecialchars($station['station_name']) . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="resetFilters" class="btn btn-danger">Reset</button>
+                    <button type="button" id="applyFilters" class="btn btn-primary">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sort Modal -->
+    <div class="modal fade" id="sortModal" tabindex="-1" aria-labelledby="sortModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sortModalLabel">Sort Guards</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label class="form-label">Sort by Date:</label>
+                        <div>
+                            <input type="radio" name="sortDate" value="asc"> Ascending<br>
+                            <input type="radio" name="sortDate" value="desc"> Descending
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <label class="form-label">Sort by Name:</label>
+                        <div>
+                            <input type="radio" name="sortName" value="asc"> A-Z<br>
+                            <input type="radio" name="sortName" value="desc"> Z-A
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="resetSort" class="btn btn-danger">Reset</button>
+                    <button type="button" id="applySort" class="btn btn-primary">Apply</button>
                 </div>
             </div>
         </div>
@@ -118,38 +200,133 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
 
     <script>
-        function fetchInactiveGuards() {
-            var stationId = $('#stationSelect').val();
-            var searchQuery = $('#search').val();
 
+        let filters = {};
+        let sort = {};
+        let search = '';
+
+        function fetchInactiveGuards() {
             $.ajax({
                 url: 'fetch_inactive_guards.php',
-                type: 'GET',
+                type: 'POST',
                 data: {
-                    station_id: stationId,
-                    search: searchQuery
-                }, // Sending station ID and search query
+                    search: search,
+                    filters: filters,
+                    sort: sort,
+                },
                 success: function(data) {
-                    $('#guardTableBody').html(data); // Populate the table with the fetched data
-                }
+                    $('#guardTableBody').html(data);
+                },
             });
-        }
+        } 
 
         $(document).ready(function() {
 
-            // Initial fetch to populate the table
+            // VALIDATE DATE INPUTS
+
+            // Get today's date in local time (correcting for time zone)
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+            const day = String(today.getDate()).padStart(2, '0'); // Ensures the day is two digits
+            const todayFormatted = `${year}-${month}-${day}`; // Format as YYYY-MM-DD
+
+            // Set max attribute for both inputs
+            $('#from_dateInput, #to_dateInput').attr('max', todayFormatted);
+
+            // VALIDATION OF DATE INPUTS
+            function validateDateInput1() {
+                const fromDate = $('#from_dateInput').val();
+                const toDate = $('#to_dateInput').val();
+
+                // Convert dates only if both fields have values
+                if (fromDate && toDate) {
+                    const fromDateValue = new Date(fromDate);
+                    const toDateValue = new Date(toDate);
+                    const todayDate = new Date(todayFormatted);
+
+                    // Check if from exceeds today's date
+                    if (fromDateValue > todayDate) {
+                        $('#from_dateInput').val(todayFormatted);
+                    }
+
+                    // Check if fromDate is greater than
+                    if (fromDateValue > toDateValue) {
+                        $('#to_dateInput').val('');
+                    }
+
+                }
+            }
+
+            function validateDateInput2() {
+                const fromDate = $('#from_dateInput').val();
+                const toDate = $('#to_dateInput').val();
+
+                // Convert dates only if both fields have values
+                if (fromDate && toDate) {
+                    const fromDateValue = new Date(fromDate);
+                    const toDateValue = new Date(toDate);
+                    const todayDate = new Date(todayFormatted);
+
+                    // Check if toDate exceeds today's date
+                    if (toDateValue > todayDate) {
+                        $('#to_dateInput').val(todayFormatted);
+                    }
+
+                    // Check if fromDate is after toDate
+                    if (fromDateValue > toDateValue) {
+                        $('#from_dateInput').val('');
+                    }
+
+                }
+            }
+
+
+            $('#from_dateInput').on('input change', validateDateInput1);
+            $('#to_dateInput').on('input change', validateDateInput2);
+
+
+            $('#applyFilters').on('click', function() {
+                filters = {
+                    fromDate: $('#from_dateInput').val(),
+                    toDate: $('#to_dateInput').val(),
+                    station: $('#filterStationSelect').val(),
+                };
+                fetchInactiveGuards();
+                $('#filterModal').modal('hide');
+            });
+
+            $('#resetFilters').on('click', function() {
+                filters = {};
+                $('#filterForm')[0].reset();
+                fetchInactiveGuards();
+            });
+
+            $('#applySort').on('click', function() {
+                sort = {
+                    date: $('input[name="sortDate"]:checked').val(),
+                    name: $('input[name="sortName"]:checked').val(),
+                };
+                fetchInactiveGuards();
+                $('#sortModal').modal('hide');
+            });
+
+            $('#resetSort').on('click', function() {
+                sort = {};
+                $('input[name="sortDate"]').prop('checked', false);
+                $('input[name="sortName"]').prop('checked', false);
+                fetchInactiveGuards();
+            });
+
+            $('#search').on('input', function() {
+                search = $(this).val().trim();
+                fetchInactiveGuards();
+            });
+
+            // Initial fetch
             fetchInactiveGuards();
 
-            // Event listener for station filter
-            $('#stationSelect').change(function() {
-                fetchInactiveGuards(); // Fetch based on selected station and current search input
-            });
-
-            // Using jQuery with onInput event to achieve live search
-            $('#search').on('input', function() {
-                fetchInactiveGuards(); // Fetch based on selected station and search input
-            });
-
+            // Back button
             $('#backbtn').on('click', function() {
                 window.location.href = '../Active/main_active.php';
             });

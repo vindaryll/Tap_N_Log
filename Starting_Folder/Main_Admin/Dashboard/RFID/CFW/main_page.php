@@ -45,7 +45,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <!-- Cropper.js CDN -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 
-    <title>Co-Admin Account | Main Admin</title>
+    <title>CFW Profiles | Main Admin</title>
     <style>
         #profile-container {
             height: 450px;
