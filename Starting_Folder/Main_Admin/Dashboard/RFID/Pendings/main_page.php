@@ -42,7 +42,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-    <title>Pending RFID Profiles  | Main Admin</title>
+    <title>Pending RFID Profiles | Main Admin</title>
     <style>
         /* Profile Image with 1:1 Ratio */
         .profile-image-container {
@@ -72,9 +72,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         .modal-content {
             overflow-y: auto;
         }
-    </style>
 
-    <style>
         /* Fixed header and scrollable body styling */
         .table-responsive {
             height: 400px;
@@ -96,6 +94,21 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             white-space: pre;
             /* Maintains line breaks without word wrapping */
         }
+
+        /* BACK BUTTON */
+        .back-icon {
+            color: #1877f2;
+            font-size: 2rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .back-icon:hover {
+            color: #145dbf;
+            transform: scale(1.1);
+        }
+        /* END FOR BACK BUTTON */
     </style>
 </head>
 
@@ -105,17 +118,17 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <?php require_once $_SESSION['directory'] . '\Starting_Folder\Main_Admin\Dashboard\navbar.php'; ?>
 
     <!-- START OF CONTAINER -->
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center px-2">
 
-        <div class="container-fluid row col-sm-12">
+        <div class="container-fluid row col-sm-12 p-0">
 
-            <div class="container col-sm-12 mb-3">
-                <button type="button" class="btn btn-primary" id="backbtn">Back</button>
+            <div class="container col-sm-12">
+                <a href="#" class="back-icon" id="backbtn" style="position: absolute;"><i class="bi bi-arrow-left"></i></a>
             </div>
 
-            <div class="container-fluid col-sm-12">
-                <div class="container-fluid text-center">
-                    <h2>Profile Management</h2>
+            <div class="container-fluid col-sm-12 mt-sm-1 mt-5 p-0">
+                <div class="container-fluid text-center p-0">
+                    <h2 class="text-center w-100">PENDING PROFILES</h2>
                     <div class="mb-3">
                         <input type="text" id="searchTextbox" class="form-control" placeholder="Search by name or ID">
                     </div>
@@ -388,7 +401,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
                 }
             }
-            
+
             function validateDateInput2() {
                 const fromDate = $('#from_dateInput').val();
                 const toDate = $('#to_dateInput').val();

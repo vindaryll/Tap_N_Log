@@ -53,10 +53,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
         <div class="container-fluid row col-sm-12">
 
-            <div class="container col-sm-12 mb-3">
-                <button type="button" class="btn btn-primary" id="backbtn">Back</button>
-            </div>
-
             <div class="container">
                 <div class="row d-flex justify-content-center align-items-center mt-3">
                     <div class="col-md-4 col-sm-12 d-flex justify-content-center align-items-center mb-3">
@@ -78,13 +74,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(function() {
-            $('#backbtn').on('click', function() {
-                window.location.href = '../dashboard_home.php';
-            });
-        });
-    </script>
 </body>
 
 </html>

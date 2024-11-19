@@ -47,9 +47,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
     <title>CFW Profiles | Main Admin</title>
     <style>
+        /* CARD CONTAINER FOR PROFILES */
         #profile-container {
-            height: 450px;
-            /* Adjust the height as needed */
+            height: 480px;
             overflow-y: auto;
 
         }
@@ -66,8 +66,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             transform: scale(1.03);
             /* Slightly enlarges the card on hover */
         }
+        /* END FOR PROFILE CONTAINER */
 
-        /* Profile Image with 1:1 Ratio */
+        /* FOR MODAL EDIT MODAL */
         .profile-image-container {
             width: 100%;
             padding-top: 100%;
@@ -95,10 +96,10 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         .modal-content {
             overflow-y: auto;
         }
-    </style>
+        /* END FOR MODALS */
 
-    <style>
-        /* Fixed header and scrollable body styling */
+
+        /* TABLES */
         .table-responsive {
             height: 400px;
             /* Adjust the height as needed */
@@ -114,11 +115,26 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             z-index: 1;
         }
 
-        /* Pre-style to maintain line breaks without wrapping text */
         .table-pre {
             white-space: pre;
             /* Maintains line breaks without word wrapping */
         }
+        /* END FOR TABLES */
+
+        /* BACK BUTTON */
+        .back-icon {
+            color: #1877f2;
+            font-size: 2rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .back-icon:hover {
+            color: #145dbf;
+            transform: scale(1.1);
+        }
+        /* END FOR BACK BUTTON */
     </style>
 </head>
 
@@ -130,15 +146,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
 
-        <div class="container-fluid row col-sm-12 p-0">
+        <div class="container-fluid row col-sm-12 px-2">
 
             <div class="container col-sm-12">
-                <button type="button" class="btn btn-primary" id="backbtn">Back</button>
+                <a href="#" class="back-icon" id="backbtn" style="position: absolute;"><i class="bi bi-arrow-left"></i></a>
             </div>
 
-            <div class="container-fluid col-sm-12">
+            <div class="container-fluid col-sm-12 mt-sm-0 mt-4 p-0">
                 <div class="container mt-3 p-0">
-
+                    <h2 class="text-center w-100">CASH FOR WORK RFID PROFILES</h2>
                     <div class="mb-3">
                         <input type="text" id="searchTextbox" class="form-control" placeholder="Search by name or RFID">
                     </div>
@@ -154,7 +170,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     <div class="row d-flex justify-content-center">
 
                         <!-- Profiles Section -->
-                        <div id="profile-container" class="row d-flex justify-content-center">
+                        <div id="profile-container" class="row d-flex justify-content-center p-0">
                             <!-- Profile Cards will be inserted here dynamically -->
                         </div>
 
@@ -164,6 +180,8 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         </div>
 
     </div>
+
+    
 
     <!-- Filter Modal -->
     <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">

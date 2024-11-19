@@ -43,6 +43,23 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
     <title>RFID Profiles | Main Admin</title>
+    <style>
+        /* BACK BUTTON */
+        .back-icon {
+            color: #1877f2;
+            font-size: 2rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .back-icon:hover {
+            color: #145dbf;
+            transform: scale(1.1);
+        }
+
+        /* END FOR BACK BUTTON */
+    </style>
 </head>
 
 <body>
@@ -51,15 +68,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <?php require_once $_SESSION['directory'] . '\Starting_Folder\Main_Admin\Dashboard\navbar.php'; ?>
 
     <!-- START OF CONTAINER -->
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center px-2">
 
-        <div class="container-fluid row col-sm-12">
-
-            <div class="container col-sm-12 mb-3">
-                <button type="button" class="btn btn-primary" id="backbtn">Back</button>
+        <div class="container-fluid row p-0">
+            <div class="container col-sm-12">
+                <a href="#" class="back-icon" id="backbtn" style="position: absolute;"><i class="bi bi-arrow-left"></i></a>
             </div>
 
-            <div class="container">
+            <div class="container-fluid col-sm-12 mt-sm-1 mt-5">
+                <h2 class="text-center w-100">RFID PROFILES</h2>
                 <div class="row d-flex justify-content-center align-items-center mt-3">
                     <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
                         <a href="Pendings/main_page.php" class="btn btn-primary w-100 p-3">PENDINGS</a>

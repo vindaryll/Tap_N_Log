@@ -67,10 +67,12 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
 
-        <div class="container row col-sm-12">
+        <div class="container-fluid row col-sm-12">
 
-            <div class="container col-sm-12 text-center">
-                <h2>Inactive Co-Admin Accounts</h2>
+            <div class="container-fluid col-sm-12 text-center p-0">
+
+                <h2>INACTIVE CO-ADMIN ACCOUNTS</h2>
+
                 <!-- Search, Filter, and Sort Buttons -->
                 <input type="text" id="search" class="form-control mb-3" placeholder="Search by guard name or ID">
                 <div class="d-flex justify-content-start mb-3">
@@ -79,7 +81,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 </div>
 
                 <!-- Table -->
-                <div class="table-responsive" style="max-height: 300px;">
+                <div class="table-responsive mb-2">
                     <table class="table table-bordered">
                         <thead class="table-dark">
                             <tr>
@@ -96,11 +98,14 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     </table>
                 </div>
 
-                <div class="row mt-3">
+                <div class="row px-2">
                     <button type="button" class="btn btn-primary" id="backbtn">Go back to Active Accounts</button>
                 </div>
             </div>
+
         </div>
+
+
     </div>
 
     <!-- Filter Modal -->
@@ -200,7 +205,6 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
 
     <script>
-
         let filters = {};
         let sort = {};
         let search = '';
@@ -218,7 +222,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     $('#guardTableBody').html(data);
                 },
             });
-        } 
+        }
 
         $(document).ready(function() {
 

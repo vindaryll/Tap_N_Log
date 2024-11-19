@@ -69,6 +69,22 @@ $stationsResult = $conn->query($stationsSql);
             background-color: #343a40;
             color: white;
         }
+
+        /* BACK BUTTON */
+        .back-icon {
+            color: #1877f2;
+            font-size: 2rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .back-icon:hover {
+            color: #145dbf;
+            transform: scale(1.1);
+        }
+
+        /* END FOR BACK BUTTON */
     </style>
 
 </head>
@@ -80,52 +96,55 @@ $stationsResult = $conn->query($stationsSql);
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
 
-        <div class="container row col-sm-12">
+        <div class="container-fluid row col-sm-12 p-0">
 
-            <div class="container col-sm-12 mb-3">
-                <button type="button" class="btn btn-primary" id="backbtn">Back</button>
+            <div class="container col-sm-12">
+                <a href="#" class="back-icon" id="backbtn" style="position: absolute;"><i class="bi bi-arrow-left"></i></a>
             </div>
 
-            <div class="container col-sm-12 text-center">
-                <h2>Active Co-Admin Accounts</h2>
+            <div class="container-fluid col-sm-12 mt-sm-0 mt-4 px-2">
 
-                <!-- Textbox for search -->
-                <input type="text" id="search" class="form-control mb-3" placeholder="Search by guard name or ID">
+                <div class="container-fluid text-center">
+                    <h2 class="text-center w-100">ACTIVE CO-ADMIN ACCOUNTS</h2>
 
-                <!-- Filter and Sort Buttons -->
-                <div class="d-flex justify-content-start mb-3">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
-                    <button class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#sortModal">Sort</button>
+                    <!-- Textbox for search -->
+                    <input type="text" id="search" class="form-control mb-3" placeholder="Search by guard name or ID">
+
+                    <!-- Filter and Sort Buttons -->
+                    <div class="d-flex justify-content-start mb-3">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
+                        <button class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#sortModal">Sort</button>
+                    </div>
+
+                    <div class="table-responsive mb-2">
+                        <table class="table table-bordered">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>DATE</th>
+                                    <th>GUARD NAME</th>
+                                    <th>STATION</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="guardTableBody">
+                                <!-- Results will be inserted here -->
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="row mb-2">
+                        <!-- Add Guard Button -->
+                        <button type="button" id="addGuardModalButton" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addGuardModal">Add Guard</button>
+                    </div>
+                    <div class="row">
+                        <!-- Inactive guard button -->
+                        <button type="button" id="goToInactive" class="btn btn-primary">Inactive Guard Accounts</button>
+                    </div>
+
                 </div>
-
-                <div class="table-responsive" style="max-height: 300px;">
-                    <table class="table table-bordered">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>ID</th>
-                                <th>DATE</th>
-                                <th>GUARD NAME</th>
-                                <th>STATION</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="guardTableBody">
-                            <!-- Results will be inserted here -->
-
-                        </tbody>
-                    </table>
-                </div>
-
-
-                <div class="row mb-2">
-                    <!-- Add Guard Button -->
-                    <button type="button" id="addGuardModalButton" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addGuardModal">Add Guard</button>
-                </div>
-                <div class="row">
-                    <!-- Inactive guard button -->
-                    <button type="button" id="goToInactive" class="btn btn-primary">Inactive Guard Accounts</button>
-                </div>
-
             </div>
 
         </div>

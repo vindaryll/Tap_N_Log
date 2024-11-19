@@ -942,8 +942,8 @@
                                     text: 'Do you want to update your email address?',
                                     icon: 'question',
                                     showCancelButton: true,
-                                    confirmButtonText: 'Yes, Update Email',
-                                    cancelButtonText: 'No, Cancel',
+                                    confirmButtonText: 'YES',
+                                    cancelButtonText: 'NO',
                                     reverseButtons: true,
                                 }).then((result) => {
                                     if (result.isConfirmed) {
@@ -1224,8 +1224,8 @@
                     text: 'You are about to change your password. Do you want to proceed?',
                     icon: 'question',
                     showCancelButton: true,
-                    confirmButtonText: 'Yes, Proceed',
-                    cancelButtonText: 'No, Cancel',
+                    confirmButtonText: 'YES',
+                    cancelButtonText: 'NO',
                     reverseButtons: true,
                 }).then((result) => {
                     if (result.isConfirmed) {
