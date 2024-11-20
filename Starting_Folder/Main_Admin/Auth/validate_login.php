@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     title: 'Error!',
                     text: 'Incorrect CAPTCHA answer! Please try again.',
                     icon: 'error',
-                    timer: 2000,
+                    timer: 1500,
                     timerProgressBar: true,
                     showConfirmButton: false,
                     allowOutsideClick: false,

@@ -916,6 +916,7 @@
             });
         });
 
+        let nav_otpAttemptCounter2 = 0;
         $('#nav_submitOtpBtn2').click(function() {
             let otpCode = $('#nav_otpCode2').val();
 

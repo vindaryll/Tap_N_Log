@@ -67,6 +67,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             transform: scale(1.03);
             /* Slightly enlarges the card on hover */
         }
+
         /* END FOR PROFILE CONTAINER */
 
         /* FOR MODAL EDIT MODAL */
@@ -97,30 +98,8 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         .modal-content {
             overflow-y: auto;
         }
+
         /* END FOR MODALS */
-
-
-        /* TABLES */
-        .table-responsive {
-            height: 400px;
-            /* Adjust the height as needed */
-            overflow-y: auto;
-        }
-
-        .table thead th {
-            position: sticky;
-            top: 0;
-            background-color: #343a40;
-            /* Background color for header */
-            color: white;
-            z-index: 1;
-        }
-
-        .table-pre {
-            white-space: pre;
-            /* Maintains line breaks without word wrapping */
-        }
-        /* END FOR TABLES */
 
         /* BACK BUTTON */
         .back-icon {
@@ -135,6 +114,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             color: #145dbf;
             transform: scale(1.1);
         }
+
         /* END FOR BACK BUTTON */
     </style>
 </head>
@@ -270,7 +250,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Profile</h5>
+                    <h5 class="modal-title">PROFILE DETAILS</h5>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -290,21 +270,21 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
                                 <!-- First name -->
                                 <div class="mb-3">
-                                    <label for="modal_1_firstName" class="form-label">First Name</label>
+                                    <label for="modal_1_firstName" class="form-label">FIRST NAME</label>
                                     <input type="text" class="form-control" id="modal_1_firstName" name="firstName">
                                     <div id="firstName-feedback" class="invalid-feedback"></div>
                                 </div>
 
                                 <!-- Last name -->
                                 <div class="mb-3">
-                                    <label for="modal_1_lastName" class="form-label">Last Name</label>
+                                    <label for="modal_1_lastName" class="form-label">LAST NAME</label>
                                     <input type="text" class="form-control" id="modal_1_lastName" name="lastName">
                                     <div id="lastName-feedback" class="invalid-feedback"></div>
                                 </div>
 
                                 <!-- RFID number -->
                                 <div class="mb-3">
-                                    <label for="modal_1_rfid" class="form-label">RFID Number</label>
+                                    <label for="modal_1_rfid" class="form-label">RFID NUMBER</label>
                                     <input type="text" class="form-control" id="modal_1_rfid" name="rfid">
                                     <div id="rfid-feedback" class="invalid-feedback"></div>
                                 </div>
@@ -711,7 +691,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             fetchProfiles();
 
 
-            
+
             // Handle Edit button click
             $(document).on('click', '.edit-btn', function() {
                 const id = $(this).data('id');
