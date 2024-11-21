@@ -64,7 +64,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
         /* Submit button text */
         #submitButton {
-            font-size: 2rem;
+            font-size: 3rem;
             font-weight: bold;
             background: none;
             border: none;
@@ -128,7 +128,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         <div id="form-container" class="col-12 d-flex align-items-center p-0 m-0">
             <form id="time_in" class="w-100 text-center">
                 <input type="text" id="rfidInput" autofocus>
-                <button type="submit" id="submitButton">PLEASE TAP YOUR RFID FOR <strong>TIME-IN</strong></button>
+                <button type="submit" id="submitButton">PLEASE TAP YOUR RFID FOR <span style="color: green;">TIME-IN</span></button>
             </form>
         </div>
 
@@ -154,12 +154,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                         <!-- Details Column -->
                         <div class="col-lg-6">
                             <form id="profileForm">
-
-                                <!-- hidden Id -->
-                                <input type="hidden" id="modal_1_profileId">
-
-                                <!-- Method -->
-                                <input type="hidden" id="modal_1_method" value="RFID">
 
                                 <!-- RFID number -->
                                 <div class="mb-3">
@@ -275,8 +269,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     hour12: true
                 }).format(currentDate); // "1:40 AM"
 
-                console.log(currentDate);
-
                 // AJAX call to check RFID
                 $.ajax({
                     url: 'check_rfid.php', // Replace with the actual path to the PHP file
@@ -309,8 +301,9 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                 name: profile.name,
                                 method: 'RFID'
                             };
+                            
+                            console.log(current);
 
-                            $('#modal_1_profileId').val(profile.id);
                             $('#modal_1_profileImg').attr('src', profile.image || '/tapnlog/image/logo_and_icons/default_avatar.png');
                             $('#modal_1_rfid').val(profile.rfid);
                             $('#modal_1_name').val(profile.name);
@@ -368,8 +361,8 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                         const rfid = current.rfid || 'None';
                         const name = current.name;
                         const method = current.method;
-                        const date = datePassing; // Get the formatted date
-                        const time = timePassing; // Get the formatted time
+                        const date = datePassing; 
+                        const time = timePassing;
 
                         $.ajax({
                             url: '../save_time_in.php',
@@ -408,13 +401,14 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                     });
                                 }
                             },
-                            error: function() {
+                            error: function(xhr, status, error) {
+                                console.error('AJAX Error:', status, error, xhr.responseText);
                                 Swal.fire({
                                     position: 'top',
                                     title: 'Error!',
-                                    text: 'An error occurred while saving the record. Please try again.',
+                                    text: 'Failed to update time-in. Please try again.',
                                     icon: 'error',
-                                    timer: 2000,
+                                    timer: 1500,
                                     timerProgressBar: true,
                                     showConfirmButton: false,
                                 });

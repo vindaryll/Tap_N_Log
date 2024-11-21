@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $time_out = $conn->real_escape_string($_POST['time_out'] ?? '');
     $rfid = $conn->real_escape_string($_POST['rfid'] ?? '');
     $name = $conn->real_escape_string($_POST['name'] ?? '');
+    $formatted_date = $conn->real_escape_string($_POST['date'] ?? '');
     $method = $conn->real_escape_string($_POST['method'] ?? 'MANUAL');
 
     if (empty($attendance_id) || empty($time_out) || empty($profile_id)) {
@@ -32,8 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Failed to update time-out record.");
         }
 
-        // Format date and time
-        $formatted_date = date('F j, Y'); // Format as "November 20, 2024"
         $formatted_time_out = date('g:i A', strtotime($time_out)); // Format as "11:30 PM"
 
         // Log the activity in activity_log
@@ -41,12 +40,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $query = "
             INSERT INTO activity_log (section, details, category, guard_id, station_id) 
-            VALUES ('EMPLOYEES', ?, 'UPDATE', ?, ?)";
+            VALUES ('EMPLOYEES', ?, 'INSERT', ?, ?)";
         $stmt = $conn->prepare($query);
 
-        // Example station_id and guard_id from session or default values
-        $guard_id = $_SESSION['record_guard_id'] ?? 1; // Replace with actual guard ID from session
-        $station_id = $_SESSION['station_id'] ?? 1;   // Replace with actual station ID from session
+        // Use session variables for guard and station
+        $guard_id = $_SESSION['guard_id'] ?? null;
+        $station_id = $_SESSION['station_id']?? null;
 
         $stmt->bind_param("sii", $details, $guard_id, $station_id);
         $stmt->execute();
@@ -57,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $conn->commit();
 
-        echo json_encode(['success' => true, 'message' => 'Time-out updated and activity log inserted successfully.']);
+        echo json_encode(['success' => true, 'message' => 'Time-out confirmed successfully.']);
     } catch (Exception $e) {
         $conn->rollback();
         echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);

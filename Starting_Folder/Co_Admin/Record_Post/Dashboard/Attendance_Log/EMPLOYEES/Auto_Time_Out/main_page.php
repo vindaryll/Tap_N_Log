@@ -1,6 +1,4 @@
 <?php
-
-// DINE NAMAN MAMAYA
 session_start();
 
 // Include database connection
@@ -66,7 +64,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
         /* Submit button text */
         #submitButton {
-            font-size: 2rem;
+            font-size: 3rem;
             font-weight: bold;
             background: none;
             border: none;
@@ -130,7 +128,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         <div id="form-container" class="col-12 d-flex align-items-center p-0 m-0">
             <form id="time_out" class="w-100 text-center">
                 <input type="text" id="rfidInput" autofocus>
-                <button type="submit" id="submitButton">PLEASE TAP YOUR RFID FOR <strong>TIME-OUT</strong></button>
+                <button type="submit" id="submitButton">PLEASE TAP YOUR RFID FOR <span style="color:red">TIME-OUT</span></button>
             </form>
         </div>
 
@@ -176,7 +174,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="modal_1_date" class="form-label">TIME IN</label>
+                                    <label for="modal_1_date" class="form-label">DATE</label>
                                     <input type="text" class="form-control" id="modal_1_date" name="date" disabled>
                                 </div>
 
@@ -369,6 +367,15 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             });
 
             $('#saveBtn').on('click', function() {
+
+                // FOR ACTIVITY LOGS
+                const currentDate = new Date();
+                const formattedDate = new Intl.DateTimeFormat('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                }).format(currentDate);
+                
                 Swal.fire({
                     title: `Are you sure?`,
                     text: `Do you want to APPROVE the TIME-OUT attendance of this profile?`,
@@ -382,12 +389,13 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
                         // Prepare data to send
                         const attendanceData = {
-                            attendance_id: current.attendance_id, // From current modal state
-                            profile_id: current.profile_id, // From current modal state
-                            rfid: current.rfid, // From current modal state
-                            name: current.name, // From current modal state
+                            attendance_id: current.attendance_id, 
+                            profile_id: current.profile_id, 
+                            rfid: current.rfid, 
+                            name: current.name, 
+                            date: formattedDate,
                             time_out: timePassing, // Current time for time-out
-                            method: current.method, // 'MANUAL' or 'RFID'
+                            method: current.method, 
                         };
 
                         // AJAX request
@@ -432,7 +440,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                     timerProgressBar: true,
                                     showConfirmButton: false,
                                 });
-                            },
+                            }
                         });
 
                     }

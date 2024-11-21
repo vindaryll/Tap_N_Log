@@ -19,7 +19,7 @@ try {
     $profile = $stmt->get_result()->fetch_assoc();
 
     if (!$profile) {
-        echo json_encode(['success' => false, 'message' => 'No profile is registered for this RFID number']);
+        echo json_encode(['success' => false, 'message' => 'No profile is registered for this RFID number.']);
         exit();
     }
 
@@ -33,9 +33,9 @@ try {
 
     if ($attendance) {
         if (is_null($attendance['time_out'])) {
-            echo json_encode(['success' => false, 'message' => 'This profile has already recorded a time-in for today', 'debug' => $attendance]);
+            echo json_encode(['success' => false, 'message' => 'This profile has already recorded a time-in for today.']);
         } else {
-            echo json_encode(['success' => false, 'message' => 'This profile has already an attendance for today', 'debug' => $attendance]);
+            echo json_encode(['success' => false, 'message' => 'This profile has already completed attendance for today.']);
         }
     } else {
         echo json_encode([
@@ -46,7 +46,6 @@ try {
                 'rfid' => $profile['employee_rfid'],
                 'name' => $profile['first_name'] . ' ' . $profile['last_name'],
             ],
-            'debug' => '$attendance is good'
         ]);
     }
 } catch (Exception $e) {

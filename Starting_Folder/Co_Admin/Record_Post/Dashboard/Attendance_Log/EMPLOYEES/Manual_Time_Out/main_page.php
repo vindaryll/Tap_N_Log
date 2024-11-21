@@ -115,8 +115,8 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
 <body>
 
-     <!-- Nav Bar -->
-     <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Record_Post\Dashboard\navbar.php'; ?>
+    <!-- Nav Bar -->
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Record_Post\Dashboard\navbar.php'; ?>
 
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
@@ -220,7 +220,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">APPROVE ATTENDANCE FOR <strong>TIME-IN</strong></h5>
+                    <h5 class="modal-title">APPROVE ATTENDANCE FOR <strong>TIME-OUT</strong></h5>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -254,17 +254,22 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                     <input type="text" class="form-control" id="modal_1_name" name="name" disabled>
                                 </div>
 
+                                <div class="mb-3">
+                                    <label for="modal_1_date" class="form-label">DATE</label>
+                                    <input type="text" class="form-control" id="modal_1_date" name="date" disabled>
+                                </div>
+
                                 <div class="row">
                                     <!-- Date -->
                                     <div class="col-lg-6">
-                                        <label for="modal_1_date" class="form-label">DATE</label>
-                                        <input type="text" class="form-control" id="modal_1_date" name="date" disabled>
+                                        <label for="modal_1_date" class="form-label">TIME IN</label>
+                                        <input type="text" class="form-control" id="modal_1_timeIn" name="time1" disabled>
                                     </div>
 
                                     <!-- Time -->
                                     <div class="col-lg-6">
-                                        <label for="modal_1_date" class="form-label">TIME-IN</label>
-                                        <input type="text" class="form-control" id="modal_1_time" name="time" disabled>
+                                        <label for="modal_1_date" class="form-label">TIME OUT</label>
+                                        <input type="text" class="form-control" id="modal_1_timeOut" name="time2" disabled>
                                     </div>
                                 </div>
                             </form>
@@ -281,7 +286,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                 <button type="button" class="btn btn-danger w-100" id="cancelBtn">CANCEL</button>
                             </div>
                             <div id="saveBtn_cont" class="col-md-6 col-sm-12 p-1">
-                                <button type="button" class="btn btn-success w-100" id="saveBtn">TIME-IN</button>
+                                <button type="button" class="btn btn-success w-100" id="saveBtn">TIME-OUT</button>
                             </div>
                         </div>
                     </div>
@@ -370,54 +375,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             // Initial Fetch
             fetchProfiles();
 
-            // Time In Button Click
-            $(document).on('click', '.time-in-btn', function() {
-
-                // Get current date and time from the laptop
-                const currentDate = new Date();
-                datePassing = currentDate.toLocaleDateString("en-CA");
-                timePassing = currentDate.toLocaleTimeString("en-CA", {
-                    hour12: false
-                });
-
-                // FOR DISPLAY ONLY
-                const formattedDate = new Intl.DateTimeFormat('en-US', {
-                    month: 'long',
-                    day: 'numeric',
-                    year: 'numeric'
-                }).format(currentDate); // "November 2, 2024"
-                const formattedTime = new Intl.DateTimeFormat('en-US', {
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    hour12: true
-                }).format(currentDate); // "1:40 AM"
-
-
-
-                const profileId = $(this).data('profile-id');
-                const name = $(this).data('name');
-                const rfid = $(this).data('rfid') || 'None';
-                const img = $(this).data('img');
-
-                current = {
-                    profile_id: profileId,
-                    rfid: rfid,
-                    name: name,
-                    method: "MANUAL",
-                    date: datePassing,
-                    time: timePassing
-                };
-
-                // Populate modal with profile data
-                $('#modal_1_profileImg').attr('src', img);
-                $('#modal_1_rfid').val(rfid);
-                $('#modal_1_name').val(name);
-
-                $('#modal_1_date').val(formattedDate);
-                $('#modal_1_time').val(formattedTime);
-
-                $('#ProfileDetailsModal').modal('show');
-            });
 
             $('#cancelBtn').on('click', function() {
                 Swal.fire({
@@ -435,10 +392,81 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 });
             });
 
+            $(document).on('click', '.time-out-btn', function() {
+                const attendanceId = $(this).data('attendance-id');
+                const profileId = $(this).data('profile-id');
+                const name = $(this).data('name');
+                const rfid = $(this).data('rfid') || 'None';
+                const img = $(this).data('img') || '/tapnlog/image/logo_and_icons/default_avatar.png';
+                const date = $(this).data('date');
+                const timeIn = $(this).data('time-in');
+
+                // Current time for time-out
+                const currentDate = new Date();
+                timePassing = currentDate.toLocaleTimeString("en-CA", {
+                    hour12: false
+                });
+
+                // FOR DISPLAY ONLY
+                const formattedDate = new Intl.DateTimeFormat('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                }).format(currentDate);
+                const formattedTimeOut = new Intl.DateTimeFormat('en-US', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true
+                }).format(currentDate);
+
+                const fetchedTime = timeIn;
+                const [hours, minutes] = fetchedTime.split(':'); // Split into hours and minutes
+                let period = "AM";
+                let hour12 = parseInt(hours, 10);
+
+                if (hour12 >= 12) {
+                    period = "PM";
+                    hour12 = hour12 > 12 ? hour12 - 12 : hour12; // Convert to 12-hour format
+                } else if (hour12 === 0) {
+                    hour12 = 12; // Handle midnight case
+                }
+
+                const formattedTimeIn = `${hour12}:${minutes} ${period}`;
+
+
+                current = {
+                    attendance_id: attendanceId,
+                    profile_id: profileId,
+                    rfid: rfid,
+                    name: name,
+                    method: 'MANUAL'
+                };
+
+                // Populate modal with the data
+                $('#modal_1_profileImg').attr('src', img);
+                $('#modal_1_rfid').val(rfid);
+                $('#modal_1_name').val(name);
+                $('#modal_1_date').val(formattedDate);
+                $('#modal_1_timeIn').val(formattedTimeIn);
+                $('#modal_1_timeOut').val(formattedTimeOut);
+
+                // Show the modal
+                $('#ProfileDetailsModal').modal('show');
+            });
+
             $('#saveBtn').on('click', function() {
+
+                // FOR ACTIVITY LOGS
+                const currentDate = new Date();
+                const formattedDate = new Intl.DateTimeFormat('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                }).format(currentDate);
+
                 Swal.fire({
                     title: `Are you sure?`,
-                    text: `Do you want to APPROVE the TIME-IN attendance of this profile?`,
+                    text: `Do you want to APPROVE the TIME-OUT attendance of this profile?`,
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonText: 'YES',
@@ -447,24 +475,22 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 }).then((result) => {
                     if (result.isConfirmed) {
 
-                        const profile_id = current.profile_id;
-                        const rfid = current.rfid || 'None';
-                        const name = current.name;
-                        const method = current.method;
-                        const date = datePassing;
-                        const time = timePassing;
+                        // Prepare data to send
+                        const attendanceData = {
+                            attendance_id: current.attendance_id,
+                            profile_id: current.profile_id,
+                            rfid: current.rfid,
+                            name: current.name,
+                            date: formattedDate,
+                            time_out: timePassing, // Current time for time-out
+                            method: current.method,
+                        };
 
+                        // AJAX request
                         $.ajax({
-                            url: '../save_time_in.php',
+                            url: '../save_time_out.php', // Backend script to handle time-out updates
                             type: 'POST',
-                            data: {
-                                profile_id: profile_id,
-                                rfid: rfid,
-                                name: name,
-                                method: method,
-                                date: date,
-                                time: time
-                            },
+                            data: attendanceData,
                             dataType: 'json',
                             success: function(response) {
                                 if (response.success) {
@@ -473,11 +499,11 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                         title: 'Success!',
                                         text: response.message,
                                         icon: 'success',
-                                        timer: 2000,
+                                        timer: 1500,
                                         timerProgressBar: true,
                                         showConfirmButton: false,
                                     });
-                                    $('#ProfileDetailsModal').modal('hide');
+                                    $('#ProfileDetailsModal').modal('hide'); // Close the modal
                                     fetchProfiles();
                                 } else {
                                     Swal.fire({
@@ -485,7 +511,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                         title: 'Error!',
                                         text: response.message,
                                         icon: 'error',
-                                        timer: 2000,
+                                        timer: 1500,
                                         timerProgressBar: true,
                                         showConfirmButton: false,
                                     });
@@ -502,12 +528,80 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                     timerProgressBar: true,
                                     showConfirmButton: false,
                                 });
-                            }
+                            },
                         });
+
                     }
                 });
             });
 
+            $(document).on('click', '.archive-btn', function() {
+                const attendanceId = $(this).data('attendance-id');
+                const profileId = $(this).data('profile-id');
+                const name = $(this).data('name');
+                const date = $(this).data('date');
+                const timeIn = $(this).data('time-in');
+                const timeOut = 'NOT COMPLETED';
+
+                Swal.fire({
+                    title: `Are you sure?`,
+                    text: `Do you want to ARCHIVE the attendance of ${name}? This action cannot be undone.`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'YES',
+                    cancelButtonText: 'NO',
+                    reverseButtons: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Send data to backend
+                        $.ajax({
+                            url: '../archive_attendance.php',
+                            method: 'POST',
+                            data: {
+                                attendance_id: attendanceId,
+                                profile_id: profileId,
+                                name: name,
+                                date: date,
+                                time_in: timeIn,
+                                time_out: timeOut,
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                if (response.success) {
+                                    Swal.fire({
+                                        position: 'top',
+                                        title: 'Success!',
+                                        text: response.message,
+                                        icon: 'success',
+                                        timer: 1500,
+                                        showConfirmButton: false,
+                                    });
+                                    fetchProfiles(); // Refresh the profiles list
+                                } else {
+                                    Swal.fire({
+                                        position: 'top',
+                                        title: 'Error!',
+                                        text: response.message,
+                                        icon: 'error',
+                                        timer: 1500,
+                                        showConfirmButton: false,
+                                    });
+                                }
+                            },
+                            error: function() {
+                                Swal.fire({
+                                    position: 'top',
+                                    title: 'Error!',
+                                    text: 'An error occurred while archiving the record.',
+                                    icon: 'error',
+                                    timer: 1500,
+                                    showConfirmButton: false,
+                                });
+                            },
+                        });
+                    }
+                });
+            });
 
         });
     </script>

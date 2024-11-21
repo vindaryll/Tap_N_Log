@@ -58,7 +58,7 @@ try {
     $conn->commit();
 
     // Return success response
-    echo json_encode(['success' => true, 'message' => 'Profile time-in confirmed successfully']);
+    echo json_encode(['success' => true, 'message' => 'Time-in confirmed successfully.']);
 } catch (Exception $e) {
     $conn->rollback();
     echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
