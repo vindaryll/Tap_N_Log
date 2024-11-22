@@ -8,7 +8,8 @@ session_start();
 // Including our database
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-function sanitizeInput($data) {
+function sanitizeInput($data)
+{
     return htmlspecialchars(stripslashes(trim($data)));
 }
 
@@ -67,9 +68,15 @@ if ($result->num_rows > 0) {
         echo "<td>" . $row['guard_name'] . "</td>";
         echo "<td>" . $row['station_name'] . "</td>";
         echo "<td>
-                    <button class='btn btn-info' onclick='openDetailsModal(" . json_encode($row) . ")'>View Details</button>
-                    <button class='btn btn-danger' onclick='deactivateGuard(" . $row['guard_id'] . ")'>Deactivate</button>
-                </td>";
+                <div class='row d-flex justify-content-center align-items-center m-0 p-0'>
+                    <div class='col-lg-6 my-1'>
+                        <button class='btn btn-info w-100 h-100 p-2' onclick='openDetailsModal(" . json_encode($row) . ")'>View Details</button>
+                    </div>
+                    <div class='col-lg-6 my-1'>
+                        <button class='btn btn-danger w-100 h-100 p-2' onclick='deactivateGuard(" . $row[' guard_id'] . ")'>Deactivate</button>
+                    </div>
+                </div>
+            </td>";
 
         echo "</tr>";
     }
@@ -78,3 +85,21 @@ if ($result->num_rows > 0) {
 }
 
 $conn->close();
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+</body>
+
+</html>

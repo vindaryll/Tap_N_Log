@@ -115,8 +115,8 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
 <body>
 
-     <!-- Nav Bar -->
-     <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Record_Post\Dashboard\navbar.php'; ?>
+    <!-- Nav Bar -->
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Record_Post\Dashboard\navbar.php'; ?>
 
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
@@ -134,11 +134,17 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                         <input type="text" id="searchTextbox" class="form-control" placeholder="Search by name or RFID">
                     </div>
 
-                    <div class="row">
-                        <!-- Add Filter and Sort Buttons -->
-                        <div class="d-flex justify-content-start mb-3">
-                            <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
-                            <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#sortModal">Sort</button>
+                    <!-- Filter and Sort Buttons -->
+                    <div class="row d-flex justify-content-start p-0 ms-2 mb-3">
+                        <div class="col-md-6 m-0 p-0">
+                            <div class="row d-flex justify-content-start">
+                                <div class="col-3 m-1 p-0">
+                                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
+                                </div>
+                                <div class="col-3 m-1 p-0">
+                                    <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#sortModal">Sort</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

@@ -133,7 +133,7 @@
 
             Swal.fire({
                 title: 'Are you sure?',
-                text: 'Do you want to redirect to the main dashboard?',
+                text: 'Do you want to redirect to the home page?',
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'YES',

@@ -51,7 +51,8 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
 
-        <div class="container-fluid row col-sm-12">
+        <div class="container-fluid row col-sm-12 text-center">
+            <h2>Welcome back, <?php echo $_SESSION['username']?>!</h2>
 
             <div class="container">
                 <div class="row d-flex justify-content-center align-items-center mt-3">

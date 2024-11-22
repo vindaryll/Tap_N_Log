@@ -55,6 +55,21 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             background-color: #343a40;
             color: white;
         }
+
+        /* BACK BUTTON */
+        .back-icon {
+            color: #1877f2;
+            font-size: 2rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .back-icon:hover {
+            color: #145dbf;
+            transform: scale(1.1);
+        }
+
     </style>
 
 </head>
@@ -64,48 +79,60 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <!-- Nav Bar -->
     <?php require_once $_SESSION['directory'] . '\Starting_Folder\Main_Admin\Dashboard\navbar.php'; ?>
 
+
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
 
-        <div class="container-fluid row col-sm-12">
+        <div class="container-fluid row col-sm-12 p-0">
 
-            <div class="container-fluid col-sm-12 text-center p-0">
+            <div class="container col-sm-12">
+                <a href="#" class="back-icon" id="backbtn" style="position: absolute;"><i class="bi bi-arrow-left"></i></a>
+            </div>
 
-                <h2>INACTIVE CO-ADMIN ACCOUNTS</h2>
+            <div class="container-fluid col-sm-12 mt-sm-0 mt-4 px-2">
 
-                <!-- Search, Filter, and Sort Buttons -->
-                <input type="text" id="search" class="form-control mb-3" placeholder="Search by guard name or ID">
-                <div class="d-flex justify-content-start mb-3">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
-                    <button class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#sortModal">Sort</button>
-                </div>
+                <div class="container-fluid text-center">
+                    <h2 class="text-center w-100">ACTIVE CO-ADMIN ACCOUNTS</h2>
 
-                <!-- Table -->
-                <div class="table-responsive mb-2">
-                    <table class="table table-bordered">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>ID</th>
-                                <th>DATE</th>
-                                <th>GUARD NAME</th>
-                                <th>STATION</th>
-                                <th>ACTION</th>
-                            </tr>
-                        </thead>
-                        <tbody id="guardTableBody">
-                            <!-- Results will be inserted here -->
-                        </tbody>
-                    </table>
-                </div>
+                    <!-- Textbox for search -->
+                    <input type="text" id="search" class="form-control mb-3" placeholder="Search by guard name or ID">
 
-                <div class="row px-2">
-                    <button type="button" class="btn btn-primary" id="backbtn">Go back to Active Accounts</button>
+                    <!-- Filter and Sort Buttons -->
+                    <div class="row d-flex justify-content-start p-0 ms-2 mb-3">
+                        <div class="col-md-6 m-0 p-0">
+                            <div class="row d-flex justify-content-start">
+                                <div class="col-3 m-1 p-0">
+                                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
+                                </div>
+                                <div class="col-3 m-1 p-0">
+                                    <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#sortModal">Sort</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive mb-2">
+                        <table class="table table-bordered">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>DATE</th>
+                                    <th>GUARD NAME</th>
+                                    <th>STATION</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="guardTableBody">
+                                <!-- Results will be inserted here -->
+
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
 
         </div>
-
-
     </div>
 
     <!-- Filter Modal -->

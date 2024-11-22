@@ -45,7 +45,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
     <style>
         #profileImg {
             width: 100%;
-            max-width: 400px;
+            max-width: 350px;
             aspect-ratio: 1 / 1;
             border: 1px solid #ddd;
             object-fit: cover;
@@ -95,9 +95,9 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
 
 <body>
 
-    <div class="container mt-5">
+    <div class="container mt-4">
         <div class="row d-flex justify-content-center align-items-center">
-            <div class="col-lg-5 col-md-6 p-0 mb-3 mb-md-4">
+            <div class="col-lg-5 col-md-6 p-0 mb-3 mb-md-4 ms-md-5">
                 <div class="row d-flex justify-content-center align-items-center p-0 m-0">
                     <div class="col-lg-2 col-md-2 col-sm-12 d-flex justify-content-center justify-content-md-end align-items-center">
                         <img src="/TAPNLOG/Image/LOGO_AND_ICONS/logo_icon.png" id="img_logo" class="img-fluid" alt="Logo" style="max-width: 60px; height: auto;">
@@ -108,6 +108,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                 </div>
             </div>
 
+            <hr>
         </div>
 
         <div class="row justify-content-center">
@@ -129,21 +130,21 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
 
                         <!-- First Name -->
                         <div class="mb-3">
-                            <label for="firstName" class="form-label">First Name</label>
+                            <label for="firstName" class="form-label"><strong>FIRST NAME</strong></label>
                             <input type="text" class="form-control" id="firstName" name="first_name" required>
                             <div id="firstName-feedback" class="invalid-feedback" style="display: block;"></div>
                         </div>
 
                         <!-- Last Name -->
                         <div class="mb-3">
-                            <label for="lastName" class="form-label">Last Name</label>
+                            <label for="lastName" class="form-label"><strong>LAST NAME</strong></label>
                             <input type="text" class="form-control" id="lastName" name="last_name" required>
                             <div id="lastName-feedback" class="invalid-feedback" style="display: block;"></div>
                         </div>
 
                         <!-- Type of profile -->
                         <div class="mb-3">
-                            <label for="profileType" class="form-label">Type of Profile</label>
+                            <label for="profileType" class="form-label"><strong>TYPE OF PROFILE</strong></label>
                             <select class="form-select" id="profileType" name="type_of_profile" required>
                                 <option value="OJT">On-the-job training</option>
                                 <option value="CFW">Cash for Work</option>

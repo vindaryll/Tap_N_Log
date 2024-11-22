@@ -79,6 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['record_guard_logged'] = true;
             $_SESSION['guard_id'] = $row['guard_id'];
             $_SESSION['station_id'] = $row['station_id'];
+            $_SESSION['username'] = $row['username'];
 
             echo "
             <script>

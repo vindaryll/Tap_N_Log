@@ -134,9 +134,17 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     </div>
 
                     <!-- Filter and Sort Buttons -->
-                    <div class="d-flex justify-content-start mb-3">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
-                        <button class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#sortModal">Sort</button>
+                    <div class="row d-flex justify-content-start p-0 ms-2 mb-3">
+                        <div class="col-md-6 m-0 p-0">
+                            <div class="row d-flex justify-content-start">
+                                <div class="col-3 m-1 p-0">
+                                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
+                                </div>
+                                <div class="col-3 m-1 p-0">
+                                    <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#sortModal">Sort</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="table-responsive">
@@ -183,9 +191,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             <label for="profileType" class="form-label">Profile Type</label>
                             <select id="profileType" class="form-select">
                                 <option value="">All</option>
-                                <option value="OJT">OJT</option>
-                                <option value="CFW">CFW</option>
-                                <option value="EMPLOYEE">EMPLOYEE</option>
+                                <option value="OJT">ON THE JOB TRAINEES</option>
+                                <option value="CFW">CASH FOR WORK</option>
+                                <option value="EMPLOYEE">EMPLOYEES</option>
                             </select>
                         </div>
                     </form>
