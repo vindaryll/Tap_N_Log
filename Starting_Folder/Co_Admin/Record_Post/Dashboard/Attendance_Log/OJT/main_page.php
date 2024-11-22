@@ -37,7 +37,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-    <title>Attendance Log - Employees | Co-Admin for Record Post</title>
+    <title>Attendance Log - On the job trainee | Co-Admin for Record Post</title>
     <style>
         /* BACK BUTTON */
         .back-icon {
@@ -71,7 +71,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             </div>
 
             <div class="container-fluid col-sm-12 mt-sm-1 mt-5">
-                <h2 class="text-center w-100">EMPLOYEES ATTENDANCE LOG</h2>
+                <h2 class="text-center w-100">ON THE JOB TRAINEES ATTENDANCE LOG</h2>
                 <div class="row d-flex justify-content-center align-items-center mt-3">
                     <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
                         <a href="Auto_Time_In/main_page.php" class="btn btn-primary w-100 p-3">RFID SCAN FOR TIME-IN</a>
