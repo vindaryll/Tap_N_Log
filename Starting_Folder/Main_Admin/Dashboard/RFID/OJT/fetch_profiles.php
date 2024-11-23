@@ -96,7 +96,7 @@ if ($result->num_rows > 0) {
         ";
 
         echo "
-            <div class='col-xl-3 col-lg-4 col-md-6 card-container'>
+            <div class='col-xl-3 col-lg-4 col-md-6 mt-2 card-container'>
                 <div class='card'>
                     <div class='profile-image-container'>
                         <img src='/TAPNLOG/Image/OJT/{$row['ojt_img']}' class='card-img-top' alt='Profile Image'>

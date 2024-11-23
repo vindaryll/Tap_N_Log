@@ -37,6 +37,9 @@ if (!empty($filters['rfid_filter'])) {
 }
 
 $order_by = [];
+if (!empty($sort['time_in'])) {
+    $order_by[] = "ea.time_in " . strtoupper($sort['time_in']);
+}
 if (!empty($sort['name'])) {
     $order_by[] = "ep.first_name " . strtoupper($sort['name']);
 }
@@ -55,7 +58,7 @@ if ($result->num_rows > 0) {
         $formattedTimeIn = $row['time_in'] ? date("g:i A", strtotime($row['time_in'])) : 'NONE';
 
         echo "
-            <div class='col-xl-3 col-lg-4 col-md-6 card-container'>
+            <div class='col-xl-3 col-lg-4 col-md-6 mt-2 card-container'>
                 <div class='card'>
                     <div class='profile-image-container'>
                         <img src='$img' class='card-img-top' alt='Profile Image'>

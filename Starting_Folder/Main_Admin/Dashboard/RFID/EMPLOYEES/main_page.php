@@ -50,7 +50,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <style>
         /* CARD CONTAINER FOR PROFILES */
         #profile-container {
-            height: 480px;
+            height: 475px;
             overflow-y: auto;
 
         }

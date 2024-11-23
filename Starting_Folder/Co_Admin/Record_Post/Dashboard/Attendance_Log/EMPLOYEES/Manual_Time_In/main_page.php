@@ -44,7 +44,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <style>
         /* CARD CONTAINER FOR PROFILES */
         #profile-container {
-            height: 480px;
+            height: 475px;
             overflow-y: auto;
 
         }

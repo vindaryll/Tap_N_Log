@@ -265,13 +265,6 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                 }
             });
 
-            $('#discardBtn').on('click', function() {
-                showAlert("Thank you!", "success"); // Show success message
-                setTimeout(() => {
-                    window.location.href = '/TAPNLOG/Starting_Folder/Landing_page/index.php';
-                }, 1000);
-            });
-
             $('#cancelCrop').on('click', function() {
 
                 $('#uploadModal').modal('hide');
@@ -496,12 +489,14 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
 
             // Function for dynamic discard/back button
             function checkDiscardBtn() {
-                let isImageValid = croppedImage !== null; // Check if a cropped image exists
-                let isFirstNameValid = $('#firstName').val().trim() !== "" && !$('#firstName').hasClass('is-invalid');
-                let isLastNameValid = $('#lastName').val().trim() !== "" && !$('#lastName').hasClass('is-invalid');
+                let isFnameValid = $('#firstName').val().trim() !== "" && !$('#firstName').hasClass('is-invalid');
+                let isLnameValid = $('#lastName').val().trim() !== "" && !$('#lastName').hasClass('is-invalid');
+                let isImageValid = croppedImage !== null && !$('#profileImg').hasClass('is-invalid-image');
                 let isTnCValid = $('#agreeTerms').is(':checked');
 
-                if (isImageValid || isFirstNameValid || isLastNameValid || isTnCValid) {
+                $('#discardBtn').off('click');
+
+                if (isImageValid || isFnameValid || isLnameValid || isTnCValid) {
                     // Change the button to "DISCARD" with a confirmation message
                     $('#discardBtn').text('DISCARD');
                     $('#discardBtn').removeClass('btn-secondary').addClass('btn-danger');
@@ -537,11 +532,12 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                 }
             }
 
-
+            checkDiscardBtn();
             $('#firstName, #lastName').on('input change', checkDiscardBtn);
             $('#saveCrop').on('click', checkDiscardBtn);
             $('#cancelCrop').on('click', checkDiscardBtn);
             $('#saveBtn').on('click', checkDiscardBtn);
+            
 
 
             function showAlert(message, type = "error") {

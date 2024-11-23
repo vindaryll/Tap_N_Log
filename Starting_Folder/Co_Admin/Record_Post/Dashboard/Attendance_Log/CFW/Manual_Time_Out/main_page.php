@@ -44,7 +44,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <style>
         /* CARD CONTAINER FOR PROFILES */
         #profile-container {
-            height: 480px;
+            height: 475px;
             overflow-y: auto;
 
         }
@@ -203,7 +203,18 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 <div class="modal-body">
 
                     <div class="mt-3">
-                        <label class="form-label">Sort by Name:</label>
+                        <label class="form-label">SORT BY TIME:</label>
+                        <div>
+                            <input type="radio" id="sortTimeInAsc" name="sortTimeIn" value="asc">
+                            <label for="sortTimeInAsc">EARLIEST FIRST</label><br>
+
+                            <input type="radio" id="sortTimeInDesc" name="sortTimeIn" value="desc">
+                            <label for="sortTimeInDesc">LATEST FIRST</label>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="form-label">SORT BY NAME:</label>
                         <div>
                             <input type="radio" id="sortNameAsc" name="sortName" value="asc">
                             <label for="sortNameAsc">A-Z</label><br>
@@ -212,6 +223,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                             <label for="sortNameDesc">Z-A</label>
                         </div>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" id="resetSort">Reset</button>
@@ -365,6 +377,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             // Apply Sort
             $('#applySort').on('click', function() {
                 sort = {
+                    time_in: $('input[name="sortTimeIn"]:checked').val(),
                     name: $('input[name="sortName"]:checked').val(),
                 };
                 fetchProfiles();
@@ -374,7 +387,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             // Reset Sort
             $('#resetSort').on('click', function() {
                 sort = {};
-                $('input[name="sortName"]').prop('checked', false);
+                $('input[name="sortName"], input[name="sortTimeIn"]').prop('checked', false);
                 fetchProfiles();
             });
 
