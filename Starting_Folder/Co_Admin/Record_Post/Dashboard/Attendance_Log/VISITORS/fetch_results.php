@@ -66,12 +66,14 @@ if ($result && $result->num_rows > 0) {
                         </button>
                         <button type='button' 
                                 class='row btn btn-success w-100 m-1 time-out-btn' 
-                                data-id='{$row['visitor_id']}'>
+                                data-id='{$row['visitor_id']}'
+                                data-name='{$row['first_name']} {$row['last_name']}'>
                             TIME OUT
                         </button>
                         <button type='button' 
                                 class='row btn btn-danger w-100 m-1 archive-btn' 
-                                data-id='{$row['visitor_id']}'>
+                                data-id='{$row['visitor_id']}'
+                                data-name='{$row['first_name']} {$row['last_name']}'>
                             ARCHIVE
                         </button>
                     </div>

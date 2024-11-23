@@ -8,7 +8,7 @@ if (!isset($_POST['id']) || !is_numeric($_POST['id'])) {
 }
 
 $visitorId = intval($_POST['id']);
-$query = "SELECT first_name, last_name, phone_num, purpose, visitor_pass 
+$query = "SELECT visitor_id, first_name, last_name, phone_num, purpose, visitor_pass 
           FROM visitors 
           WHERE visitor_id = ? AND is_archived = FALSE";
 $stmt = $conn->prepare($query);

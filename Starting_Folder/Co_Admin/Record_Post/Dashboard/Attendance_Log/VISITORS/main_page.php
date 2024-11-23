@@ -133,7 +133,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                             <!-- Result Cards will be inserted here dynamically -->
 
                             <!-- card 1 -->
-                            <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
+                            <!-- <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
                                 <div class='card'>
                                     <div class='card-body'>
                                         <h6 class='card-title'><strong>MELVIN DARYLL ALOCILLO</strong></h6>
@@ -152,11 +152,11 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                         </button>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
 
                             <!-- card 2 -->
-                            <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
+                            <!-- <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
                                 <div class='card'>
                                     <div class='card-body'>
                                         <h6 class='card-title'><strong>PRINCESS MIKHAELA JOSE</strong></h6>
@@ -175,10 +175,10 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                         </button>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <!-- card 3 -->
-                            <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
+                            <!-- <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
                                 <div class='card'>
                                     <div class='card-body'>
                                         <h6 class='card-title'><strong>KEN ANGELO VELASQUEZ</strong></h6>
@@ -197,10 +197,10 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                         </button>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <!-- card 4 -->
-                            <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
+                            <!-- <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
                                 <div class='card'>
                                     <div class='card-body'>
                                         <h6 class='card-title'><strong>LHOY FLORO</strong></h6>
@@ -219,185 +219,9 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                         </button>
                                     </div>
                                 </div>
-                            </div>
-
-                            <!-- card 1 -->
-                            <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
-                                <div class='card'>
-                                    <div class='card-body'>
-                                        <h6 class='card-title'><strong>MELVIN DARYLL ALOCILLO</strong></h6>
-                                        <p class='card-text'><strong>DATE:</strong> November 22, 2024</p>
-                                        <p class='card-text'><strong>TIME-IN:</strong> 7:04 am</p>
-                                    </div>
-                                    <div class='card-footer d-flex flex-column'>
-                                        <button type='button' class='row btn btn-primary m-1 w-100 view-details-btn'>
-                                            VIEW DETAILS
-                                        </button>
-                                        <button type='button' class='row btn btn-success w-100 m-1 time-out-btn'>
-                                            TIME OUT
-                                        </button>
-                                        <button type='button' class='row btn btn-danger w-100 m-1 archive-btn'>
-                                            ARCHIVE
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                            </div> -->
 
 
-                            <!-- card 2 -->
-                            <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
-                                <div class='card'>
-                                    <div class='card-body'>
-                                        <h6 class='card-title'><strong>PRINCESS MIKHAELA JOSE</strong></h6>
-                                        <p class='card-text'><strong>DATE:</strong> November 22, 2024</p>
-                                        <p class='card-text'><strong>TIME-IN:</strong> 7:28 AM</p>
-                                    </div>
-                                    <div class='card-footer d-flex flex-column'>
-                                        <button type='button' class='row btn btn-primary m-1 w-100 view-details-btn'>
-                                            VIEW DETAILS
-                                        </button>
-                                        <button type='button' class='row btn btn-success w-100 m-1 time-out-btn'>
-                                            TIME OUT
-                                        </button>
-                                        <button type='button' class='row btn btn-danger w-100 m-1 archive-btn'>
-                                            ARCHIVE
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- card 3 -->
-                            <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
-                                <div class='card'>
-                                    <div class='card-body'>
-                                        <h6 class='card-title'><strong>KEN ANGELO VELASQUEZ</strong></h6>
-                                        <p class='card-text'><strong>DATE:</strong> November 22, 2024</p>
-                                        <p class='card-text'><strong>TIME-IN:</strong> 9:18 AM</p>
-                                    </div>
-                                    <div class='card-footer d-flex flex-column'>
-                                        <button type='button' class='row btn btn-primary m-1 w-100 view-details-btn'>
-                                            VIEW DETAILS
-                                        </button>
-                                        <button type='button' class='row btn btn-success w-100 m-1 time-out-btn'>
-                                            TIME OUT
-                                        </button>
-                                        <button type='button' class='row btn btn-danger w-100 m-1 archive-btn'>
-                                            ARCHIVE
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- card 4 -->
-                            <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
-                                <div class='card'>
-                                    <div class='card-body'>
-                                        <h6 class='card-title'><strong>LHOY FLORO</strong></h6>
-                                        <p class='card-text'><strong>DATE:</strong> November 22, 2024</p>
-                                        <p class='card-text'><strong>TIME-IN:</strong> 1:38 PM</p>
-                                    </div>
-                                    <div class='card-footer d-flex flex-column'>
-                                        <button type='button' class='row btn btn-primary m-1 w-100 view-details-btn'>
-                                            VIEW DETAILS
-                                        </button>
-                                        <button type='button' class='row btn btn-success w-100 m-1 time-out-btn'>
-                                            TIME OUT
-                                        </button>
-                                        <button type='button' class='row btn btn-danger w-100 m-1 archive-btn'>
-                                            ARCHIVE
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- card 1 -->
-                            <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
-                                <div class='card'>
-                                    <div class='card-body'>
-                                        <h6 class='card-title'><strong>MELVIN DARYLL ALOCILLO</strong></h6>
-                                        <p class='card-text'><strong>DATE:</strong> November 22, 2024</p>
-                                        <p class='card-text'><strong>TIME-IN:</strong> 7:04 am</p>
-                                    </div>
-                                    <div class='card-footer d-flex flex-column'>
-                                        <button type='button' class='row btn btn-primary m-1 w-100 view-details-btn'>
-                                            VIEW DETAILS
-                                        </button>
-                                        <button type='button' class='row btn btn-success w-100 m-1 time-out-btn'>
-                                            TIME OUT
-                                        </button>
-                                        <button type='button' class='row btn btn-danger w-100 m-1 archive-btn'>
-                                            ARCHIVE
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <!-- card 2 -->
-                            <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
-                                <div class='card'>
-                                    <div class='card-body'>
-                                        <h6 class='card-title'><strong>PRINCESS MIKHAELA JOSE</strong></h6>
-                                        <p class='card-text'><strong>DATE:</strong> November 22, 2024</p>
-                                        <p class='card-text'><strong>TIME-IN:</strong> 7:28 AM</p>
-                                    </div>
-                                    <div class='card-footer d-flex flex-column'>
-                                        <button type='button' class='row btn btn-primary m-1 w-100 view-details-btn'>
-                                            VIEW DETAILS
-                                        </button>
-                                        <button type='button' class='row btn btn-success w-100 m-1 time-out-btn'>
-                                            TIME OUT
-                                        </button>
-                                        <button type='button' class='row btn btn-danger w-100 m-1 archive-btn'>
-                                            ARCHIVE
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- card 3 -->
-                            <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
-                                <div class='card'>
-                                    <div class='card-body'>
-                                        <h6 class='card-title'><strong>KEN ANGELO VELASQUEZ</strong></h6>
-                                        <p class='card-text'><strong>DATE:</strong> November 22, 2024</p>
-                                        <p class='card-text'><strong>TIME-IN:</strong> 9:18 AM</p>
-                                    </div>
-                                    <div class='card-footer d-flex flex-column'>
-                                        <button type='button' class='row btn btn-primary m-1 w-100 view-details-btn'>
-                                            VIEW DETAILS
-                                        </button>
-                                        <button type='button' class='row btn btn-success w-100 m-1 time-out-btn'>
-                                            TIME OUT
-                                        </button>
-                                        <button type='button' class='row btn btn-danger w-100 m-1 archive-btn'>
-                                            ARCHIVE
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- card 4 -->
-                            <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
-                                <div class='card'>
-                                    <div class='card-body'>
-                                        <h6 class='card-title'><strong>LHOY FLORO</strong></h6>
-                                        <p class='card-text'><strong>DATE:</strong> November 22, 2024</p>
-                                        <p class='card-text'><strong>TIME-IN:</strong> 1:38 PM</p>
-                                    </div>
-                                    <div class='card-footer d-flex flex-column'>
-                                        <button type='button' class='row btn btn-primary m-1 w-100 view-details-btn'>
-                                            VIEW DETAILS
-                                        </button>
-                                        <button type='button' class='row btn btn-success w-100 m-1 time-out-btn'>
-                                            TIME OUT
-                                        </button>
-                                        <button type='button' class='row btn btn-danger w-100 m-1 archive-btn'>
-                                            ARCHIVE
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
 
                             <!-- END OF CARDS -->
                         </div>
@@ -502,7 +326,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
     <!-- View Visitor Modal -->
     <div class="modal fade" id="viewRecordModal" tabindex="-1" aria-labelledby="viewRecordModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="viewRecordLabel">VISITORS DETAILS</h5>
@@ -555,8 +379,15 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 $(this).val($(this).val().toUpperCase()); // Convert to uppercase
             });
 
-            // Add event listener for the last name input
             $('#modal_1_lastName').on('input', function() {
+                $(this).val($(this).val().toUpperCase()); // Convert to uppercase
+            });
+
+            $('#modal_2_firstName').on('input', function() {
+                $(this).val($(this).val().toUpperCase()); // Convert to uppercase
+            });
+
+            $('#modal_2_lastName').on('input', function() {
                 $(this).val($(this).val().toUpperCase()); // Convert to uppercase
             });
 
@@ -983,7 +814,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
 
 
-            // TIME OUT
+            // VIEW AND EDIT DETAILS
             $(document).on('click', '.view-details-btn', function() {
                 const visitorId = $(this).data('id'); // Get the visitor ID from the button
 
@@ -996,32 +827,418 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     dataType: 'json',
                     success: function(response) {
                         if (response.success) {
-                            // Populate modal fields with visitor data
-                            $('#modal_2_firstName').val(response.data.first_name);
-                            $('#modal_2_lastName').val(response.data.last_name);
-                            $('#modal_2_phoneNumber').val(response.data.phone_num);
-                            $('#modal_2_visitorPass').val(response.data.visitor_pass);
-                            $('#modal_2_purpose').val(response.data.purpose);
+
+                            // Store current values for checking of changes
+                            current = {
+                                record_id: response.data.visitor_id,
+                                first_name: response.data.first_name,
+                                last_name: response.data.last_name,
+                                phone_number: response.data.phone_num,
+                                pass: response.data.visitor_pass,
+                                purpose: response.data.purpose
+                            }
+
+
+                            // OPEN THE MODAL WITH POPULATED VALUES AND disabled inputs
+                            $('#modal_2_firstName').val(current.first_name).removeClass('is-invalid');
+                            $('#modal_2_firstName-feedback').text('').removeClass('invalid-feedback');
+                            $('#modal_2_lastName').val(current.last_name).removeClass('is-invalid');
+                            $('#modal_2_lastName-feedback').text('').removeClass('invalid-feedback');
+                            $('#modal_2_phoneNumber').val(current.phone_number).removeClass('is-invalid');
+                            $('#modal_2_phoneNumber-feedback').text('').removeClass('invalid-feedback');
+                            $('#modal_2_visitorPass').val(current.pass);
+                            $('#modal_2_purpose').val(current.purpose).removeClass('is-invalid');
+                            $('#modal_2_purpose-feedback').text('').removeClass('invalid-feedback');
+
+                            $('#editBtn, #modal_2_closeBtn').show();
+                            $('#cancelBtn, #saveEditBtn').hide();
+                            $('#modal_2_firstName, #modal_2_lastName, #modal_2_phoneNumber, #modal_2_visitorPass, #modal_2_purpose').prop('disabled', true);
 
                             // Show the modal
                             $('#viewRecordModal').modal('show');
                         } else {
                             Swal.fire({
+                                position: 'top',
                                 icon: 'error',
                                 title: 'Error',
                                 text: response.message,
+                                timer: 2000,
+                                timerProgressBar: true,
+                                showConfirmButton: false,
                             });
                         }
                     },
                     error: function(xhr, status, error) {
                         console.error("Error fetching visitor details:", error);
                         Swal.fire({
+                            position: 'top',
                             icon: 'error',
                             title: 'Error',
                             text: 'Unable to fetch visitor details. Please try again.',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
                         });
                     }
                 });
+            });
+
+            $('#modal_2_closeBtn').on('click', function() {
+                $('#viewRecordModal').modal('hide');
+            });
+
+            $('#editBtn').on('click', function() {
+
+                $('#editBtn, #modal_2_closeBtn').hide();
+                $('#cancelBtn, #saveEditBtn').show();
+                $('#modal_2_firstName, #modal_2_lastName, #modal_2_phoneNumber, #modal_2_visitorPass, #modal_2_purpose').prop('disabled', false);
+            });
+
+            $('#cancelBtn').on('click', function() {
+
+                const first_name = $('#modal_2_firstName').val().trim();
+                const last_name = $('#modal_2_lastName').val().trim();
+                const phone_number = $('#modal_2_phoneNumber').val().trim();
+                const pass = $('#modal_2_visitorPass').val().trim();
+                const purpose = $('#modal_2_purpose').val().trim();
+
+
+                if (current.first_name === first_name && current.last_name === last_name &&
+                    current.phone_number === phone_number && current.pass === pass && current.purpose === purpose
+                ) {
+                    $('#editBtn, #modal_2_closeBtn').show();
+                    $('#cancelBtn, #saveEditBtn').hide();
+                    $('#modal_2_firstName, #modal_2_lastName, #modal_2_phoneNumber, #modal_2_visitorPass, #modal_2_purpose').prop('disabled', true);
+                    return;
+                }
+
+                // swal fire confirmation message ta's etong nasa baba
+                Swal.fire({
+                    title: 'Unsaved Changes Detected',
+                    text: 'You have unsaved changes. Are you sure you want to DISCARD the changes?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'YES, DISCARD CHANGES',
+                    cancelButtonText: 'NO, KEEP EDITING',
+                    reverseButtons: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // REVERT VALUES AND DISABLE INPUTS
+                        $('#modal_2_firstName').val(current.first_name).removeClass('is-invalid');
+                        $('#modal_2_firstName-feedback').text('').removeClass('invalid-feedback');
+                        $('#modal_2_lastName').val(current.last_name).removeClass('is-invalid');
+                        $('#modal_2_lastName-feedback').text('').removeClass('invalid-feedback');
+                        $('#modal_2_phoneNumber').val(current.phone_number).removeClass('is-invalid');
+                        $('#modal_2_phoneNumber-feedback').text('').removeClass('invalid-feedback');
+                        $('#modal_2_visitorPass').val(current.pass);
+                        $('#modal_2_purpose').val(current.purpose).removeClass('is-invalid');
+                        $('#modal_2_purpose-feedback').text('').removeClass('invalid-feedback');
+
+                        $('#editBtn, #modal_2_closeBtn').show();
+                        $('#cancelBtn, #saveEditBtn').hide();
+                        $('#modal_2_firstName, #modal_2_lastName, #modal_2_phoneNumber, #modal_2_visitorPass, #modal_2_purpose').prop('disabled', true);
+                    }
+                });
+            });
+
+            $('#saveEditBtn').on('click', function() {
+
+                validateFirstName2();
+                validateLastName2();
+                validatePhoneNumber2();
+                validatePurpose2();
+
+                if (!checkbtn2()) {
+                    return;
+                }
+
+                data_update = {
+                    record_id: current.record_id,
+                    first_name: $('#modal_2_firstName').val().trim(),
+                    last_name: $('#modal_2_lastName').val().trim(),
+                    phone_number: $('#modal_2_phoneNumber').val().trim(),
+                    pass: $('#modal_2_visitorPass').val().trim(),
+                    purpose: $('#modal_2_purpose').val().trim()
+                }
+
+
+
+                if (current.first_name === data_update.first_name && current.last_name === data_update.last_name &&
+                    current.phone_number === data_update.phone_number && current.pass === data_update.pass && current.purpose === data_update.purpose
+                ) {
+                    Swal.fire({
+                        title: 'No Changes Detected',
+                        text: 'You have not made any changes to the details.',
+                        icon: 'info',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                    });
+                    return;
+                }
+
+                // Show a confirmation message before proceeding
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Do you want to save the changes to this profile?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'YES',
+                    cancelButtonText: 'NO',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        // Show a loading alert while saving
+                        Swal.fire({
+                            title: 'Saving Changes...',
+                            text: 'Please wait while we update the profile.',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            },
+                        });
+
+                        // Send the data using AJAX
+                        $.ajax({
+                            url: 'save_changes.php',
+                            type: 'POST',
+                            data: data_update,
+                            dataType: 'json',
+                            success: function(response) {
+                                Swal.close(); // Close the loading alert
+
+                                if (response.success) {
+                                    Swal.fire({
+                                        position: 'top',
+                                        title: 'Success!',
+                                        text: response.message,
+                                        icon: 'success',
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                    });
+
+                                    // Refresh the profile list or update the UI
+                                    fetchResults();
+
+                                    current.first_name = data_update.first_name;
+                                    current.last_name = data_update.last_name;
+                                    current.phone_number = data_update.phone_number;
+                                    current.pass = data_update.pass;
+                                    current.purpose = data_update.purpose;
+
+                                    // UPDATE VALUES AND DISABLE INPUTS
+                                    $('#modal_2_firstName').val(data_update.first_name);
+                                    $('#modal_2_lastName').val(data_update.last_name);
+                                    $('#modal_2_phoneNumber').val(data_update.phone_number);
+                                    $('#modal_2_visitorPass').val(data_update.pass);
+                                    $('#modal_2_purpose').val(data_update.purpose);
+
+                                    $('#editBtn, #modal_2_closeBtn').show();
+                                    $('#cancelBtn, #saveEditBtn').hide();
+                                    $('#modal_2_firstName, #modal_2_lastName, #modal_2_phoneNumber, #modal_2_visitorPass, #modal_2_purpose').prop('disabled', true);
+
+                                } else {
+                                    Swal.fire({
+                                        position: 'top',
+                                        title: 'Error!',
+                                        text: response.message,
+                                        icon: 'error',
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                    });
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.close(); // Close the loading alert
+                                console.error("Error on time out:", error);
+                                Swal.fire({
+                                    position: 'top',
+                                    title: 'Error!',
+                                    text: 'An unexpected error occurred. Please try again later.',
+                                    icon: 'error',
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                });
+                            },
+                        });
+                    }
+                });
+
+            });
+
+
+            // TIME OUT
+            $(document).on('click', '.time-out-btn', function() {
+                const visitorId = $(this).data('id'); // Get the visitor ID from the button
+                const full_name = $(this).data('name');
+
+                // Get the current time
+                const currentDate = new Date();
+                datePassing = currentDate.toLocaleDateString("en-CA");
+                timePassing = currentDate.toLocaleTimeString("en-CA", {
+                    hour12: false
+                });
+
+                // Confirmation dialog
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: `Do you want to CONFIRM the TIME-OUT of ${full_name}? This action cannot be undone.`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'YES',
+                    cancelButtonText: 'NO',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Show a loading alert while processing
+                        Swal.fire({
+                            title: 'Processing Time-Out...',
+                            text: 'Please wait.',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            },
+                        });
+
+                        // Send the AJAX request
+                        $.ajax({
+                            url: 'time_out.php', // Backend script for processing time out
+                            type: 'POST',
+                            data: {
+                                record_id: visitorId,
+                                date: datePassing,
+                                time_out: timePassing
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                Swal.close(); // Close the loading alert
+
+                                if (response.success) {
+                                    Swal.fire({
+                                        position: 'top',
+                                        title: 'Success!',
+                                        text: response.message,
+                                        icon: 'success',
+                                        timer: 2000,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                    });
+
+                                    // Refresh the visitor list or remove the card from UI
+                                    fetchResults();
+                                } else {
+                                    Swal.fire({
+                                        position: 'top',
+                                        title: 'Error!',
+                                        text: response.message,
+                                        icon: 'error',
+                                        timer: 2000,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                    });
+                                }
+                            },
+                            error: function() {
+                                Swal.fire({
+                                    position: 'top',
+                                    title: 'Error!',
+                                    text: 'Failed to process Time-Out. Please try again.',
+                                    icon: 'error',
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                });
+                            },
+                        });
+                    }
+                });
+            });
+
+
+
+            // ARCHIVE RECORD
+            $(document).on('click', '.archive-btn', function() {
+                const visitorId = $(this).data('id'); // Get the visitor ID from the button
+                const full_name = $(this).data('name');
+                
+                // Confirmation dialog
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: `Do you want to ARCHIVE the LOG of ${full_name}? This action cannot be undone.`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'YES, ARCHIVE',
+                    cancelButtonText: 'NO, CANCEL',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Show a loading alert while processing
+                        Swal.fire({
+                            title: 'Archiving Record...',
+                            text: 'Please wait.',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            },
+                        });
+
+                        // Send the AJAX request to archive the record
+                        $.ajax({
+                            url: 'archive_record.php', // The backend script to process the archive
+                            type: 'POST',
+                            data: {
+                                record_id: visitorId
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                Swal.close(); // Close the loading alert
+
+                                if (response.success) {
+                                    Swal.fire({
+                                        position: 'top',
+                                        title: 'Success!',
+                                        text: response.message,
+                                        icon: 'success',
+                                        timer: 2000,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                    });
+
+                                    // Refresh the visitor list or update the UI
+                                    fetchResults();
+                                } else {
+                                    Swal.fire({
+                                        position: 'top',
+                                        title: 'Error!',
+                                        text: response.message,
+                                        icon: 'error',
+                                        timer: 2000,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                    });
+                                }
+                            },
+                            error: function() {
+                                Swal.fire({
+                                    position: 'top',
+                                    title: 'Error!',
+                                    text: 'Failed to process archive. Please try again.',
+                                    icon: 'error',
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                });
+                            },
+                        });
+                    }
+                });
+
             });
 
         });

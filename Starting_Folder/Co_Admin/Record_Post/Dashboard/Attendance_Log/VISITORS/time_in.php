@@ -19,13 +19,16 @@ function sanitizeInput($data) {
 $firstName = $conn->real_escape_string(sanitizeInput($_POST['first_name']));
 $lastName = $conn->real_escape_string(sanitizeInput($_POST['last_name']));
 $phoneNumber = $conn->real_escape_string(sanitizeInput($_POST['phone_number']));
-$visitorPass = isset($_POST['visitor_pass']) ? $conn->real_escape_string(sanitizeInput($_POST['visitor_pass'])) : 'None';
+$visitorPass = isset($_POST['visitor_pass']) && !empty($_POST['visitor_pass']) 
+    ? $conn->real_escape_string(sanitizeInput($_POST['visitor_pass'])) 
+    : null; // Assign NULL if empty
 $purpose = $conn->real_escape_string(sanitizeInput($_POST['purpose']));
 $date = $conn->real_escape_string(date('Y-m-d', strtotime($_POST['date'])));
 $timeIn = $conn->real_escape_string(date('H:i:s', strtotime($_POST['time_in'])));
 
 $formattedDate = $conn->real_escape_string(sanitizeInput($_POST['date_format']));
 $formattedTime = date('g:i a', strtotime($timeIn));
+$logVisitorPass = $visitorPass ?? "None";
 
 // Start transaction
 $conn->begin_transaction();
@@ -39,7 +42,7 @@ try {
     $stmt->close();
 
     // Prepare activity log
-    $details = "Insert Visitor Log\n\nTIME IN\n\nRecord Id: $visitorId\nName: $firstName $lastName\nDate: $formattedDate\nTime in: $formattedTime\nVisitor pass: $visitorPass\nPurpose: $purpose";
+    $details = "Insert Visitor Log\n\nTIME IN\n\nRecord Id: $visitorId\nName: $firstName $lastName\nPhone Number: $phoneNumber\nDate: $formattedDate\nTime in: $formattedTime\nVisitor pass: $logVisitorPass\nPurpose: $purpose";
     $section = 'VISITORS';
     $category = 'INSERT';
     $stationId = $_SESSION['station_id'] ?? 0;
