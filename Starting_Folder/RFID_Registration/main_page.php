@@ -284,10 +284,11 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                     Swal.fire({
                         title: 'Are you sure?',
                         text: 'Do you want to remove the uploaded image?',
-                        icon: 'warning',
+                        icon: 'question',
                         showCancelButton: true,
-                        confirmButtonText: 'Yes, remove it!',
-                        cancelButtonText: 'Cancel',
+                        confirmButtonText: 'YES',
+                        cancelButtonText: 'NO',
+                        reverseButtons: true
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $('#profileImg').attr('src', '../../Image/logo_and_icons/default_avatar.png');

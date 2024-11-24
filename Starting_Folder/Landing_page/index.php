@@ -53,7 +53,7 @@ if (isset($_SESSION['admin_logged'])) {
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
     <style>
-        /* Custom SweetAlert2 Facebook Theme */
+        /* Keeping existing SweetAlert2 styles */
         .swal2-popup {
             border-radius: 15px;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
@@ -75,6 +75,103 @@ if (isset($_SESSION['admin_logged'])) {
         .swal2-confirm:hover {
             background-color: #145dbd !important;
         }
+
+        body {
+            min-height: 100vh;
+            background: url('/tapnlog/image/logo_and_icons/bsu-bg.png') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Glassmorphism effect */
+        .glass-container {
+            background: rgba(255, 255, 255, 0.33);
+            backdrop-filter: blur(2.8px);
+            -webkit-backdrop-filter: blur(2.8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .landing-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .logo-container {
+            text-align: center;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .logo-container img {
+            max-width: 100%;
+            height: auto;
+            width: clamp(150px, 80%, 300px);
+        }
+
+        .logo-container h1 {
+            color: #1877f2;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-weight: 700;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            margin-top: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-custom {
+            width: 100%;
+            margin: 0.5rem 0;
+            padding: 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            background-color: #1877f2;
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background-color: #145dbd;
+        }
+
+        /* Add specific styling for the QR button */
+        #showQRButton {
+            width: 90%;
+            /* Make button 10% smaller */
+            margin: 0.5rem auto;
+            /* Center the smaller button */
+        }
+
+        @media (max-width: 768px) {
+            .glass-container {
+                padding: 1rem;
+            }
+
+            .logo-container {
+                padding: 1rem;
+            }
+
+            .logo-container h1 {
+                font-size: 2rem;
+            }
+        }
     </style>
 
 
@@ -82,20 +179,24 @@ if (isset($_SESSION['admin_logged'])) {
 </head>
 
 <body>
-    <div class="container mt-5">
-        <h2>Welcome to the Landing Page</h2>
-        <p>Please select an option:</p>
+    <div class="container vh-100 d-flex justify-content-center align-items-center">
+        <div class="glass-container py-xl-5 py-lg-5">
+            <div class="row landing-container">
+                <!-- Left Panel with Logo -->
+                <div class="col-md-6 logo-container">
+                    <img src="/tapnlog/image/logo_and_icons/logo_icon.png" alt="TAP-N-LOG Logo" class="img-fluid">
+                    <h1>TAP-N-LOG</h1>
+                </div>
 
-        <div class="btn-group-vertical d-flex" role="group" aria-label="Button group">
-            <a href="../Co_Admin/Vehicle_Post/Auth/login.php" class="btn btn-primary">Vehicle Post</a>
-            <a href="../Co_Admin/Record_Post/Auth/login.php" class="btn btn-success">Record Post</a>
-            <a href="../Main_Admin/Auth/login.php" class="btn btn-info">Main Admin</a>
-            <a href="../RFID_Registration/main_page.php" class="btn btn-danger">Apply for RFID</a>
-        </div>
-
-        <!-- Button to trigger the QR code SweetAlert -->
-        <div class="text-center mt-4">
-            <button id="showQRButton" class="btn btn-secondary">Show QR Code for Website Link</button>
+                <!-- Right Panel with Buttons -->
+                <div class="col-md-6 d-flex flex-column justify-content-center">
+                    <a href="../Main_Admin/Auth/login.php" class="btn btn-custom">MAIN ADMIN</a>
+                    <a href="../Co_Admin/Vehicle_Post/Auth/login.php" class="btn btn-custom">VEHICLE POST</a>
+                    <a href="../Co_Admin/Record_Post/Auth/login.php" class="btn btn-custom">RECORD POST</a>
+                    <a href="../RFID_Registration/main_page.php" class="btn btn-custom">RFID REGISTRATION</a>
+                    <button id="showQRButton" class="btn btn-custom mt-4">WEBSITE LINK</button>
+                </div>
+            </div>
         </div>
     </div>
 
