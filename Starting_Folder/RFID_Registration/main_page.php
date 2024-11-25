@@ -278,7 +278,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                 }
             });
 
-            $('#removePicBtn').on('click',function() {
+            $('#removePicBtn').on('click', function() {
                 // go back to landing page
                 if (croppedImage) {
                     Swal.fire({
@@ -293,12 +293,11 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                         if (result.isConfirmed) {
                             $('#profileImg').attr('src', '../../Image/logo_and_icons/default_avatar.png');
                             croppedImage = null;
-                            showAlert("Image removed successfully!", "success");
                             checkDiscardBtn();
                         }
                     });
                 } else {
-                    showAlert("No image to remove.", "info");
+                    showAlert("No image is available for removal.", "error");
                 }
             });
 
@@ -320,6 +319,16 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                 e.preventDefault(); // Prevent the default form submission
 
                 showConfirmation('Do you want to register this profile?', function() {
+
+                    Swal.fire({
+                        title: 'Saving Changes...',
+                        text: 'Please wait while we update the profile.',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        },
+                    });
+
                     $.ajax({
                         url: 'upload_profile.php', // The server endpoint to handle the request
                         type: 'POST', // Method type
@@ -331,7 +340,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                         },
                         dataType: 'json', // Expecting a JSON response
                         success: function(response) {
-
+                            Swal.close();
                             if (response.success) {
 
                                 showAlert(response.message, "success"); // Show success message
@@ -344,6 +353,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                             }
                         },
                         error: function() {
+                            Swal.close();
                             showAlert("An error occurred while saving the profile.", "error");
                         }
                     });
@@ -525,10 +535,9 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                     $('#discardBtn').text('BACK');
                     $('#discardBtn').removeClass('btn-danger').addClass('btn-secondary');
                     $('#discardBtn').on('click', function() {
-                        showAlert("Thank you!", "success"); // Show success message
-                        setTimeout(() => {
-                            window.location.href = '/TAPNLOG/Starting_Folder/Landing_page/index.php';
-                        }, 1000);
+
+                        window.location.href = '/TAPNLOG/Starting_Folder/Landing_page/index.php';
+
                     });
                 }
             }
@@ -538,7 +547,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
             $('#saveCrop').on('click', checkDiscardBtn);
             $('#cancelCrop').on('click', checkDiscardBtn);
             $('#saveBtn').on('click', checkDiscardBtn);
-            
+
 
 
             function showAlert(message, type = "error") {

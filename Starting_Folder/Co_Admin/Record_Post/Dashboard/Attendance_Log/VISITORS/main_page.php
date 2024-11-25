@@ -132,98 +132,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                         <div id="results-container" class="row d-flex justify-content-center p-0">
                             <!-- Result Cards will be inserted here dynamically -->
 
-                            <!-- card 1 -->
-                            <!-- <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
-                                <div class='card'>
-                                    <div class='card-body'>
-                                        <h6 class='card-title'><strong>MELVIN DARYLL ALOCILLO</strong></h6>
-                                        <p class='card-text'><strong>DATE:</strong> November 22, 2024</p>
-                                        <p class='card-text'><strong>TIME-IN:</strong> 7:04 am</p>
-                                    </div>
-                                    <div class='card-footer d-flex flex-column'>
-                                        <button type='button' class='row btn btn-primary m-1 w-100 view-details-btn'>
-                                            VIEW DETAILS
-                                        </button>
-                                        <button type='button' class='row btn btn-success w-100 m-1 time-out-btn'>
-                                            TIME OUT
-                                        </button>
-                                        <button type='button' class='row btn btn-danger w-100 m-1 archive-btn'>
-                                            ARCHIVE
-                                        </button>
-                                    </div>
-                                </div>
-                            </div> -->
-
-
-                            <!-- card 2 -->
-                            <!-- <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
-                                <div class='card'>
-                                    <div class='card-body'>
-                                        <h6 class='card-title'><strong>PRINCESS MIKHAELA JOSE</strong></h6>
-                                        <p class='card-text'><strong>DATE:</strong> November 22, 2024</p>
-                                        <p class='card-text'><strong>TIME-IN:</strong> 7:28 AM</p>
-                                    </div>
-                                    <div class='card-footer d-flex flex-column'>
-                                        <button type='button' class='row btn btn-primary m-1 w-100 view-details-btn'>
-                                            VIEW DETAILS
-                                        </button>
-                                        <button type='button' class='row btn btn-success w-100 m-1 time-out-btn'>
-                                            TIME OUT
-                                        </button>
-                                        <button type='button' class='row btn btn-danger w-100 m-1 archive-btn'>
-                                            ARCHIVE
-                                        </button>
-                                    </div>
-                                </div>
-                            </div> -->
-
-                            <!-- card 3 -->
-                            <!-- <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
-                                <div class='card'>
-                                    <div class='card-body'>
-                                        <h6 class='card-title'><strong>KEN ANGELO VELASQUEZ</strong></h6>
-                                        <p class='card-text'><strong>DATE:</strong> November 22, 2024</p>
-                                        <p class='card-text'><strong>TIME-IN:</strong> 9:18 AM</p>
-                                    </div>
-                                    <div class='card-footer d-flex flex-column'>
-                                        <button type='button' class='row btn btn-primary m-1 w-100 view-details-btn'>
-                                            VIEW DETAILS
-                                        </button>
-                                        <button type='button' class='row btn btn-success w-100 m-1 time-out-btn'>
-                                            TIME OUT
-                                        </button>
-                                        <button type='button' class='row btn btn-danger w-100 m-1 archive-btn'>
-                                            ARCHIVE
-                                        </button>
-                                    </div>
-                                </div>
-                            </div> -->
-
-                            <!-- card 4 -->
-                            <!-- <div class='col-xl-3 col-lg-4 col-md-6 card-container mt-1'>
-                                <div class='card'>
-                                    <div class='card-body'>
-                                        <h6 class='card-title'><strong>LHOY FLORO</strong></h6>
-                                        <p class='card-text'><strong>DATE:</strong> November 22, 2024</p>
-                                        <p class='card-text'><strong>TIME-IN:</strong> 1:38 PM</p>
-                                    </div>
-                                    <div class='card-footer d-flex flex-column'>
-                                        <button type='button' class='row btn btn-primary m-1 w-100 view-details-btn'>
-                                            VIEW DETAILS
-                                        </button>
-                                        <button type='button' class='row btn btn-success w-100 m-1 time-out-btn'>
-                                            TIME OUT
-                                        </button>
-                                        <button type='button' class='row btn btn-danger w-100 m-1 archive-btn'>
-                                            ARCHIVE
-                                        </button>
-                                    </div>
-                                </div>
-                            </div> -->
-
-
-
-                            <!-- END OF CARDS -->
                         </div>
 
                     </div>
@@ -325,7 +233,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     </div>
 
     <!-- View Visitor Modal -->
-    <div class="modal fade" id="viewRecordModal" tabindex="-1" aria-labelledby="viewRecordModalLabel" aria-hidden="true">
+    <div class="modal fade" id="viewRecordModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="viewRecordModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -980,7 +888,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 // Show a confirmation message before proceeding
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: "Do you want to save the changes to this profile?",
+                    text: "Do you want to SAVE the changes?",
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',

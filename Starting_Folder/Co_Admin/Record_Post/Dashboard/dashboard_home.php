@@ -60,7 +60,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                         <a href="Attendance_Log/main_page.php" class="btn btn-primary w-100 p-3">ATTENDANCE LOG</a>
                     </div>
                     <div class="col-md-4 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="" class="btn btn-primary w-100 p-3">RECORDS</a>
+                        <a href="Records/main_page.php" class="btn btn-primary w-100 p-3">RECORDS</a>
                     </div>
                     <div class="col-md-4 col-sm-12 d-flex justify-content-center align-items-center mb-3">
                         <a href="" class="btn btn-primary w-100 p-3">ACTIVITY LOGS</a>

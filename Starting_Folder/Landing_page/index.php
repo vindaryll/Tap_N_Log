@@ -1,8 +1,5 @@
 <?php
 
-
-// GAWAN NG UI, and mahalaga lang rito ay yung href ng <a> tags, kayo na ang bahala kung button ang gagamitin niyo or a tags pa rin
-
 session_start();
 
 // to get the directory path for require purposes
@@ -153,7 +150,7 @@ if (isset($_SESSION['admin_logged'])) {
 
         /* Add specific styling for the QR button */
         #showQRButton {
-            width: 90%;
+            width: 80%;
             /* Make button 10% smaller */
             margin: 0.5rem auto;
             /* Center the smaller button */

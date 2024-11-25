@@ -15,7 +15,7 @@
             <ul class="navbar-nav ms-auto">
 
                 <!-- QR Code Button (Visible on Large Screens) -->
-                <li class="nav-item d-none d-lg-block">
+                <li class="nav-item d-none d-lg-block mx-2">
                     <a href="#" id="nav-showQRButton" class="nav-link">
                         <i class="bi bi-qr-code" style="font-size: 1.5rem; color: #1877f2;"></i>
                     </a>
@@ -23,14 +23,14 @@
 
 
                 <!-- Profile Icon with Modal Trigger (Visible on Large Screens) -->
-                <li class="nav-item d-none d-lg-block">
+                <li class="nav-item d-none d-lg-block mx-2">
                     <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#nav_profileModal">
                         <i class="bi bi-person-circle" style="font-size: 1.5rem; color: #1877f2;"></i>
                     </a>
                 </li>
 
                 <!-- Logout Button (Visible on Large Screens) -->
-                <li class="nav-item d-none d-lg-block">
+                <li class="nav-item d-none d-lg-block mx-2">
                     <a href="#" id="logout-link" class="nav-link">
                         <i class="bi bi-box-arrow-right" style="font-size: 1.5rem; color: #1877f2;"></i>
                     </a>
@@ -204,7 +204,7 @@
     .navbar-nav .nav-link {
         color: red;
         /* Default text color */
-        transition: background-color 0.3s, color 0.3s;
+        transition: all 0.3s ease;
         /* Smooth transition */
         height: 56px;
         /* Set a fixed height for all nav links */
@@ -217,17 +217,10 @@
     }
 
     .navbar-nav .nav-link:hover {
-        background-color: red;
-        /* Background color on hover */
-        color: white;
-        /* Text color on hover */
-    }
-
-    .navbar-nav .nav-link.active {
-        background-color: transparent;
-        /* Remove background color for active state */
-        color: red;
-        /* Keep the text color */
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        border-bottom: 5px solid 145dbd;
+        /* background-color: #145dbd; */
     }
 
     /* Center alignment for medium and smaller screens */

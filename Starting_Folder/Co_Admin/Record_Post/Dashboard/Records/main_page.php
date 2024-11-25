@@ -76,16 +76,16 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             </div>
 
             <div class="container-fluid col-sm-12 mt-sm-1 mt-5">
-                <h2 class="text-center w-100">RFID PROFILES</h2>
+                <h2 class="text-center w-100">RECORDS</h2>
                 <div class="row d-flex justify-content-center align-items-center mt-3">
                     <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="" class="btn btn-primary w-100 p-3">PENDINGS</a>
+                        <a href="VISITORS/main_page.php" class="btn btn-primary w-100 p-3">VISITOR</a>
                     </div>
                     <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
                         <a href="" class="btn btn-primary w-100 p-3">EMPLOYEES</a>
                     </div>
                     <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="" class="btn btn-primary w-100 p-3">CASH FOR WORK STAFF</a>
+                        <a href="" class="btn btn-primary w-100 p-3">CASH FOR WORK</a>
                     </div>
                     <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
                         <a href="" class="btn btn-primary w-100 p-3">ON THE JOB TRAINEES</a>
