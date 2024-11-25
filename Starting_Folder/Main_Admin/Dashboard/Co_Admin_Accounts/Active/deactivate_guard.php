@@ -19,7 +19,15 @@ if ($guardId === 0) {
 }
 
 // Fetch current guard details
-$sql = "SELECT g.guard_name, s.station_name FROM guards g JOIN stations s ON g.station_id = s.station_id WHERE g.guard_id = ?";
+$sql = "
+    SELECT 
+        g.guard_name, 
+        s.station_name, 
+        ga.username 
+    FROM guards g 
+    JOIN stations s ON g.station_id = s.station_id 
+    JOIN guard_accounts ga ON g.guard_id = ga.guard_id 
+    WHERE g.guard_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $guardId);
 $stmt->execute();
@@ -29,6 +37,7 @@ if ($result->num_rows > 0) {
     $guardData = $result->fetch_assoc();
     $guardName = $guardData['guard_name'];
     $stationName = $guardData['station_name'];
+    $username = $guardData['username'];
 
     try {
         // Begin transaction
@@ -44,8 +53,8 @@ if ($result->num_rows > 0) {
         $logSql = "INSERT INTO admin_activity_log (section, details, category, admin_id) VALUES (?, ?, ?, ?)";
         $logStmt = $conn->prepare($logSql);
 
-        $section = 'GUARDS';
-        $details = "Deactivate Guard\n\nID: $guardId\nStation Name: $stationName\nName: $guardName";
+        $section = 'CO-ADMIN';
+        $details = "Deactivate Co-admin Account\n\nID: $guardId\nStation: $stationName\nName: $guardName\nUsername: $username";
         $category = 'DEACTIVATE';
         $adminId = $_SESSION['admin_id'];
 

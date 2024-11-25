@@ -15,8 +15,14 @@ if ($guardId === 0) {
     exit();
 }
 
-// Fetch current guard details
-$sql = "SELECT g.guard_name, s.station_name FROM guards g JOIN stations s ON g.station_id = s.station_id WHERE g.guard_id = ?";
+// Fetch current guard details, including username
+$sql = "
+    SELECT g.guard_name, s.station_name, ga.username 
+    FROM guards g 
+    JOIN stations s ON g.station_id = s.station_id 
+    JOIN guard_accounts ga ON g.guard_id = ga.guard_id 
+    WHERE g.guard_id = ?
+";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $guardId);
 $stmt->execute();
@@ -26,6 +32,7 @@ if ($result->num_rows > 0) {
     $guardData = $result->fetch_assoc();
     $guardName = $guardData['guard_name'];
     $stationName = $guardData['station_name'];
+    $username = $guardData['username'];
 
     try {
         // Begin transaction
@@ -41,8 +48,8 @@ if ($result->num_rows > 0) {
         $logSql = "INSERT INTO admin_activity_log (section, details, category, admin_id) VALUES (?, ?, ?, ?)";
         $logStmt = $conn->prepare($logSql);
 
-        $section = 'GUARDS';
-        $details = "Reactivate Guard\n\nID: $guardId\nStation Name: $stationName\nName: $guardName";
+        $section = 'CO-ADMIN';
+        $details = "Reactivate Co-admin Account\n\nID: $guardId\nStation: $stationName\nName: $guardName\nUsername: $username";
         $category = 'REACTIVATE';
         $adminId = $_SESSION['admin_id'];
 
@@ -57,7 +64,7 @@ if ($result->num_rows > 0) {
         $logStmt->close();
 
         // Send success response
-        echo json_encode(['success' => true, 'message' => 'Guard reactivated successfully!']);
+        echo json_encode(['success' => true, 'message' => 'Account reactivated successfully.']);
     } catch (Exception $e) {
         // Rollback transaction if something failed
         $conn->rollback();

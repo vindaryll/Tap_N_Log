@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $formatted_date = date("F j, Y", strtotime($date));
     $formatted_time_in = date("g:i A", strtotime($time_in));
-    $formatted_time_out = date("g:i A", strtotime($time_out));
+    $formatted_time_out = !empty($time_out) ? date("g:i A", strtotime($time_out)) : "NOT COMPLETED";
 
     // Begin transaction
     $conn->begin_transaction();

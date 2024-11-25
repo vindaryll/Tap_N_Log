@@ -74,7 +74,7 @@ if ($result->num_rows > 0) {
         echo "<td>" . htmlspecialchars($formattedDate) . "</td>";
         echo "<td>" . htmlspecialchars($row['name']) . "</td>";
         echo "<td>" . htmlspecialchars($typeFullForm) . "</td>";
-        echo "<td><button class='btn btn-info' onclick='viewDetails(" . $row['profile_id'] . ")'>VIEW DETAILS</button></td>";
+        echo "<td><button class='btn btn-info w-100 h-100' onclick='viewDetails(" . $row['profile_id'] . ")'>VIEW DETAILS</button></td>";
         echo "</tr>";
     }
 } else {

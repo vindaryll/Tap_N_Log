@@ -343,6 +343,7 @@
                                 } else {
                                     console.error("QR Code generation error:", error);
                                     Swal.fire({
+                                        position: 'top',
                                         title: 'Error!',
                                         text: 'Failed to generate QR Code.',
                                         icon: 'error',
@@ -355,6 +356,7 @@
                         );
                     } else {
                         Swal.fire({
+                            position: 'top',
                             title: 'Error!',
                             text: response.message || 'Failed to fetch website link.',
                             icon: 'error',
@@ -366,6 +368,7 @@
                 },
                 error: function() {
                     Swal.fire({
+                        position: 'top',
                         title: 'Error!',
                         text: 'Error occurred while fetching the website link.',
                         icon: 'error',
@@ -390,7 +393,7 @@
                 timeLeft--;
                 if (timeLeft <= 0) {
                     clearInterval(nav_sendTimeout1);
-                    $('#nav_sendCodeBtn1').prop('disabled', false).text('Change Email');
+                    $('#nav_sendCodeBtn1').prop('disabled', false).text('CHANGE EMAIL');
                 }
             }, 1000);
         }
@@ -427,6 +430,7 @@
 
                         // Success Message
                         Swal.fire({
+                            position: 'top',
                             title: 'Success!',
                             text: response.message,
                             icon: 'success',
@@ -447,6 +451,7 @@
                     } else {
 
                         Swal.fire({
+                            position: 'top',
                             title: 'Error!',
                             text: response.message,
                             icon: 'error',
@@ -456,13 +461,14 @@
                         });
 
                         clearInterval(nav_sendTimeout1);
-                        $('#nav_sendCodeBtn1').prop('disabled', false).text('Change Email');
+                        $('#nav_sendCodeBtn1').prop('disabled', false).text('CHANGE EMAIL');
                     }
                 },
                 error: function() {
                     Swal.close();
 
                     Swal.fire({
+                        position: 'top',
                         title: 'Error!',
                         text: 'An error occurred while processing your request.',
                         icon: 'error',
@@ -472,7 +478,7 @@
                     });
 
                     clearInterval(nav_sendTimeout1);
-                    $('#nav_sendCodeBtn1').prop('disabled', false).text('Change Email');
+                    $('#nav_sendCodeBtn1').prop('disabled', false).text('CHANGE EMAIL');
                 }
             });
         });
@@ -540,6 +546,7 @@
                                 nav_otpAttemptCounter1++;
 
                                 Swal.fire({
+                                    position: 'top',
                                     title: 'Error!',
                                     text: response.message + " You have " + attemptsLeft + " attempts left.",
                                     icon: 'error',
@@ -551,6 +558,7 @@
                         },
                         error: function() {
                             Swal.fire({
+                                position: 'top',
                                 title: 'Error!',
                                 text: 'An error occurred while verifying OTP.',
                                 icon: 'error',
@@ -566,6 +574,7 @@
                     // If attempts reach 5, reset counter and switch to the previous modal
                     nav_otpAttemptCounter1 = 0;
                     Swal.fire({
+                        position: 'top',
                         title: 'Error!',
                         text: 'Maximum OTP attempts reached. Returning to get a new code.',
                         icon: 'error',
@@ -623,6 +632,7 @@
 
                         // Success Message
                         Swal.fire({
+                            position: 'top',
                             title: 'Success!',
                             text: response.message,
                             icon: 'success',
@@ -635,6 +645,7 @@
 
                         // Display error message
                         Swal.fire({
+                            position: 'top',
                             title: 'Error!',
                             text: response.message,
                             icon: 'error',
@@ -652,6 +663,7 @@
                     Swal.close();
 
                     Swal.fire({
+                        position: 'top',
                         title: 'Error!',
                         text: 'An error occurred while processing your request.',
                         icon: 'error',
@@ -672,6 +684,7 @@
 
         $('#Nav_closeNewEmailBtn').click(function() {
             Swal.fire({
+                position: 'top',
                 title: 'Are you sure?',
                 text: 'Do you want to cancel changing your email?',
                 icon: 'question',
@@ -744,6 +757,7 @@
 
                             // Success Message
                             Swal.fire({
+                                position: 'top',
                                 title: 'Success!',
                                 text: response.message,
                                 icon: 'success',
@@ -764,6 +778,7 @@
                         } else {
                             // Display error message
                             Swal.fire({
+                                position: 'top',
                                 title: 'Error!',
                                 text: response.message,
                                 icon: 'error',
@@ -781,6 +796,7 @@
                         Swal.close();
 
                         Swal.fire({
+                            position: 'top',
                             title: 'Error!',
                             text: 'An error occurred while processing your request.',
                             icon: 'error',
@@ -867,6 +883,7 @@
 
                         // Success Message
                         Swal.fire({
+                            position: 'top',
                             title: 'Success!',
                             text: response.message,
                             icon: 'success',
@@ -879,6 +896,7 @@
 
                         // Error Message
                         Swal.fire({
+                            position: 'top',
                             title: 'Error!',
                             text: response.message,
                             icon: 'error',
@@ -895,6 +913,7 @@
                     Swal.close();
 
                     Swal.fire({
+                        position: 'top',
                         title: 'Error!',
                         text: 'An error occurred while processing your request.',
                         icon: 'error',
@@ -957,6 +976,7 @@
 
                                                     // Success Message
                                                     Swal.fire({
+                                                        position: 'top',
                                                         title: 'Success!',
                                                         text: updateResponse.message,
                                                         icon: 'success',
@@ -972,6 +992,7 @@
 
                                                     // Show error message if email update failed
                                                     Swal.fire({
+                                                        position: 'top',
                                                         title: 'Error!',
                                                         text: updateResponse.message,
                                                         icon: 'error',
@@ -984,6 +1005,7 @@
                                             error: function() {
 
                                                 Swal.fire({
+                                                    position: 'top',
                                                     title: 'Error!',
                                                     text: 'An error occurred while updating your email.',
                                                     icon: 'error',
@@ -996,6 +1018,7 @@
 
                                     } else {
                                         Swal.fire({
+                                            position: 'top',
                                             title: 'Update Canceled',
                                             text: 'Your email address has not been updated.',
                                             icon: 'info',
@@ -1014,6 +1037,7 @@
                                 nav_otpAttemptCounter2++;
 
                                 Swal.fire({
+                                    position: 'top',
                                     title: 'Error!',
                                     text: response.message + " You have " + attemptsLeft + " attempts left.",
                                     icon: 'error',
@@ -1026,6 +1050,7 @@
                         error: function() {
 
                             Swal.fire({
+                                position: 'top',
                                 title: 'Error!',
                                 text: 'An error occurred while verifying OTP.',
                                 icon: 'error',
@@ -1040,6 +1065,7 @@
                     nav_otpAttemptCounter2 = 0;
 
                     Swal.fire({
+                        position: 'top',
                         title: 'Error!',
                         text: 'Maximum OTP attempts reached. Returning to get a new code.',
                         icon: 'error',
@@ -1238,6 +1264,7 @@
 
                                     // Success Message
                                     Swal.fire({
+                                        position: 'top',
                                         title: 'Success!',
                                         text: response.message,
                                         icon: 'success',
@@ -1252,6 +1279,7 @@
                                 } else {
 
                                     Swal.fire({
+                                        position: 'top',
                                         title: 'Error!',
                                         text: response.message,
                                         icon: 'error',
@@ -1265,6 +1293,7 @@
 
                                 // Handle any errors
                                 Swal.fire({
+                                    position: 'top',
                                     title: 'Error!',
                                     text: 'An error occurred: ' + error,
                                     icon: 'error',

@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if ($stmt->execute()) {
 
                         // Log activity in the admin_activity_log table
-                        $logDetails = "Forgot password\n\nid: $adminId\nusername: $username";
+                        $logDetails = "Forgot password\n\nId: $adminId\nUsername: $username";
                         $logQuery = "INSERT INTO admin_activity_log (section, details, category) VALUES ('PERSONAL ACCOUNT', ?, 'UPDATE')";
                         $logStmt = $conn->prepare($logQuery);
                         $logStmt->bind_param("s", $logDetails);

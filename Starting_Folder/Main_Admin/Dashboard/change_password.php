@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         if ($updateStmt->execute()) {
                             // Log activity in the admin_activity_log table
-                            $logDetails = "Change password\n\nid: $adminId\nusername: $username";
+                            $logDetails = "Change password\n\nId: $adminId\nUsername: $username";
                             $logQuery = "INSERT INTO admin_activity_log (section, details, category, admin_id) VALUES ('PERSONAL ACCOUNT', ?, 'UPDATE', ?)";
                             $logStmt = $conn->prepare($logQuery);
                             $logStmt->bind_param("si", $logDetails, $adminId);

@@ -39,6 +39,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Begin transaction
         $conn->begin_transaction();
 
+        // Fetch the station name and username associated with the guard
+        $detailsSql = "
+            SELECT s.station_name, ga.username 
+            FROM guards g 
+            JOIN stations s ON g.station_id = s.station_id 
+            JOIN guard_accounts ga ON g.guard_id = ga.guard_id 
+            WHERE g.guard_id = ?
+        ";
+        $detailsStmt = $conn->prepare($detailsSql);
+        $detailsStmt->bind_param("i", $guard_id);
+        $detailsStmt->execute();
+        $detailsResult = $detailsStmt->get_result();
+        $detailsData = $detailsResult->fetch_assoc();
+
+        $stationName = $detailsData['station_name'] ?? 'Unknown Station';
+        $username = $detailsData['username'] ?? 'Unknown Username';
+
         // Update the guard's password
         $updateSql = "UPDATE guard_accounts SET password = ? WHERE guard_id = ?";
         $updateStmt = $conn->prepare($updateSql);
@@ -52,8 +69,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $logSql = "INSERT INTO admin_activity_log (section, details, category, admin_id) VALUES (?, ?, ?, ?)";
             $logStmt = $conn->prepare($logSql);   
 
-            $section = 'GUARDS';
-            $details = "Update Guard\n\nId: $guard_id\nGuard name: $guardName\n\nChanged password";
+            $section = 'CO-ADMIN';
+            $details = "Update Co-admin Account\n\nId: $guard_id\nStation: $stationName\nName: $guardName\nUsername: $username\n\nChanged password.";
             $category = 'UPDATE';
             $adminId = $_SESSION['admin_id'];
 
@@ -74,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode([
                 'status' => 'success',
                 'success' => true,
-                'message' => 'Guard password updated successfully!',
+                'message' => 'Password changed successfully.',
             ]);
             exit();
 

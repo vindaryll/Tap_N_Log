@@ -68,22 +68,22 @@ if (isset($_SESSION['otp_code']) && isset($_SESSION['admin_id'])) {
             $mail->Port = 465;
 
             // Email settings
-            $mail->setFrom('no-reply@gmail.com', 'Tap_N_Log');
+            $mail->setFrom('no-reply@gmail.com', 'Tap-N-Log');
             $mail->addAddress($email);
             $mail->isHTML(true);
             $mail->Subject = 'OTP Code for Verification';
             $mail->Body = '
                 <div style="max-width: 600px; margin: auto; padding: 20px; font-family: Arial, sans-serif; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;">
                     <div style="text-align: center; margin-bottom: 20px;">
-                        <h2 style="color: #007bff;">Tap_N_Log</h2>
-                        <p style="font-size: 18px; color: #555;">Password Reset Request</p>
+                        <h2 style="color: #007bff;">Tap-N-Log</h2>
+                        <p style="font-size: 18px; color: #555;">Email Change Verification</p>
                     </div>
                     <div style="padding: 20px; background-color: #ffffff; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
                         <p style="color: #555;">Hello, Admin!</p>
                         <p style="color: #555;">Did you request to reset your password? If so, please use the OTP below to proceed with the reset:</p>
                         <h3 style="color: #28a745; text-align: center;">Your OTP code is: <b>' . $otpCode . '</b></h3>
                         <p style="color: #555;">If you did not request a password reset, please disregard this email.</p>
-                        <p style="color: #777;">Thank you,<br>The Tap_N_Log Team</p>
+                        <p style="color: #777;">Thank you,<br>The Tap-N-Log Team</p>
                     </div>
                 </div>
             ';

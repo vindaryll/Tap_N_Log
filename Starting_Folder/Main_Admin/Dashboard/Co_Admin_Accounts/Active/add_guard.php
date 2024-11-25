@@ -67,8 +67,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $logSql = "INSERT INTO admin_activity_log (section, details, category, admin_id) VALUES (?, ?, ? , ?)";
         $logStmt = $conn->prepare($logSql);
 
-        $section = 'GUARDS';
-        $details = "Insert Guard\n\nID: $guardId\nName: $guard_name\nStation Name: $station_name";
+        $section = 'CO-ADMIN';
+        $details = "Insert Co-admin Account\n\nID: $guardId\nStation: $station_name\nName: $guard_name\nUsername: $username";
         $category = 'INSERT';
         $adminId = $_SESSION['admin_id'];
 
@@ -86,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $logStmt->close();
 
         // Success response
-        echo json_encode(['success' => true, 'message' => 'Guard added successfully.']);
+        echo json_encode(['success' => true, 'message' => 'Account created successfully.']);
     } catch (Exception $e) {
         // Rollback transaction if something failed
         $conn->rollback();

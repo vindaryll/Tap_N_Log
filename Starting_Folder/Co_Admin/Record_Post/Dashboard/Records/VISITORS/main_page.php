@@ -57,6 +57,19 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             min-width: 1000px;
         }
 
+        table.table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        table.table th {
+            text-align: center;
+            vertical-align: middle;
+        }
+        
+        table.table tbody tr:hover {
+            background-color: #5abed6;
+        }
 
         .table-pre {
             white-space: pre;
@@ -148,7 +161,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
                     <div class="row d-flex justify-content-start mt-2">
                         <div class="col-md-3 col-sm-4 col-12 mb-2">
-                            <!-- Add Guard Button -->
                             <button type="button" id="goToArchive" class="btn btn-primary w-100 h-100 p-2">ARCHIVED RECORDS</button>
                         </div>
                     </div>
@@ -287,6 +299,10 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
             $('#backbtn').on('click', function() {
                 window.location.href = '../main_page.php';
+            });
+
+            $('#goToArchive').on('click', function() {
+                window.location.href = 'Archived/main_page.php';
             });
 
             $('#modal_2_firstName').on('input', function() {
@@ -771,11 +787,12 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             $(document).on('click', '.archive-btn', function() {
                 const visitorId = $(this).data('id'); // Get the visitor ID from the button
                 const full_name = $(this).data('name');
+                const date = $(this).data('date');
 
                 // Confirmation dialog
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: `Do you want to ARCHIVE the LOG of ${full_name}? This action cannot be undone.`,
+                    text: `Do you want to ARCHIVE the LOG of ${full_name} on ${date}? This action cannot be undone.`,
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonText: 'YES, ARCHIVE',

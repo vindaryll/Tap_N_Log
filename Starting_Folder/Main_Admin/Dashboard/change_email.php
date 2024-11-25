@@ -41,7 +41,7 @@ if (isset($_SESSION['admin_id']) && isset($_POST['nav_newEmail'])) {
             // Execute the update
             if ($stmt->execute()) {
                 // Prepare log details
-                $logDetails = "Change Email\n\nID: $adminId\nUsername: $username\n\nFrom: $previousEmail\nTo: $newEmail"; 
+                $logDetails = "Change email\n\nId: $adminId\nUsername: $username\n\nFrom: $previousEmail\nTo: $newEmail"; 
                 $logQuery = "INSERT INTO admin_activity_log (section, details, category, admin_id) VALUES ('PERSONAL ACCOUNT', ?, 'UPDATE', ?)";
                 $logStmt = $conn->prepare($logQuery);
                 $logStmt->bind_param("si", $logDetails, $adminId);

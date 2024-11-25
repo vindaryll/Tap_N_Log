@@ -52,12 +52,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $logDetails = [];
 
         // Build log header
-        $logHeader = "Update Guard Details\n\nGuard ID: $guard_id\nGuard Name: $guard_name\n\n";
+        $logHeader = "Update Co-admin Details\n\nGuard ID: $guard_id\nGuard Name: $guard_name\n\n";
 
         // Check and prepare updates for guards table
         if ($currentGuardData['guard_name'] !== $guard_name) {
             $updatesGuards[] = "guard_name = '$guard_name'";
-            $logDetails[] = "Set Guard Name\nFrom: {$currentGuardData['guard_name']}\nTo: $guard_name";
+            $logDetails[] = "Set Name\nFrom: {$currentGuardData['guard_name']}\nTo: $guard_name";
         }
         if ($currentGuardData['station_id'] != $station_id) {
             // Fetch new station name
@@ -105,14 +105,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $logDetailsText = $logHeader . implode("\n\n", $logDetails);
             $logSQL = "INSERT INTO admin_activity_log (section, details, category, admin_id) VALUES (?, ?, ?, ?)";
             $logStmt = $conn->prepare($logSQL);
-            $section = 'GUARDS';
+            $section = 'CO-ADMIN';
             $category = 'UPDATE';
             $logStmt->bind_param("sssi", $section, $logDetailsText, $category, $admin_id);
             $logStmt->execute();
         }
 
         $conn->commit();
-        echo json_encode(['success' => true, 'message' => 'Guard details updated successfully.']);
+        echo json_encode(['success' => true, 'message' => 'Details updated successfully.']);
     } catch (Exception $e) {
         $conn->rollback();
         echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);

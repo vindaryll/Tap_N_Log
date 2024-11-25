@@ -70,10 +70,10 @@ if ($result->num_rows > 0) {
         echo "<td>
                 <div class='row d-flex justify-content-center align-items-center m-0 p-0'>
                     <div class='col-lg-6 my-1'>
-                        <button class='btn btn-info w-100 h-100 p-2' onclick='openDetailsModal(" . json_encode($row) . ")'>View Details</button>
+                        <button class='btn btn-info w-100 h-100 p-2' onclick='openDetailsModal(" . json_encode($row) . ")'>VIEW DETAILS</button>
                     </div>
                     <div class='col-lg-6 my-1'>
-                        <button class='btn btn-danger w-100 h-100 p-2' onclick='deactivateGuard(" . $row[' guard_id'] . ")'>Deactivate</button>
+                        <button class='btn btn-danger w-100 h-100 p-2' onclick='deactivateGuard(" . $row['guard_id'] . ")'>DEACTIVATE</button>
                     </div>
                 </div>
             </td>";

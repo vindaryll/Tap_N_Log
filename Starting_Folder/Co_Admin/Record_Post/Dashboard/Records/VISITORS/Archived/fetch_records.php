@@ -15,7 +15,7 @@ $sort = $_POST['sort'] ?? [];
 $search = sanitizeInput($_POST['search'] ?? '');
 
 // Base SQL query
-$query = "SELECT * FROM visitors WHERE is_archived = 0";
+$query = "SELECT * FROM visitors WHERE is_archived = 1";
 
 // Apply filters
 if (!empty($filters['from_date'])) {
@@ -73,23 +73,14 @@ if ($result->num_rows > 0) {
             <td>{$formattedTimeOut}</td>
             <td>
                 <div class='row d-flex justify-content-center align-items-center m-0 p-0'>
-                    <div class='col-lg-6 h-100 my-1'>
+                    <div class='col-12 my-1'>
                         <button class='btn btn-info w-100 h-100 p-2 view-details-btn'
-                            data-id='{$row['visitor_id']}'
                             data-first-name='{$row['first_name']}'
                             data-last-name='{$row['last_name']}'
                             data-phone-num='{$row['phone_num']}'
                             data-purpose='{$row['purpose']}'
                             data-visitor-pass='{$row['visitor_pass']}'>
                             VIEW DETAILS
-                        </button>
-                    </div>
-                    <div class='col-lg-6 h-100 my-1'>
-                        <button class='btn btn-danger w-100 h-100 p-2 archive-btn'
-                            data-id='{$row['visitor_id']}'
-                            data-name='{$row['first_name']} {$row['last_name']}'
-                            data-date='{$formattedDate}'>
-                            ARCHIVE
                         </button>
                     </div>
                 </div>
@@ -101,5 +92,4 @@ if ($result->num_rows > 0) {
     echo "<tr><td colspan='6' class='text-center'>No records found.</td></tr>";
 }
 ?>
-
 

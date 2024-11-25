@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     if ($updateStmt->execute()) {
                         // Log activity in the activity_log table
-                        $logDetails = "Forgot password for guard\n\nGuard ID: $guardId\nGuard Name: $guardName\nStation Name: $stationName";
+                        $logDetails = "Forgot password for Co-Admin\n\Id: $guardId\nName: $guardName\nStation: $stationName";
                         $logQuery = "INSERT INTO activity_log (section, details, category, station_id) VALUES ('ACCOUNTS', ?, 'UPDATE', ?)";
                         $logStmt = $conn->prepare($logQuery);
                         $logStmt->bind_param("si", $logDetails, $stationId);

@@ -73,10 +73,27 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             overflow-y: auto;
         }
 
-        /* Fixed header and scrollable body styling */
+        /* FOR TABLE */
+        table.table {
+            min-width: 1000px;
+        }
+
+        table.table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        table.table th {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        table.table tbody tr:hover {
+            background-color: #5abed6;
+        }
+
         .table-responsive {
             height: 400px;
-            /* Adjust the height as needed */
             overflow-y: auto;
         }
 
@@ -84,15 +101,12 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             position: sticky;
             top: 0;
             background-color: #343a40;
-            /* Background color for header */
             color: white;
             z-index: 1;
         }
 
-        /* Pre-style to maintain line breaks without wrapping text */
         .table-pre {
             white-space: pre;
-            /* Maintains line breaks without word wrapping */
         }
 
         /* BACK BUTTON */
@@ -108,6 +122,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             color: #145dbf;
             transform: scale(1.1);
         }
+
         /* END FOR BACK BUTTON */
     </style>
 </head>

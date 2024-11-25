@@ -58,6 +58,25 @@ $stationsResult = $conn->query($stationsSql);
             cursor: pointer;
         }
 
+        /* FOR TABLE */
+        table.table {
+            min-width: 1000px;
+        }
+
+        table.table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        table.table th {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        table.table tbody tr:hover {
+            background-color: #5abed6;
+        }
+
         .table-responsive {
             height: 400px;
             overflow-y: auto;
@@ -128,7 +147,7 @@ $stationsResult = $conn->query($stationsSql);
                                 <tr>
                                     <th>ID</th>
                                     <th>DATE</th>
-                                    <th>GUARD NAME</th>
+                                    <th>NAME</th>
                                     <th>STATION</th>
                                     <th>Actions</th>
                                 </tr>
@@ -479,6 +498,7 @@ $stationsResult = $conn->query($stationsSql);
                         success: function(response) {
                             if (response.success) {
                                 Swal.fire({
+                                    position: 'top',
                                     title: 'Success!',
                                     text: response.message,
                                     icon: 'success',
@@ -489,6 +509,7 @@ $stationsResult = $conn->query($stationsSql);
                                 fetchActiveGuards();
                             } else {
                                 Swal.fire({
+                                    position: 'top',
                                     title: 'Error!',
                                     text: response.message,
                                     icon: 'error',
@@ -500,6 +521,7 @@ $stationsResult = $conn->query($stationsSql);
                         },
                         error: function(xhr, status, error) {
                             Swal.fire({
+                                position: 'top',
                                 title: 'Error!',
                                 text: `An unexpected error occurred: ${error}`,
                                 icon: 'error',
@@ -751,6 +773,7 @@ $stationsResult = $conn->query($stationsSql);
                         // Handle alert messages
                         if (response.success) {
                             Swal.fire({
+                                position: 'top',
                                 title: 'Success!',
                                 text: response.message,
                                 icon: 'success',
@@ -763,6 +786,7 @@ $stationsResult = $conn->query($stationsSql);
 
                         } else {
                             Swal.fire({
+                                position: 'top',
                                 title: 'Error!',
                                 text: response.message,
                                 icon: 'error',
@@ -775,6 +799,7 @@ $stationsResult = $conn->query($stationsSql);
                     error: function(xhr, status, error) {
 
                         Swal.fire({
+                            position: 'top',
                             title: 'Error!',
                             text: `An error occurred while adding the guard: ${error}`,
                             icon: 'error',
@@ -962,6 +987,7 @@ $stationsResult = $conn->query($stationsSql);
                         if (response.success) {
 
                             Swal.fire({
+                                position: 'top',
                                 title: 'Success!',
                                 text: response.message,
                                 icon: 'success',
@@ -984,6 +1010,7 @@ $stationsResult = $conn->query($stationsSql);
                         } else {
                             // Show error message if unsuccessful
                             Swal.fire({
+                                position: 'top',
                                 title: 'Error!',
                                 text: response.message,
                                 icon: 'error',
@@ -996,6 +1023,7 @@ $stationsResult = $conn->query($stationsSql);
                     error: function(xhr, status, error) {
                         console.error(error); // Log the error for debugging
                         Swal.fire({
+                            position: 'top',
                             title: 'Error!',
                             text: 'An error occurred. Please try again.',
                             icon: 'error',
@@ -1085,6 +1113,7 @@ $stationsResult = $conn->query($stationsSql);
                                 if (response.success) {
                                     // Handle success message
                                     Swal.fire({
+                                        position: 'top',
                                         title: 'Success!',
                                         text: response.message,
                                         icon: 'success',
@@ -1102,6 +1131,7 @@ $stationsResult = $conn->query($stationsSql);
                                 } else {
                                     // Show error message if unsuccessful
                                     Swal.fire({
+                                        position: 'top',
                                         title: 'Error!',
                                         text: response.message,
                                         icon: 'error',
@@ -1114,6 +1144,7 @@ $stationsResult = $conn->query($stationsSql);
                             error: function(xhr, status, error) {
                                 console.error(error); // Log the error for debugging
                                 Swal.fire({
+                                    position: 'top',
                                     title: 'Error!',
                                     text: 'An error occurred. Please try again.',
                                     icon: 'error',

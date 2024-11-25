@@ -64,7 +64,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
         /* END FOR PROFILE CONTAINER */
 
-        /* FOR MODAL EDIT MODAL */
+        /* FOR MODAL VIEW MODAL */
         .profile-image-container {
             width: 100%;
             padding-top: 100%;

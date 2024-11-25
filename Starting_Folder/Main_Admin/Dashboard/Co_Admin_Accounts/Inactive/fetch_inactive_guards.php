@@ -66,9 +66,15 @@ if ($result->num_rows > 0) {
         echo "<td>" . $row['guard_name'] . "</td>";
         echo "<td>" . $row['station_name'] . "</td>";
         echo "<td>
-                    <button class='btn btn-info' onclick='openDetailsModal(" . json_encode($row) . ")'>View Details</button>
-                    <button class='btn btn-success' onclick='reactivateGuard(" . $row['guard_id'] . ")'>Reactivate</button>
-                </td>";
+                    <div class='row d-flex justify-content-center align-items-center m-0 p-0'>
+                        <div class='col-lg-6 my-1'>
+                            <button class='btn btn-info w-100 h-100 p-2' onclick='openDetailsModal(" . json_encode($row) . ")'>VIEW DETAILS</button>
+                        </div>
+                        <div class='col-lg-6 my-1'>
+                            <button class='btn btn-success w-100 h-100 p-2' onclick='reactivateGuard(" . $row['guard_id'] . ")'>REACTIVATE</button>
+                        </div>
+                    </div>
+             </td>";
 
         echo "</tr>";
     }
@@ -78,3 +84,5 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 ?>
+
+

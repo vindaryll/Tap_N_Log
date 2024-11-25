@@ -82,13 +82,13 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                         <a href="VISITORS/main_page.php" class="btn btn-primary w-100 p-3">VISITOR</a>
                     </div>
                     <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="" class="btn btn-primary w-100 p-3">EMPLOYEES</a>
+                        <a href="EMPLOYEES/main_page.php" class="btn btn-primary w-100 p-3">EMPLOYEES</a>
                     </div>
                     <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="" class="btn btn-primary w-100 p-3">CASH FOR WORK</a>
+                        <a href="CFW/main_page.php" class="btn btn-primary w-100 p-3">CASH FOR WORK</a>
                     </div>
                     <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="" class="btn btn-primary w-100 p-3">ON THE JOB TRAINEES</a>
+                        <a href="OJT/main_page.php" class="btn btn-primary w-100 p-3">ON THE JOB TRAINEES</a>
                     </div>
                 </div>
             </div>
