@@ -115,12 +115,12 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                         <input type="text" id="searchTextbox" class="form-control" placeholder="Search by name">
                     </div>
 
-                    <!-- Filter and Sort Buttons -->
-                    <div class="row d-flex justify-content-start p-0 ms-2 mb-3">
-                        <div class="col-md-6 m-0 p-0">
-                            <div class="row d-flex justify-content-start">
+                    <!-- Sort Button -->
+                    <div class="w-100 d-flex justify-content-start p-0 mb-3">
+                        <div class="col-md-6 col-12 m-0 p-0">
+                            <div class="w-100 d-flex justify-content-start p-0 m-0">
                                 <div class="col-3 m-1 p-0">
-                                    <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#sortModal">Sort</button>
+                                    <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#sortModal">SORT</button>
                                 </div>
                             </div>
                         </div>
@@ -720,8 +720,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             });
 
 
-
-
             // VIEW AND EDIT DETAILS
             $(document).on('click', '.view-details-btn', function() {
                 const visitorId = $(this).data('id'); // Get the visitor ID from the button
@@ -746,6 +744,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                 purpose: response.data.purpose
                             }
 
+                            console.log(current);
 
                             // OPEN THE MODAL WITH POPULATED VALUES AND disabled inputs
                             $('#modal_2_firstName').val(current.first_name).removeClass('is-invalid');
@@ -807,9 +806,8 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 const first_name = $('#modal_2_firstName').val().trim();
                 const last_name = $('#modal_2_lastName').val().trim();
                 const phone_number = $('#modal_2_phoneNumber').val().trim();
-                const pass = $('#modal_2_visitorPass').val().trim();
+                const pass = $('#modal_2_visitorPass').val().trim() === '' ? null : $('#modal_2_visitorPass').val().trim();
                 const purpose = $('#modal_2_purpose').val().trim();
-
 
                 if (current.first_name === first_name && current.last_name === last_name &&
                     current.phone_number === phone_number && current.pass === pass && current.purpose === purpose
@@ -865,11 +863,9 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     first_name: $('#modal_2_firstName').val().trim(),
                     last_name: $('#modal_2_lastName').val().trim(),
                     phone_number: $('#modal_2_phoneNumber').val().trim(),
-                    pass: $('#modal_2_visitorPass').val().trim(),
+                    pass: $('#modal_2_visitorPass').val().trim() === '' ? null : $('#modal_2_visitorPass').val().trim(),
                     purpose: $('#modal_2_purpose').val().trim()
                 }
-
-
 
                 if (current.first_name === data_update.first_name && current.last_name === data_update.last_name &&
                     current.phone_number === data_update.phone_number && current.pass === data_update.pass && current.purpose === data_update.purpose

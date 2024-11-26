@@ -951,7 +951,7 @@
 
                                 // Prompt for confirmation before updating the email
                                 Swal.fire({
-                                    title: 'OTP Verified Successfully!',
+                                    title: 'Email has been verified.',
                                     text: 'Do you want to update your email address?',
                                     icon: 'question',
                                     showCancelButton: true,

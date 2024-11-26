@@ -128,14 +128,14 @@ $stationsResult = $conn->query($stationsSql);
                     <input type="text" id="search" class="form-control mb-3" placeholder="Search by guard name or ID">
 
                     <!-- Filter and Sort Buttons -->
-                    <div class="row d-flex justify-content-start p-0 ms-2 mb-3">
-                        <div class="col-md-6 m-0 p-0">
-                            <div class="row d-flex justify-content-start">
+                    <div class="w-100 d-flex justify-content-start p-0 mb-3">
+                        <div class="col-md-6 col-12 m-0 p-0">
+                            <div class="w-100 d-flex justify-content-start p-0 m-0">
                                 <div class="col-3 m-1 p-0">
-                                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#filterModal">Filter</button>
+                                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#filterModal">FILTER</button>
                                 </div>
                                 <div class="col-3 m-1 p-0">
-                                    <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#sortModal">Sort</button>
+                                    <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#sortModal">SORT</button>
                                 </div>
                             </div>
                         </div>
