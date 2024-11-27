@@ -1,15 +1,17 @@
 <?php
+
 session_start();
 
 // Include database connection
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-if (!isset($_SESSION['record_guard_logged'])) {
+// If already logged in, redirect to dashboard
+if (!isset($_SESSION['vehicle_guard_logged'])) {
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
     exit();
 }
 
-if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])) {
+if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged'])) {
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
     exit();
 }
@@ -40,7 +42,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <!-- Cropper.js CDN -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 
-    <title>Visitor logs | Co-Admin for Record Post</title>
+    <title>Vehicle logs | Co-Admin for Vehicle Post</title>
     <style>
         /* CARD CONTAINER FOR RESULT */
         #results-container {
@@ -110,7 +112,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
             <div class="container-fluid col-sm-12 mt-sm-0 mt-4 p-0">
                 <div class="container mt-3 p-0">
-                    <h2 class="text-center w-100">VISITOR LOGS</h2>
+                    <h2 class="text-center w-100">VEHICLE LOGS</h2>
                     <div class="mb-3">
                         <input type="text" id="searchTextbox" class="form-control" placeholder="Search by name">
                     </div>
@@ -139,7 +141,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     <div class="row d-flex justify-content-start mt-2">
                         <div class="col-md-3 col-sm-4 col-12 mb-2">
                             <!-- Add Guard Button -->
-                            <button type="button" id="addRecord" class="btn btn-primary w-100 h-100 p-2">ADD NEW VISITOR</button>
+                            <button type="button" id="addRecord" class="btn btn-primary w-100 h-100 p-2">ADD NEW VEHICLE</button>
                         </div>
                     </div>
 
@@ -189,12 +191,12 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         </div>
     </div>
 
-    <!-- Add Visitor Modal -->
+    <!-- Add Vehicle Modal -->
     <div class="modal fade" id="addRecordModal" tabindex="-1" aria-labelledby="addRecordModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addRecordModalLabel">VISITOR DETAILS</h5>
+                    <h5 class="modal-title" id="addRecordModalLabel">VEHICLE DETAILS</h5>
                     <button type="button" class="btn-close" id="modal_1_closeBtn"></button>
                 </div>
                 <div class="modal-body">
@@ -210,13 +212,13 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                             <div id="modal_1_lastName-feedback" class="invalid-feedback"> <!-- Message will display here --> </div>
                         </div>
                         <div class="mb-3">
-                            <label for="modal_1_phoneNumber" class="form-label"><strong>PHONE NUMBER</strong></label>
-                            <input type="text" class="form-control" id="modal_1_phoneNumber">
-                            <div id="modal_1_phoneNumber-feedback" class="invalid-feedback"> <!-- Message will display here --> </div>
+                            <label for="modal_1_plateNumber" class="form-label"><strong>PLATE NUMBER</strong></label>
+                            <input type="text" class="form-control" id="modal_1_plateNumber">
+                            <div id="modal_1_plateNumber-feedback" class="invalid-feedback"> <!-- Message will display here --> </div>
                         </div>
                         <div class="mb-3">
-                            <label for="modal_1_visitorPass" class="form-label"><strong>VISITOR PASS (Optional)</strong></label>
-                            <input type="text" class="form-control" id="modal_1_visitorPass">
+                            <label for="modal_1_vehiclePass" class="form-label"><strong>VEHICLE PASS (Optional)</strong></label>
+                            <input type="text" class="form-control" id="modal_1_vehiclePass">
                         </div>
                         <div class="mb-3">
                             <label for="modal_1_purpose" class="form-label"><strong>PURPOSE</strong></label>
@@ -232,12 +234,12 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         </div>
     </div>
 
-    <!-- View Visitor Modal -->
+    <!-- View Vehicle Modal -->
     <div class="modal fade" id="viewRecordModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="viewRecordModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="viewRecordLabel">VISITOR DETAILS</h5>
+                    <h5 class="modal-title" id="viewRecordLabel">VEHICLE DETAILS</h5>
                     <button type="button" class="btn-close" id="modal_2_closeBtn"></button>
                 </div>
                 <div class="modal-body">
@@ -253,13 +255,13 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                             <div id="modal_2_lastName-feedback" class="invalid-feedback"> <!-- Message will display here --> </div>
                         </div>
                         <div class="mb-3">
-                            <label for="modal_2_phoneNumber" class="form-label"><strong>PHONE NUMBER</strong></label>
-                            <input type="text" class="form-control" id="modal_2_phoneNumber" disabled>
-                            <div id="modal_2_phoneNumber-feedback" class="invalid-feedback"> <!-- Message will display here --> </div>
+                            <label for="modal_2_plateNumber" class="form-label"><strong>PLATE NUMBER</strong></label>
+                            <input type="text" class="form-control" id="modal_2_plateNumber" disabled>
+                            <div id="modal_2_plateNumber-feedback" class="invalid-feedback"> <!-- Message will display here --> </div>
                         </div>
                         <div class="mb-3">
-                            <label for="modal_2_visitorPass" class="form-label"><strong>VISITOR PASS (Optional)</strong></label>
-                            <input type="text" class="form-control" id="modal_2_visitorPass" disabled>
+                            <label for="modal_2_vehiclePass" class="form-label"><strong>VEHICLE PASS (Optional)</strong></label>
+                            <input type="text" class="form-control" id="modal_2_vehiclePass" disabled>
                         </div>
                         <div class="mb-3">
                             <label for="modal_2_purpose" class="form-label"><strong>PURPOSE</strong></label>
@@ -302,7 +304,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
             // BACK BUTTON
             $('#backbtn').on('click', function() {
-                window.location.href = '../main_page.php';
+                window.location.href = '../dashboard_home.php';
             });
 
             let datePassing = null;
@@ -358,11 +360,11 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             fetchResults();
 
 
-            // FEEDBACK MESSAGE FUNCTIONS FOR ADD VISITOR MODAL
+            // FEEDBACK MESSAGE FUNCTIONS FOR ADD VEHICLE MODAL
 
             $('#modal_1_firstName').on('input', validateFirstName1);
             $('#modal_1_lastName').on('input', validateLastName1);
-            $('#modal_1_phoneNumber').on('input', validatePhoneNumber1);
+            $('#modal_1_plateNumber').on('input', validatePlateNumber1);
             $('#modal_1_purpose').on('input', validatePurpose1);
 
             function validateFirstName1() {
@@ -407,26 +409,22 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 }
             }
 
-            function validatePhoneNumber1() {
-                const phoneNumber = $('#modal_1_phoneNumber').val().trim();
-                const phoneRegex = /^09\d{9}$/;
+            function validatePlateNumber1() {
+                const plateNumber = $('#modal_1_plateNumber').val().trim();
+                const plateRegex = /^09\d{9}$/;
 
-                $('#modal_1_phoneNumber-feedback').text('').removeClass('invalid-feedback');
+                $('#modal_1_plateNumber-feedback').text('').removeClass('invalid-feedback');
 
                 let feedbackMessage = '';
-                if (phoneNumber === "") {
-                    feedbackMessage = 'Phone number cannot be empty.';
-                } else if (!phoneNumber.match(/^\d+$/)) {
-                    feedbackMessage = 'Phone number must contain numbers only.';
-                } else if (!phoneRegex.test(phoneNumber)) {
-                    feedbackMessage = 'Phone number must start with "09" and be exactly 11 digits long.';
+                if (plateNumber === "") {
+                    feedbackMessage = 'Plate number cannot be empty.';
                 }
 
                 if (feedbackMessage) {
-                    $('#modal_1_phoneNumber-feedback').text(feedbackMessage).addClass('invalid-feedback');
-                    $('#modal_1_phoneNumber').addClass('is-invalid');
+                    $('#modal_1_plateNumber-feedback').text(feedbackMessage).addClass('invalid-feedback');
+                    $('#modal_1_plateNumber').addClass('is-invalid');
                 } else {
-                    $('#modal_1_phoneNumber').removeClass('is-invalid');
+                    $('#modal_1_plateNumber').removeClass('is-invalid');
                 }
             }
 
@@ -451,10 +449,10 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             function checksaveNewRecord() {
                 const isFirstNameValid = !$('#modal_1_firstName').hasClass('is-invalid') && $('#modal_1_firstName').val().trim() !== "";
                 const isLastNameValid = !$('#modal_1_lastName').hasClass('is-invalid') && $('#modal_1_lastName').val().trim() !== "";
-                const isPhoneNumberValid = !$('#modal_1_phoneNumber').hasClass('is-invalid') && $('#modal_1_phoneNumber').val().trim() !== "";
+                const isPlateNumberValid = !$('#modal_1_plateNumber').hasClass('is-invalid') && $('#modal_1_plateNumber').val().trim() !== "";
                 const isPurposeValid = !$('#modal_1_purpose').hasClass('is-invalid') && $('#modal_1_purpose').val().trim() !== "";
 
-                if (!isFirstNameValid || !isLastNameValid || !isPhoneNumberValid || !isPurposeValid) {
+                if (!isFirstNameValid || !isLastNameValid || !isPlateNumberValid || !isPurposeValid) {
                     return false;
                 } else {
                     return true;
@@ -462,11 +460,11 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             }
 
 
-            // FEEDBACK MESSAGE FUNCTIONS FOR EDIT VISITOR MODAL
+            // FEEDBACK MESSAGE FUNCTIONS FOR EDIT VEHICLE MODAL
 
             $('#modal_2_firstName').on('input', validateFirstName2);
             $('#modal_2_lastName').on('input', validateLastName2);
-            $('#modal_2_phoneNumber').on('input', validatePhoneNumber2);
+            $('#modal_2_plateNumber').on('input', validatePlateNumber2);
             $('#modal_2_purpose').on('input', validatePurpose2);
 
             function validateFirstName2() {
@@ -511,26 +509,22 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 }
             }
 
-            function validatePhoneNumber2() {
-                const phoneNumber = $('#modal_2_phoneNumber').val().trim();
-                const phoneRegex = /^09\d{9}$/;
+            function validatePlateNumber2() {
+                const plateNumber = $('#modal_2_plateNumber').val().trim();
+                const plateRegex = /^09\d{9}$/;
 
-                $('#modal_2_phoneNumber-feedback').text('').removeClass('invalid-feedback');
+                $('#modal_2_plateNumber-feedback').text('').removeClass('invalid-feedback');
 
                 let feedbackMessage = '';
-                if (phoneNumber === "") {
-                    feedbackMessage = 'Phone number cannot be empty.';
-                } else if (!phoneNumber.match(/^\d+$/)) {
-                    feedbackMessage = 'Phone number must contain numbers only.';
-                } else if (!phoneRegex.test(phoneNumber)) {
-                    feedbackMessage = 'Phone number must start with "09" and be exactly 11 digits long.';
+                if (plateNumber === "") {
+                    feedbackMessage = 'Plate number cannot be empty.';
                 }
 
                 if (feedbackMessage) {
-                    $('#modal_2_phoneNumber-feedback').text(feedbackMessage).addClass('invalid-feedback');
-                    $('#modal_2_phoneNumber').addClass('is-invalid');
+                    $('#modal_2_plateNumber-feedback').text(feedbackMessage).addClass('invalid-feedback');
+                    $('#modal_2_plateNumber').addClass('is-invalid');
                 } else {
-                    $('#modal_2_phoneNumber').removeClass('is-invalid');
+                    $('#modal_2_plateNumber').removeClass('is-invalid');
                 }
             }
 
@@ -555,10 +549,10 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             function checkbtn2() {
                 const isFirstNameValid = !$('#modal_2_firstName').hasClass('is-invalid') && $('#modal_2_firstName').val().trim() !== "";
                 const isLastNameValid = !$('#modal_2_lastName').hasClass('is-invalid') && $('#modal_2_lastName').val().trim() !== "";
-                const isPhoneNumberValid = !$('#modal_2_phoneNumber').hasClass('is-invalid') && $('#modal_2_phoneNumber').val().trim() !== "";
+                const isPlateNumberValid = !$('#modal_2_plateNumber').hasClass('is-invalid') && $('#modal_2_plateNumber').val().trim() !== "";
                 const isPurposeValid = !$('#modal_2_purpose').hasClass('is-invalid') && $('#modal_2_purpose').val().trim() !== "";
 
-                if (!isFirstNameValid || !isLastNameValid || !isPhoneNumberValid || !isPurposeValid) {
+                if (!isFirstNameValid || !isLastNameValid || !isPlateNumberValid || !isPurposeValid) {
                     return false;
                 } else {
                     return true;
@@ -592,9 +586,9 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 $('#modal_1_firstName-feedback').text('').removeClass('invalid-feedback');
                 $('#modal_1_lastName').val('').removeClass('is-invalid');
                 $('#modal_1_lastName-feedback').text('').removeClass('invalid-feedback');
-                $('#modal_1_phoneNumber').val('').removeClass('is-invalid');
-                $('#modal_1_phoneNumber-feedback').text('').removeClass('invalid-feedback');
-                $('#modal_1_visitorPass').val('');
+                $('#modal_1_plateNumber').val('').removeClass('is-invalid');
+                $('#modal_1_plateNumber-feedback').text('').removeClass('invalid-feedback');
+                $('#modal_1_vehiclePass').val('');
                 $('#modal_1_purpose').val('').removeClass('is-invalid');
                 $('#modal_1_purpose-feedback').text('').removeClass('invalid-feedback');
 
@@ -607,7 +601,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
                 validateFirstName1();
                 validateLastName1();
-                validatePhoneNumber1();
+                validatePlateNumber1();
                 validatePurpose1();
 
                 if (!checksaveNewRecord()) {
@@ -631,8 +625,8 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                             date_format: formattedDate,
                             first_name: $('#modal_1_firstName').val().trim(),
                             last_name: $('#modal_1_lastName').val().trim(),
-                            phone_number: $('#modal_1_phoneNumber').val().trim(),
-                            visitor_pass: $('#modal_1_visitorPass').val().trim() ? $('#modal_1_visitorPass').val().trim() : null,
+                            plate_number: $('#modal_1_plateNumber').val().trim(),
+                            vehicle_pass: $('#modal_1_vehiclePass').val().trim() ? $('#modal_1_vehiclePass').val().trim() : null,
                             purpose: $('#modal_1_purpose').val().trim(),
                         };
 
@@ -690,11 +684,11 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             $('#modal_1_closeBtn').on('click', function() {
                 const first_name = $('#modal_1_firstName').val().trim();
                 const last_name = $('#modal_1_lastName').val().trim();
-                const phone_number = $('#modal_1_phoneNumber').val().trim();
-                const pass = $('#modal_1_visitorPass').val().trim();
+                const plate_number = $('#modal_1_plateNumber').val().trim();
+                const pass = $('#modal_1_vehiclePass').val().trim();
                 const purpose = $('#modal_1_purpose').val().trim();
 
-                if (first_name !== '' || last_name !== '' || phone_number !== '' || pass !== '' || purpose !== '') {
+                if (first_name !== '' || last_name !== '' || plate_number !== '' || pass !== '' || purpose !== '') {
 
                     Swal.fire({
                         title: `Unsaved Input Detected`,
@@ -722,13 +716,13 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
             // VIEW AND EDIT DETAILS
             $(document).on('click', '.view-details-btn', function() {
-                const visitorId = $(this).data('id'); // Get the visitor ID from the button
+                const vehicleId = $(this).data('id'); // Get the vehicle ID from the button
 
                 $.ajax({
-                    url: 'get_record_details.php', // Backend to fetch visitor details
+                    url: 'get_record_details.php', // Backend to fetch vehicle details
                     method: 'POST',
                     data: {
-                        id: visitorId
+                        id: vehicleId
                     },
                     dataType: 'json',
                     success: function(response) {
@@ -736,11 +730,11 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
                             // Store current values for checking of changes
                             current = {
-                                record_id: response.data.visitor_id,
+                                record_id: response.data.vehicle_id,
                                 first_name: response.data.first_name,
                                 last_name: response.data.last_name,
-                                phone_number: response.data.phone_num,
-                                pass: response.data.visitor_pass,
+                                plate_number: response.data.plate_num,
+                                pass: response.data.vehicle_pass,
                                 purpose: response.data.purpose
                             }
 
@@ -751,15 +745,15 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                             $('#modal_2_firstName-feedback').text('').removeClass('invalid-feedback');
                             $('#modal_2_lastName').val(current.last_name).removeClass('is-invalid');
                             $('#modal_2_lastName-feedback').text('').removeClass('invalid-feedback');
-                            $('#modal_2_phoneNumber').val(current.phone_number).removeClass('is-invalid');
-                            $('#modal_2_phoneNumber-feedback').text('').removeClass('invalid-feedback');
-                            $('#modal_2_visitorPass').val(current.pass);
+                            $('#modal_2_plateNumber').val(current.plate_number).removeClass('is-invalid');
+                            $('#modal_2_plateNumber-feedback').text('').removeClass('invalid-feedback');
+                            $('#modal_2_vehiclePass').val(current.pass);
                             $('#modal_2_purpose').val(current.purpose).removeClass('is-invalid');
                             $('#modal_2_purpose-feedback').text('').removeClass('invalid-feedback');
 
                             $('#editBtn, #modal_2_closeBtn').show();
                             $('#cancelBtn, #saveEditBtn').hide();
-                            $('#modal_2_firstName, #modal_2_lastName, #modal_2_phoneNumber, #modal_2_visitorPass, #modal_2_purpose').prop('disabled', true);
+                            $('#modal_2_firstName, #modal_2_lastName, #modal_2_plateNumber, #modal_2_vehiclePass, #modal_2_purpose').prop('disabled', true);
 
                             // Show the modal
                             $('#viewRecordModal').modal('show');
@@ -776,12 +770,12 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                         }
                     },
                     error: function(xhr, status, error) {
-                        console.error("Error fetching visitor details:", error);
+                        console.error("Error fetching vehicle details:", error);
                         Swal.fire({
                             position: 'top',
                             icon: 'error',
                             title: 'Error',
-                            text: 'Unable to fetch visitor details. Please try again.',
+                            text: 'Unable to fetch vehicle details. Please try again.',
                             timer: 2000,
                             timerProgressBar: true,
                             showConfirmButton: false,
@@ -798,23 +792,23 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
                 $('#editBtn, #modal_2_closeBtn').hide();
                 $('#cancelBtn, #saveEditBtn').show();
-                $('#modal_2_firstName, #modal_2_lastName, #modal_2_phoneNumber, #modal_2_visitorPass, #modal_2_purpose').prop('disabled', false);
+                $('#modal_2_firstName, #modal_2_lastName, #modal_2_plateNumber, #modal_2_vehiclePass, #modal_2_purpose').prop('disabled', false);
             });
 
             $('#cancelBtn').on('click', function() {
 
                 const first_name = $('#modal_2_firstName').val().trim();
                 const last_name = $('#modal_2_lastName').val().trim();
-                const phone_number = $('#modal_2_phoneNumber').val().trim();
-                const pass = $('#modal_2_visitorPass').val().trim() === '' ? null : $('#modal_2_visitorPass').val().trim();
+                const plate_number = $('#modal_2_plateNumber').val().trim();
+                const pass = $('#modal_2_vehiclePass').val().trim() === '' ? null : $('#modal_2_vehiclePass').val().trim();
                 const purpose = $('#modal_2_purpose').val().trim();
 
                 if (current.first_name === first_name && current.last_name === last_name &&
-                    current.phone_number === phone_number && current.pass === pass && current.purpose === purpose
+                    current.plate_number === plate_number && current.pass === pass && current.purpose === purpose
                 ) {
                     $('#editBtn, #modal_2_closeBtn').show();
                     $('#cancelBtn, #saveEditBtn').hide();
-                    $('#modal_2_firstName, #modal_2_lastName, #modal_2_phoneNumber, #modal_2_visitorPass, #modal_2_purpose').prop('disabled', true);
+                    $('#modal_2_firstName, #modal_2_lastName, #modal_2_plateNumber, #modal_2_vehiclePass, #modal_2_purpose').prop('disabled', true);
                     return;
                 }
 
@@ -834,15 +828,15 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                         $('#modal_2_firstName-feedback').text('').removeClass('invalid-feedback');
                         $('#modal_2_lastName').val(current.last_name).removeClass('is-invalid');
                         $('#modal_2_lastName-feedback').text('').removeClass('invalid-feedback');
-                        $('#modal_2_phoneNumber').val(current.phone_number).removeClass('is-invalid');
-                        $('#modal_2_phoneNumber-feedback').text('').removeClass('invalid-feedback');
-                        $('#modal_2_visitorPass').val(current.pass);
+                        $('#modal_2_plateNumber').val(current.plate_number).removeClass('is-invalid');
+                        $('#modal_2_plateNumber-feedback').text('').removeClass('invalid-feedback');
+                        $('#modal_2_vehiclePass').val(current.pass);
                         $('#modal_2_purpose').val(current.purpose).removeClass('is-invalid');
                         $('#modal_2_purpose-feedback').text('').removeClass('invalid-feedback');
 
                         $('#editBtn, #modal_2_closeBtn').show();
                         $('#cancelBtn, #saveEditBtn').hide();
-                        $('#modal_2_firstName, #modal_2_lastName, #modal_2_phoneNumber, #modal_2_visitorPass, #modal_2_purpose').prop('disabled', true);
+                        $('#modal_2_firstName, #modal_2_lastName, #modal_2_plateNumber, #modal_2_vehiclePass, #modal_2_purpose').prop('disabled', true);
                     }
                 });
             });
@@ -851,7 +845,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
                 validateFirstName2();
                 validateLastName2();
-                validatePhoneNumber2();
+                validatePlateNumber2();
                 validatePurpose2();
 
                 if (!checkbtn2()) {
@@ -862,13 +856,13 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     record_id: current.record_id,
                     first_name: $('#modal_2_firstName').val().trim(),
                     last_name: $('#modal_2_lastName').val().trim(),
-                    phone_number: $('#modal_2_phoneNumber').val().trim(),
-                    pass: $('#modal_2_visitorPass').val().trim() === '' ? null : $('#modal_2_visitorPass').val().trim(),
+                    plate_number: $('#modal_2_plateNumber').val().trim(),
+                    pass: $('#modal_2_vehiclePass').val().trim() === '' ? null : $('#modal_2_vehiclePass').val().trim(),
                     purpose: $('#modal_2_purpose').val().trim()
                 }
 
                 if (current.first_name === data_update.first_name && current.last_name === data_update.last_name &&
-                    current.phone_number === data_update.phone_number && current.pass === data_update.pass && current.purpose === data_update.purpose
+                    current.plate_number === data_update.plate_number && current.pass === data_update.pass && current.purpose === data_update.purpose
                 ) {
                     Swal.fire({
                         title: 'No Changes Detected',
@@ -930,20 +924,20 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
                                     current.first_name = data_update.first_name;
                                     current.last_name = data_update.last_name;
-                                    current.phone_number = data_update.phone_number;
+                                    current.plate_number = data_update.plate_number;
                                     current.pass = data_update.pass;
                                     current.purpose = data_update.purpose;
 
                                     // UPDATE VALUES AND DISABLE INPUTS
                                     $('#modal_2_firstName').val(data_update.first_name);
                                     $('#modal_2_lastName').val(data_update.last_name);
-                                    $('#modal_2_phoneNumber').val(data_update.phone_number);
-                                    $('#modal_2_visitorPass').val(data_update.pass);
+                                    $('#modal_2_plateNumber').val(data_update.plate_number);
+                                    $('#modal_2_vehiclePass').val(data_update.pass);
                                     $('#modal_2_purpose').val(data_update.purpose);
 
                                     $('#editBtn, #modal_2_closeBtn').show();
                                     $('#cancelBtn, #saveEditBtn').hide();
-                                    $('#modal_2_firstName, #modal_2_lastName, #modal_2_phoneNumber, #modal_2_visitorPass, #modal_2_purpose').prop('disabled', true);
+                                    $('#modal_2_firstName, #modal_2_lastName, #modal_2_plateNumber, #modal_2_vehiclePass, #modal_2_purpose').prop('disabled', true);
 
                                 } else {
                                     Swal.fire({
@@ -979,7 +973,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
             // TIME OUT
             $(document).on('click', '.time-out-btn', function() {
-                const visitorId = $(this).data('id'); // Get the visitor ID from the button
+                const vehicleId = $(this).data('id'); // Get the vehicle ID from the button
                 const full_name = $(this).data('name');
 
                 // Get the current time
@@ -1015,7 +1009,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                             url: 'time_out.php', // Backend script for processing time out
                             type: 'POST',
                             data: {
-                                record_id: visitorId,
+                                record_id: vehicleId,
                                 date: datePassing,
                                 time_out: timePassing
                             },
@@ -1034,7 +1028,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                         showConfirmButton: false,
                                     });
 
-                                    // Refresh the visitor list or remove the card from UI
+                                    // Refresh the vehicle list or remove the card from UI
                                     fetchResults();
                                 } else {
                                     Swal.fire({
@@ -1068,7 +1062,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
             // ARCHIVE RECORD
             $(document).on('click', '.archive-btn', function() {
-                const visitorId = $(this).data('id'); // Get the visitor ID from the button
+                const vehicleId = $(this).data('id'); // Get the vehicle ID from the button
                 const full_name = $(this).data('name');
                 
                 // Confirmation dialog
@@ -1097,7 +1091,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                             url: 'archive_record.php', // The backend script to process the archive
                             type: 'POST',
                             data: {
-                                record_id: visitorId
+                                record_id: vehicleId
                             },
                             dataType: 'json',
                             success: function(response) {
@@ -1114,7 +1108,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                         showConfirmButton: false,
                                     });
 
-                                    // Refresh the visitor list or update the UI
+                                    // Refresh the vehicle list or update the UI
                                     fetchResults();
                                 } else {
                                     Swal.fire({

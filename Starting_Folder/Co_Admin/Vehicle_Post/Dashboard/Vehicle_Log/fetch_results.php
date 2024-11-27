@@ -16,8 +16,8 @@ $search = sanitizeInput($_POST['search'] ?? '');
 // Build the query
 $query = "
     SELECT 
-        visitor_id, first_name, last_name, date_att, phone_num, purpose, visitor_pass, time_in 
-    FROM visitors
+        vehicle_id, first_name, last_name, date_att, plate_num, purpose, vehicle_pass, time_in 
+    FROM vehicles
     WHERE date_att = CURDATE() 
         AND time_out IS NULL 
         AND is_archived = FALSE
@@ -61,18 +61,18 @@ if ($result && $result->num_rows > 0) {
                     <div class='card-footer d-flex flex-column'>
                         <button type='button' 
                                 class='row btn btn-primary m-1 w-100 view-details-btn' 
-                                data-id='{$row['visitor_id']}'>
+                                data-id='{$row['vehicle_id']}'>
                             VIEW DETAILS
                         </button>
                         <button type='button' 
                                 class='row btn btn-success w-100 m-1 time-out-btn' 
-                                data-id='{$row['visitor_id']}'
+                                data-id='{$row['vehicle_id']}'
                                 data-name='{$row['first_name']} {$row['last_name']}'>
                             TIME OUT
                         </button>
                         <button type='button' 
                                 class='row btn btn-danger w-100 m-1 archive-btn' 
-                                data-id='{$row['visitor_id']}'
+                                data-id='{$row['vehicle_id']}'
                                 data-name='{$row['first_name']} {$row['last_name']}'>
                             ARCHIVE
                         </button>
@@ -82,7 +82,7 @@ if ($result && $result->num_rows > 0) {
         ";
     }
 } else {
-    echo "<p class='text-center'>No visitors to display.</p>";
+    echo "<p class='text-center'>No vehicles to display.</p>";
 }
 
 $conn->close();

@@ -1,22 +1,20 @@
 <?php
+
 session_start();
 
 // Include database connection
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-// Kapag hindi pa sila nakakalogin, dederetso sa login page
-if (!isset($_SESSION['record_guard_logged'])) {
+// If already logged in, redirect to dashboard
+if (!isset($_SESSION['vehicle_guard_logged'])) {
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
     exit();
 }
 
-// kapag hindi belong sa Record Post, redirect sa landing page
-if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])) {
+if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged'])) {
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
     exit();
 }
-
-
 ?>
 
 <!doctype html>
@@ -41,7 +39,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-    <title>Archived Records - Visitors | Record Post</title>
+    <title>Activity logs | Record Post</title>
 
     <style>
         .input-group {
@@ -50,6 +48,35 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
         .toggle-password {
             cursor: pointer;
+        }
+
+        /* FOR MODAL VIEW MODAL */
+        .profile-image-container {
+            width: 100%;
+            padding-top: 100%;
+            /* 1:1 Aspect Ratio */
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        .profile-image-container img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Max Height for Modal to Prevent Overflow */
+        .modal-dialog {
+            max-height: 90vh;
+        }
+
+        .modal-content {
+            overflow-y: auto;
         }
 
         /* FOR TABLE */
@@ -65,10 +92,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         table.table th {
             text-align: center;
             vertical-align: middle;
-        }
-        
-        table.table tbody tr:hover {
-            background-color: #5abed6;
         }
 
         .table-pre {
@@ -86,6 +109,10 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             background-color: #343a40;
             color: white;
             z-index: 1;
+        }
+
+        table.table tbody tr:hover {
+            background-color: #5abed6;
         }
 
         /* BACK BUTTON */
@@ -121,10 +148,10 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             <div class="container-fluid col-sm-12 mt-sm-0 mt-4 px-2">
 
                 <div class="container-fluid text-center">
-                    <h2 class="text-center w-100">VISITORS ARCHIVED RECORDS</h2>
+                    <h2 class="text-center w-100">VEHICLE CO-ADMINISTRATOR ACTIVITY LOG</h2>
 
                     <!-- Textbox for search -->
-                    <input type="text" id="searchTextbox" class="form-control mb-3" placeholder="Search by name or Logbook ID">
+                    <input type="text" id="searchTextbox" class="form-control mb-3" placeholder="Search by details or activity ID">
 
                     <!-- Filter and Sort Buttons -->
                     <div class="w-100 d-flex justify-content-start p-0 mb-3">
@@ -144,12 +171,11 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                         <table class="table table-bordered">
                             <thead class="table-dark">
                                 <tr>
-                                    <th>LOGBOOK ID</th>
-                                    <th>DATE</th>
-                                    <th>NAME</th>
-                                    <th>TIME-IN</th>
-                                    <th>TIME-OUT</th>
-                                    <th>ACTION</th>
+                                    <th>ACTIVITY ID</th>
+                                    <th>TIMESTAMP</th>
+                                    <th>DETAILS</th>
+                                    <th>CATEGORY</th>
+                                    <th>CO-ADMIN ID - NAME</th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
@@ -171,7 +197,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="filterModalLabel">FILTER RECORDS</h5>
+                    <h5 class="modal-title" id="filterModalLabel">FILTER ACTIVITY</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -183,6 +209,37 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                         <div class="mb-3">
                             <label for="to_dateInput" class="form-label">TO</label>
                             <input type="date" id="to_dateInput" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="co-admin" class="form-label">CO-ADMINISTRATOR</label>
+                            <select id="co-admin" class="form-select">
+                                <option value="">ALL</option>
+                                <!-- populate it like this:
+                                <option value="1">1 - MELVIN DARYLL ALOCILLO</option>
+                                <option value="2">2 - PRINCESS MIKHAELA JOSE</option>
+                                <option value="3">3 - KEN ANGELO VELASQUEZ</option> -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="section" class="form-label">SECTION</label>
+                            <select id="section" class="form-select">
+                                <option value="">ALL</option>
+                                <!-- 
+                                <option value="VEHICLES">CASH FOR WORK</option>
+                                <option value="ACCOUNTS">ACCOUNTS</option>
+                                 -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">SECTION</label>
+                            <select id="category" class="form-select">
+                                <option value="">ALL</option>
+                                <!-- 
+                                <option value="INSERT">INSERT</option>
+                                <option value="UPDATE">UPDATE</option>
+                                <option value="ARCHIVE">ARCHIVE</option>
+                                 -->
+                            </select>
                         </div>
                     </form>
                 </div>
@@ -199,36 +256,15 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="sortModalLabel">SORT RECORDS</h5>
+                    <h5 class="modal-title" id="sortModalLabel">SORT ACTIVITY</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-2">
-                        <label class="form-label">SORT BY DATE</label>
+                        <label class="form-label">SORT BY TIMESTAMP</label>
                         <div>
-                            <input type="radio" name="sortDate" value="asc"> Ascending<br>
-                            <input type="radio" name="sortDate" value="desc"> Descending
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label">SORT BY TIME-IN</label>
-                        <div>
-                            <input type="radio" name="sortTimeIn" value="asc"> Earliest<br>
-                            <input type="radio" name="sortTimeIn" value="desc"> Latest
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label">SORT BY TIME-OUT</label>
-                        <div>
-                            <input type="radio" name="sortTimeOut" value="asc"> Earliest<br>
-                            <input type="radio" name="sortTimeOut" value="desc"> Latest
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label">SORT BY name</label>
-                        <div>
-                            <input type="radio" name="sortName" value="asc"> A-Z<br>
-                            <input type="radio" name="sortName" value="desc"> Z-A
+                            <input type="radio" name="sortTimestamp" value="asc"> Ascending<br>
+                            <input type="radio" name="sortTimestamp" value="desc"> Descending
                         </div>
                     </div>
                 </div>
@@ -240,65 +276,84 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         </div>
     </div>
 
-    <!-- View Visitor Modal -->
-    <div class="modal fade" id="viewRecordModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="viewRecordModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="viewRecordLabel">VISITOR DETAILS</h5>
-                    <button type="button" class="btn-close" id="modal_1_closeBtn"></button>
-                </div>
-                <div class="modal-body mb-3">
-                    <form id="addRecordForm">
-                        <div class="mb-3">
-                            <label for="modal_1_firstName" class="form-label"><strong>FIRST NAME</strong></label>
-                            <input type="text" class="form-control" id="modal_1_firstName" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label for="modal_1_lastName" class="form-label"><strong>LAST NAME</strong></label>
-                            <input type="text" class="form-control" id="modal_1_lastName" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label for="modal_1_phoneNumber" class="form-label"><strong>PHONE NUMBER</strong></label>
-                            <input type="text" class="form-control" id="modal_1_phoneNumber" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label for="modal_1_visitorPass" class="form-label"><strong>VISITOR PASS (Optional)</strong></label>
-                            <input type="text" class="form-control" id="modal_1_visitorPass" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label for="modal_1_purpose" class="form-label"><strong>PURPOSE</strong></label>
-                            <textarea class="form-control" id="modal_1_purpose" rows="3" disabled></textarea>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
 
 
 
     <script>
         $(document).ready(function() {
 
-            $('#modal_1_closeBtn').on('click', function() {
-                $('#viewRecordModal').modal('hide');
-            });
-
             $('#backbtn').on('click', function() {
-                window.location.href = '../main_page.php';
+                window.location.href = '../dashboard_home.php';
             });
 
-            $('#modal_1_firstName').on('input', function() {
-                $(this).val($(this).val().toUpperCase()); // Convert to uppercase
+            // POPULATE DROP DOWNS: co-admin
+            function populateCoAdminDropdown() {
+                $.ajax({
+                    url: 'fetch_coadmins.php', // PHP script to fetch co-admin data
+                    type: 'GET',
+                    success: function(data) {
+                        $('#co-admin').html(data); // Populate the dropdown
+                    },
+                    error: function() {
+                        console.error('Error fetching co-admin data.');
+                    }
+                });
+            }
+
+            populateCoAdminDropdown();
+
+            // POPULATE DROP DOWNS: section and category
+            let sectionCategoryMap = {};
+
+            // Fetch sections and categories dynamically
+            function fetchSectionsAndCategories() {
+                $.ajax({
+                    url: 'fetch_sections_categories.php', // Backend script
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        // Populate #section dropdown
+                        const sectionSelect = $('#section');
+                        sectionSelect.empty();
+                        sectionSelect.append('<option value="">ALL</option>'); // Default option
+                        data.sections.forEach(section => {
+                            sectionSelect.append(`<option value="${section.value}">${section.label}</option>`);
+                        });
+
+                        // Save categories mapping for validation
+                        sectionCategoryMap = data.categories;
+
+                        // Reset #category dropdown
+                        updateCategoryOptions();
+                    },
+                    error: function() {
+                        console.error('Error fetching sections and categories.');
+                    },
+                });
+            }
+
+            // Update category options based on selected section
+            function updateCategoryOptions() {
+                const selectedSection = $('#section').val();
+                const categorySelect = $('#category');
+                categorySelect.empty();
+                categorySelect.append('<option value="">ALL</option>'); // Default option
+
+                if (selectedSection && sectionCategoryMap[selectedSection]) {
+                    // Populate valid categories for the selected section
+                    sectionCategoryMap[selectedSection].forEach(category => {
+                        categorySelect.append(`<option value="${category}">${category}</option>`);
+                    });
+                }
+            }
+
+            // Validate category when section changes
+            $('#section').on('change', function() {
+                updateCategoryOptions();
             });
 
-            // Add event listener for the last name input
-            $('#modal_1_lastName').on('input', function() {
-                $(this).val($(this).val().toUpperCase()); // Convert to uppercase
-            });
+            // Initialize sections and categories
+            fetchSectionsAndCategories();
 
             // Get today's date in local time (correcting for time zone)
             const today = new Date();
@@ -354,20 +409,21 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     if (fromDateValue > toDateValue) {
                         $('#from_dateInput').val('');
                     }
-
                 }
             }
 
             $('#from_dateInput').on('input change', validateDateInput1);
             $('#to_dateInput').on('input change', validateDateInput2);
 
+            // Initialize filters and sort
             let filters = {};
             let sort = {};
             let search = '';
 
-            function fetchRecords() {
+            // Function to fetch activity data
+            function fetchActivity() {
                 $.ajax({
-                    url: 'fetch_records.php',
+                    url: 'fetch_activity.php', // Backend script to handle fetching
                     type: 'POST',
                     data: {
                         search: search,
@@ -375,85 +431,58 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                         sort: sort,
                     },
                     success: function(data) {
-                        $('#tableBody').html(data);
+                        $('#tableBody').html(data); // Update the table body with the results
                     },
+                    error: function() {
+                        console.error('Error fetching activity data.');
+                    }
                 });
             }
 
-            // Live Search
+            // Live search functionality
             $('#searchTextbox').on('keyup', function() {
                 search = $(this).val().trim();
-                fetchRecords();
+                fetchActivity();
             });
 
-            // Apply Filters
+            // Apply filters from the filter modal
             $('#applyFilters').on('click', function() {
                 filters = {
                     from_date: $('#from_dateInput').val(),
-                    to_date: $('#to_dateInput').val()
+                    to_date: $('#to_dateInput').val(),
+                    co_admin: $('#co-admin').val(),
+                    section: $('#section').val(),
+                    category: $('#category').val(),
                 };
-                fetchRecords();
-                $('#filterModal').modal('hide');
+                fetchActivity();
+                $('#filterModal').modal('hide'); // Close the modal after applying filters
             });
 
-            // Apply Sort
+            // Reset filters
+            $('#resetFilters').on('click', function() {
+                filters = {}; // Clear filters
+                $('#filterForm')[0].reset(); // Reset form inputs
+                fetchActivity();
+            });
+
+            // Apply sorting from the sort modal
             $('#applySort').on('click', function() {
                 sort = {
-                    date: $('input[name="sortDate"]:checked').val(),
-                    time_in: $('input[name="sortTimeIn"]:checked').val(),
-                    time_out: $('input[name="sortTimeOut"]:checked').val(),
-                    name: $('input[name="sortName"]:checked').val()
+                    timestamp: $('input[name="sortTimestamp"]:checked').val(),
                 };
-                fetchRecords();
-                $('#sortModal').modal('hide');
+                fetchActivity();
+                $('#sortModal').modal('hide'); // Close the modal after applying sorting
             });
 
-            // Reset Filters
-            $('#resetFilters').on('click', function() {
-                filters = {};
-                $('#filterForm')[0].reset();
-                fetchRecords();
-            });
-
-            // Reset Sort
+            // Reset sorting
             $('#resetSort').on('click', function() {
-                sort = {};
-
-                // Reset the sorting radio buttons to default
-                $('input[name="sortDate"]').prop('checked', false);
-                $('input[name="sortName"]').prop('checked', false);
-                $('input[name="sortTimeIn"]').prop('checked', false);
-                $('input[name="sortTimeOut"]').prop('checked', false);
-                fetchRecords();
+                sort = {}; // Clear sorting
+                $('input[name="sortTimestamp"]').prop('checked', false);
+                fetchActivity();
             });
 
-            // Initial Fetch
-            fetchRecords();
-
-            // VIEW AND EDIT DETAILS
-            $(document).on('click', '.view-details-btn', function() {
-
-                current = {
-                    first_name: $(this).data('first-name'),
-                    last_name: $(this).data('last-name'),
-                    phone_number: $(this).data('phone-num'),
-                    purpose: $(this).data('purpose'),
-                    pass: $(this).data('visitor-pass')
-                }
-
-                console.log(current);
-
-                // OPEN THE MODAL WITH POPULATED VALUES AND disabled inputs
-                $('#modal_1_firstName').val(current.first_name).removeClass('is-invalid');
-                $('#modal_1_lastName').val(current.last_name).removeClass('is-invalid');
-                $('#modal_1_phoneNumber').val(current.phone_number).removeClass('is-invalid');
-                $('#modal_1_visitorPass').val(current.pass);
-                $('#modal_1_purpose').val(current.purpose).removeClass('is-invalid');
-
-                // Show the modal
-                $('#viewRecordModal').modal('show');
-            });
-
+            // Initial fetch to populate the table
+            fetchActivity();
 
 
         });

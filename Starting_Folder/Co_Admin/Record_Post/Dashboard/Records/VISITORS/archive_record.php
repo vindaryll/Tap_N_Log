@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Log the activity
-        $details = "Archive Visitor Log\n\nRecord ID: $record_id\nName: $first_name $last_name\nPhone Number: $phone_num\nDate: $formatted_date\nTime In: $formatted_time_in\nTime Out: $formatted_time_out\nVisitor Pass: $visitor_pass\nPurpose: $purpose";
+        $details = "Archive Visitor Log\n\nRecord Id: $record_id\nName: $first_name $last_name\nPhone Number: $phone_num\nDate: $formatted_date\nTime In: $formatted_time_in\nTime Out: $formatted_time_out\nVisitor Pass: $visitor_pass\nPurpose: $purpose";
 
         $log_query = "
             INSERT INTO activity_log (section, details, category, station_id, guard_id) 

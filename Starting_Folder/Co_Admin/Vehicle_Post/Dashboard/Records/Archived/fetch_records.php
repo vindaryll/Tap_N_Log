@@ -15,7 +15,7 @@ $sort = $_POST['sort'] ?? [];
 $search = sanitizeInput($_POST['search'] ?? '');
 
 // Base SQL query
-$query = "SELECT * FROM visitors WHERE is_archived = 0";
+$query = "SELECT * FROM vehicles WHERE is_archived = 1";
 
 // Apply filters
 if (!empty($filters['from_date'])) {
@@ -30,7 +30,7 @@ if (!empty($filters['to_date'])) {
 // Apply search functionality
 if (!empty($search)) {
     $search = $conn->real_escape_string($search);
-    $query .= " AND (first_name LIKE '%$search%' OR last_name LIKE '%$search%' OR CONCAT(first_name, ' ', last_name) LIKE '%$search%' OR visitor_id LIKE '%$search%')";
+    $query .= " AND (first_name LIKE '%$search%' OR last_name LIKE '%$search%' OR CONCAT(first_name, ' ', last_name) LIKE '%$search%' OR vehicle_id LIKE '%$search%')";
 }
 
 // Apply sorting
@@ -50,7 +50,7 @@ if (!empty($sort['name'])) {
 if (!empty($order_by)) {
     $query .= " ORDER BY " . implode(", ", $order_by);
 } else {
-    $query .= " ORDER BY visitor_id DESC"; // Default sorting by date
+    $query .= " ORDER BY vehicle_id DESC"; // Default sorting by date
 }
 
 // Execute query
@@ -63,34 +63,24 @@ if ($result->num_rows > 0) {
         $formattedDate = date("F j, Y", strtotime($row['date_att']));
         $formattedTimeIn = date("g:i A", strtotime($row['time_in']));
         $formattedTimeOut = !empty($row['time_out']) ? date("g:i A", strtotime($row['time_out'])) : "NOT COMPLETED";
-        $visitor_pass = isset($row['visitor_pass']) && !empty($row['visitor_pass']) ? $row['visitor_pass'] : null;
 
         echo "
         <tr>
-            <td>{$row['visitor_id']}</td>
+            <td>{$row['vehicle_id']}</td>
             <td>{$formattedDate}</td>
             <td>{$row['first_name']} {$row['last_name']}</td>
             <td>{$formattedTimeIn}</td>
             <td>{$formattedTimeOut}</td>
             <td>
                 <div class='row d-flex justify-content-center align-items-center m-0 p-0'>
-                    <div class='col-lg-6 h-100 my-1'>
+                    <div class='col-12 my-1'>
                         <button class='btn btn-info w-100 h-100 p-2 view-details-btn'
-                            data-id='{$row['visitor_id']}'
                             data-first-name='{$row['first_name']}'
                             data-last-name='{$row['last_name']}'
-                            data-phone-num='{$row['phone_num']}'
+                            data-plate-num='{$row['plate_num']}'
                             data-purpose='{$row['purpose']}'
-                            data-visitor-pass='{$row['visitor_pass']}'>
+                            data-vehicle-pass='{$row['vehicle_pass']}'>
                             VIEW DETAILS
-                        </button>
-                    </div>
-                    <div class='col-lg-6 h-100 my-1'>
-                        <button class='btn btn-danger w-100 h-100 p-2 archive-btn'
-                            data-id='{$row['visitor_id']}'
-                            data-name='{$row['first_name']} {$row['last_name']}'
-                            data-date='{$formattedDate}'>
-                            ARCHIVE
                         </button>
                     </div>
                 </div>
@@ -102,5 +92,4 @@ if ($result->num_rows > 0) {
     echo "<tr><td colspan='6' class='text-center'>No records found.</td></tr>";
 }
 ?>
-
 

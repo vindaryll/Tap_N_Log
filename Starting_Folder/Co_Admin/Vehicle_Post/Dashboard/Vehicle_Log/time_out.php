@@ -18,8 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conn->begin_transaction();
 
     try {
-        // Fetch visitor's attendance details
-        $fetchQuery = "SELECT first_name, last_name, phone_num, purpose, visitor_pass FROM visitors WHERE visitor_id = ? AND is_archived = FALSE";
+        // Fetch vehicle's attendance details
+        $fetchQuery = "SELECT first_name, last_name, plate_num, purpose, vehicle_pass FROM vehicles WHERE vehicle_id = ? AND is_archived = FALSE";
         $fetchStmt = $conn->prepare($fetchQuery);
         $fetchStmt->bind_param("i", $record_id);
         $fetchStmt->execute();
@@ -27,17 +27,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $record = $result->fetch_assoc();
 
         if (!$record) {
-            throw new Exception("Visitor record not found or already archived.");
+            throw new Exception("Vehicle record not found or already archived.");
         }
 
         $first_name = $record['first_name'];
         $last_name = $record['last_name'];
-        $phone_num = $record['phone_num'];
+        $plate_num = $record['plate_num'];
         $purpose = $record['purpose'];
-        $pass = !empty($record['visitor_pass']) ? $record['visitor_pass'] : "None";
+        $pass = !empty($record['vehicle_pass']) ? $record['vehicle_pass'] : "None";
 
-        // Update the time_out in the visitors table
-        $updateQuery = "UPDATE visitors SET time_out = ? WHERE visitor_id = ?";
+        // Update the time_out in the vehicles table
+        $updateQuery = "UPDATE vehicles SET time_out = ? WHERE vehicle_id = ?";
         $updateStmt = $conn->prepare($updateQuery);
         $updateStmt->bind_param("si", $time_out, $record_id);
         $updateStmt->execute();
@@ -52,10 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $full_name = "$first_name $last_name";
 
         // Prepare log details
-        $log_details = "Insert Visitor Log\n\nTIME OUT\n\nVisitor ID: $record_id\nName: $full_name\nPhone Number: $phone_num\nDate: $formatted_date\nTime-Out: $formatted_time_out\nVisitor Pass: $pass\nPurpose: $purpose";
+        $log_details = "Insert Vehicle Log\n\nTIME OUT\n\nVehicle ID: $record_id\nName: $full_name\nPlate Number: $plate_num\nDate: $formatted_date\nTime-Out: $formatted_time_out\nVehicle Pass: $pass\nPurpose: $purpose";
 
         // Insert into activity_log
-        $logQuery = "INSERT INTO activity_log (section, details, category, station_id, guard_id) VALUES ('VISITORS', ?, 'INSERT', ?, ?)";
+        $logQuery = "INSERT INTO activity_log (section, details, category, station_id, guard_id) VALUES ('VEHICLES', ?, 'INSERT', ?, ?)";
         $logStmt = $conn->prepare($logQuery);
         $station_id = $_SESSION['station_id'] ?? null;
         $guard_id = $_SESSION['guard_id'] ?? null;

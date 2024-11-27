@@ -2,13 +2,15 @@
 
 session_start();
 
+// Include database connection
+require_once $_SESSION['directory'] . '\Database\dbcon.php';
+
 // If already logged in, redirect to dashboard
 if (!isset($_SESSION['vehicle_guard_logged'])) {
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
     exit();
 }
 
-// kapag guard sa ibang station, ideretso sa landing page
 if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged'])) {
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
     exit();
@@ -45,23 +47,22 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
     <!-- Nav Bar -->
     <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Record_Post\Dashboard\navbar.php'; ?>
 
-
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
 
         <div class="container-fluid row col-sm-12 text-center">
-            <h2>Welcome back, <?php echo $_SESSION['username'] ?>!</h2>
+            <h2>Welcome back, <?php echo $_SESSION['username']?>!</h2>
 
             <div class="container">
                 <div class="row d-flex justify-content-center align-items-center mt-3">
-                    <div class="col-md-4 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="Attendance_Log/main_page.php" class="btn btn-primary w-100 p-3">ATTENDANCE LOG</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
+                        <a href="Vehicle_Log/main_page.php" class="btn btn-primary w-100 p-3">VEHICLE LOG</a>
                     </div>
-                    <div class="col-md-4 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="" class="btn btn-primary w-100 p-3">RECORDS</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
+                        <a href="Records/main_page.php" class="btn btn-primary w-100 p-3">RECORDS</a>
                     </div>
-                    <div class="col-md-4 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="" class="btn btn-primary w-100 p-3">ACTIVITY LOGS</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
+                        <a href="Activity_Logs/main_page.php" class="btn btn-primary w-100 p-3">ACTIVITY LOGS</a>
                     </div>
                 </div>
             </div>

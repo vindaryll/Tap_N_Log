@@ -1,22 +1,20 @@
 <?php
+
 session_start();
 
 // Include database connection
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-// Kapag hindi pa sila nakakalogin, dederetso sa login page
-if (!isset($_SESSION['record_guard_logged'])) {
+// If already logged in, redirect to dashboard
+if (!isset($_SESSION['vehicle_guard_logged'])) {
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
     exit();
 }
 
-// kapag hindi belong sa Record Post, redirect sa landing page
-if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])) {
+if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged'])) {
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
     exit();
 }
-
-
 ?>
 
 <!doctype html>
@@ -41,7 +39,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-    <title>Archived Records - Visitors | Record Post</title>
+    <title>Archived Records - Vehicles | Vehicle Post</title>
 
     <style>
         .input-group {
@@ -121,7 +119,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             <div class="container-fluid col-sm-12 mt-sm-0 mt-4 px-2">
 
                 <div class="container-fluid text-center">
-                    <h2 class="text-center w-100">VISITORS ARCHIVED RECORDS</h2>
+                    <h2 class="text-center w-100">VEHICLES ARCHIVED RECORDS</h2>
 
                     <!-- Textbox for search -->
                     <input type="text" id="searchTextbox" class="form-control mb-3" placeholder="Search by name or Logbook ID">
@@ -240,12 +238,12 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         </div>
     </div>
 
-    <!-- View Visitor Modal -->
+    <!-- View Vehicle Modal -->
     <div class="modal fade" id="viewRecordModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="viewRecordModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="viewRecordLabel">VISITOR DETAILS</h5>
+                    <h5 class="modal-title" id="viewRecordLabel">VEHICLE DETAILS</h5>
                     <button type="button" class="btn-close" id="modal_1_closeBtn"></button>
                 </div>
                 <div class="modal-body mb-3">
@@ -259,12 +257,12 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                             <input type="text" class="form-control" id="modal_1_lastName" disabled>
                         </div>
                         <div class="mb-3">
-                            <label for="modal_1_phoneNumber" class="form-label"><strong>PHONE NUMBER</strong></label>
-                            <input type="text" class="form-control" id="modal_1_phoneNumber" disabled>
+                            <label for="modal_1_plateNumber" class="form-label"><strong>PLATE NUMBER</strong></label>
+                            <input type="text" class="form-control" id="modal_1_plateNumber" disabled>
                         </div>
                         <div class="mb-3">
-                            <label for="modal_1_visitorPass" class="form-label"><strong>VISITOR PASS (Optional)</strong></label>
-                            <input type="text" class="form-control" id="modal_1_visitorPass" disabled>
+                            <label for="modal_1_vehiclePass" class="form-label"><strong>VEHICLE PASS (Optional)</strong></label>
+                            <input type="text" class="form-control" id="modal_1_vehiclePass" disabled>
                         </div>
                         <div class="mb-3">
                             <label for="modal_1_purpose" class="form-label"><strong>PURPOSE</strong></label>
@@ -436,9 +434,9 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 current = {
                     first_name: $(this).data('first-name'),
                     last_name: $(this).data('last-name'),
-                    phone_number: $(this).data('phone-num'),
+                    plate_number: $(this).data('plate-num'),
                     purpose: $(this).data('purpose'),
-                    pass: $(this).data('visitor-pass')
+                    pass: $(this).data('vehicle-pass')
                 }
 
                 console.log(current);
@@ -446,8 +444,8 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 // OPEN THE MODAL WITH POPULATED VALUES AND disabled inputs
                 $('#modal_1_firstName').val(current.first_name).removeClass('is-invalid');
                 $('#modal_1_lastName').val(current.last_name).removeClass('is-invalid');
-                $('#modal_1_phoneNumber').val(current.phone_number).removeClass('is-invalid');
-                $('#modal_1_visitorPass').val(current.pass);
+                $('#modal_1_plateNumber').val(current.plate_number).removeClass('is-invalid');
+                $('#modal_1_vehiclePass').val(current.pass);
                 $('#modal_1_purpose').val(current.purpose).removeClass('is-invalid');
 
                 // Show the modal

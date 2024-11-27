@@ -18,26 +18,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Fetch additional visitor details (phone_num, visitor_pass, purpose)
-    $visitor_query = "SELECT first_name, date_att, time_in, last_name, phone_num, visitor_pass, purpose FROM visitors WHERE visitor_id = ?";
-    $stmt = $conn->prepare($visitor_query);
+    // Fetch additional vehicle details (plate_num, vehicle_pass, purpose)
+    $vehicle_query = "SELECT first_name, date_att, time_in, last_name, plate_num, vehicle_pass, purpose FROM vehicles WHERE vehicle_id = ?";
+    $stmt = $conn->prepare($vehicle_query);
     $stmt->bind_param("i", $record_id);
     $stmt->execute();
-    $visitor_details = $stmt->get_result()->fetch_assoc();
+    $vehicle_details = $stmt->get_result()->fetch_assoc();
     $stmt->close();
 
-    if (!$visitor_details) {
-        echo json_encode(['success' => false, 'message' => 'Visitor record not found.']);
+    if (!$vehicle_details) {
+        echo json_encode(['success' => false, 'message' => 'Vehicle record not found.']);
         exit();
     }
 
-    $first_name = $visitor_details['first_name'];
-    $last_name = $visitor_details['last_name'];
-    $phone_num = $visitor_details['phone_num'];
-    $date = $visitor_details['date_att'];
-    $time_in = $visitor_details['time_in'];
-    $visitor_pass = $visitor_details['visitor_pass'] ?? 'None';
-    $purpose = $visitor_details['purpose'];
+    $first_name = $vehicle_details['first_name'];
+    $last_name = $vehicle_details['last_name'];
+    $plate_num = $vehicle_details['plate_num'];
+    $date = $vehicle_details['date_att'];
+    $time_in = $vehicle_details['time_in'];
+    $vehicle_pass = $vehicle_details['vehicle_pass'] ?? 'None';
+    $purpose = $vehicle_details['purpose'];
 
     $formatted_date = date("F j, Y", strtotime($date));
     $formatted_time_in = date("g:i A", strtotime($time_in));
@@ -46,22 +46,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conn->begin_transaction();
 
     try {
-        // Archive the visitor record
-        $archive_query = "UPDATE visitors SET is_archived = TRUE WHERE visitor_id = ?";
+        // Archive the vehicle record
+        $archive_query = "UPDATE vehicles SET is_archived = TRUE WHERE vehicle_id = ?";
         $stmt = $conn->prepare($archive_query);
         $stmt->bind_param("i", $record_id);
         $stmt->execute();
 
         if ($stmt->affected_rows === 0) {
-            throw new Exception("Failed to archive the visitor record.");
+            throw new Exception("Failed to archive the vehicle record.");
         }
 
         // Log the activity
-        $details = "Archive Visitor Log\n\nRecord Id: $record_id\nName: $first_name $last_name\nPhone Number: $phone_num\nDate: $formatted_date\nTime In: $formatted_time_in\nTime Out: $time_out\nVisitor Pass: $visitor_pass\nPurpose: $purpose";
+        $details = "Archive Vehicle Log\n\nRecord Id: $record_id\nName: $first_name $last_name\nPlate Number: $plate_num\nDate: $formatted_date\nTime In: $formatted_time_in\nTime Out: $time_out\nVehicle Pass: $vehicle_pass\nPurpose: $purpose";
 
         $log_query = "
             INSERT INTO activity_log (section, details, category, station_id, guard_id) 
-            VALUES ('VISITORS', ?, 'ARCHIVE', ?, ?)";
+            VALUES ('VEHICLES', ?, 'ARCHIVE', ?, ?)";
         $stmt = $conn->prepare($log_query);
         $stmt->bind_param("sii", $details, $station_id, $guard_id);
         $stmt->execute();
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Commit transaction
         $conn->commit();
-        echo json_encode(['success' => true, 'message' => 'Visitor record archived successfully.']);
+        echo json_encode(['success' => true, 'message' => 'Vehicle record archived successfully.']);
     } catch (Exception $e) {
         // Rollback transaction on error
         $conn->rollback();
