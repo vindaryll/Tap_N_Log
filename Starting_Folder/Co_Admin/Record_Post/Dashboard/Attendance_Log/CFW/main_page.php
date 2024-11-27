@@ -37,6 +37,9 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
+    <!-- Real time session checker -->
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\status_script.php'; ?>
+
     <title>Attendance Log - Cash for work | Co-Admin for Record Post</title>
     <style>
         /* BACK BUTTON */

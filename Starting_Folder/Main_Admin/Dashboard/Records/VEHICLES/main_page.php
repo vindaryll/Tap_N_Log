@@ -1,21 +1,20 @@
 <?php
+
 session_start();
 
 // Include database connection
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-// Kapag hindi pa sila nakakalogin, dederetso sa login page
-if (!isset($_SESSION['record_guard_logged'])) {
+// If they haven't logged in yet
+if (!isset($_SESSION['admin_logged'])) {
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
     exit();
 }
 
-// kapag hindi belong sa Record Post, redirect sa landing page
-if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])) {
+if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_logged'])) {
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
     exit();
 }
-
 
 ?>
 
@@ -41,11 +40,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-    <!-- Real time session checker -->
-    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\status_script.php'; ?>
-
-    <title>Records - Employees | Record Post</title>
-
+    <title>Records - Vehicles | Main Admin</title>
     <style>
         .input-group {
             position: relative;
@@ -53,35 +48,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
         .toggle-password {
             cursor: pointer;
-        }
-
-        /* FOR MODAL VIEW MODAL */
-        .profile-image-container {
-            width: 100%;
-            padding-top: 100%;
-            /* 1:1 Aspect Ratio */
-            position: relative;
-            overflow: hidden;
-            border: 1px solid #ddd;
-        }
-
-        .profile-image-container img {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Max Height for Modal to Prevent Overflow */
-        .modal-dialog {
-            max-height: 90vh;
-        }
-
-        .modal-content {
-            overflow-y: auto;
         }
 
         /* FOR TABLE */
@@ -97,6 +63,10 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         table.table th {
             text-align: center;
             vertical-align: middle;
+        }
+
+        table.table tbody tr:hover {
+            background-color: #5abed6;
         }
 
         .table-pre {
@@ -116,10 +86,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             z-index: 1;
         }
 
-        table.table tbody tr:hover {
-            background-color: #5abed6;
-        }
-
         /* BACK BUTTON */
         .back-icon {
             color: #1877f2;
@@ -134,12 +100,12 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             transform: scale(1.1);
         }
     </style>
-
 </head>
 
 <body>
+
     <!-- Nav Bar -->
-    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Record_Post\Dashboard\navbar.php'; ?>
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Vehicle_Post\Dashboard\navbar.php'; ?>
 
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
@@ -153,7 +119,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             <div class="container-fluid col-sm-12 mt-sm-0 mt-4 px-2">
 
                 <div class="container-fluid text-center">
-                    <h2 class="text-center w-100">EMPLOYEES RECORDS</h2>
+                    <h2 class="text-center w-100">VEHICLE RECORDS</h2>
 
                     <!-- Textbox for search -->
                     <input type="text" id="searchTextbox" class="form-control mb-3" placeholder="Search by name or Logbook ID">
@@ -193,7 +159,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
                     <div class="row d-flex justify-content-start mt-2">
                         <div class="col-md-3 col-sm-4 col-12 mb-2">
-                            <!-- Add Guard Button -->
                             <button type="button" id="goToArchive" class="btn btn-primary w-100 h-100 p-2">ARCHIVED RECORDS</button>
                         </div>
                     </div>
@@ -222,22 +187,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                         <div class="mb-3">
                             <label for="to_dateInput" class="form-label">TO</label>
                             <input type="date" id="to_dateInput" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="rfidFilter" class="form-label">RFID Status</label>
-                            <select id="rfidFilter" class="form-select">
-                                <option value="">BOTH</option>
-                                <option value="with_rfid">WITH RFID</option>
-                                <option value="without_rfid">WITHOUT RFID</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select id="status" class="form-select">
-                                <option value="">ALL</option>
-                                <option value="ACTIVE">ACTIVE</option>
-                                <option value="INACTIVE">INACTIVE</option>
-                            </select>
                         </div>
                     </form>
                 </div>
@@ -280,7 +229,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                         </div>
                     </div>
                     <div class="mb-2">
-                        <label class="form-label">SORT BY NAME</label>
+                        <label class="form-label">SORT BY name</label>
                         <div>
                             <input type="radio" name="sortName" value="asc"> A-Z<br>
                             <input type="radio" name="sortName" value="desc"> Z-A
@@ -295,66 +244,44 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         </div>
     </div>
 
-    <!-- Details Modal -->
-    <div class="modal fade" id="ProfileDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ProfileDetailsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <!-- View Vehicle Modal -->
+    <div class="modal fade" id="viewRecordModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="viewRecordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><strong>EMPLOYEE DETAILS</strong></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="viewRecordLabel">VEHICLE DETAILS</h5>
+                    <button type="button" class="btn-close" id="modal_1_closeBtn"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-
-                        <!-- Profile Image Column (1:1 Ratio) -->
-                        <div class="col-lg-6 d-flex justify-content-center align-items-center">
-                            <div class="profile-image-container">
-                                <img id="modal_1_profileImg" src="/tapnlog/Image/LOGO_AND_ICONS/default_avatar.png" alt="Profile Picture" class="img-thumbnail">
-                            </div>
+                    <form id="addRecordForm">
+                        <div class="mb-3">
+                            <label for="modal_1_firstName" class="form-label"><strong>FIRST NAME</strong></label>
+                            <input type="text" class="form-control" id="modal_1_firstName" disabled>
                         </div>
-
-                        <!-- Details Column -->
-                        <div class="col-lg-6">
-                            <form id="profileForm" class=" mt-2 mt-lg-4">
-
-                                <!-- DATE APPROVED -->
-                                <div class="mb-3">
-                                    <p><strong>Date Approved: </strong><span id="details_date"> <!-- for populate --> </span></p>
-                                </div>
-
-                                <!-- FULL NAME -->
-                                <div class="mb-3">
-                                    <p><strong>Name: </strong><span id="details_name"> <!-- for populate --> </span></p>
-                                </div>
-
-                                <!-- TYPE OF PROFILE: EMPLOYEE -->
-                                <div class="mb-3">
-                                    <p><strong>Profile Type: </strong><span id="details_type"> <!-- for populate --> </span></p>
-                                </div>
-
-                                <!-- STATUS -->
-                                <div class="mb-3">
-                                    <p><strong>Status: </strong><span id="details_status"> <!-- for populate --> </span></p>
-                                </div>
-
-                                <!-- RFID NUMBER -->
-                                <div class="mb-3">
-                                    <p><strong>RFID Number: </strong><span id="details_rfid"> <!-- for populate --> </span></p>
-                                </div>
-
-                            </form>
-
+                        <div class="mb-3">
+                            <label for="modal_1_lastName" class="form-label"><strong>LAST NAME</strong></label>
+                            <input type="text" class="form-control" id="modal_1_lastName" disabled>
                         </div>
-                    </div>
+                        <div class="mb-3">
+                            <label for="modal_1_plateNumber" class="form-label"><strong>PLATE NUMBER</strong></label>
+                            <input type="text" class="form-control" id="modal_1_plateNumber" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modal_1_vehiclePass" class="form-label"><strong>VEHICLE PASS (Optional)</strong></label>
+                            <input type="text" class="form-control" id="modal_1_vehiclePass" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modal_1_purpose" class="form-label"><strong>PURPOSE</strong></label>
+                            <textarea class="form-control" id="modal_1_purpose" rows="3" disabled></textarea>
+                        </div>
+                    </form>
                 </div>
 
             </div>
         </div>
     </div>
 
-
-
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function() {
 
@@ -366,8 +293,13 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 window.location.href = 'Archived/main_page.php';
             });
 
-            $('#modal_2_closeBtn').on('click', function() {
-                $('#viewRecordModal').modal('hide');
+            $('#modal_1_firstName').on('input', function() {
+                $(this).val($(this).val().toUpperCase()); // Convert to uppercase
+            });
+
+            // Add event listener for the last name input
+            $('#modal_1_lastName').on('input', function() {
+                $(this).val($(this).val().toUpperCase()); // Convert to uppercase
             });
 
             // Get today's date in local time (correcting for time zone)
@@ -424,6 +356,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     if (fromDateValue > toDateValue) {
                         $('#from_dateInput').val('');
                     }
+
                 }
             }
 
@@ -460,9 +393,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             $('#applyFilters').on('click', function() {
                 filters = {
                     from_date: $('#from_dateInput').val(),
-                    to_date: $('#to_dateInput').val(),
-                    rfid_filter: $('#rfidFilter').val(), // Correct key for backend
-                    status: $('#status').val(),
+                    to_date: $('#to_dateInput').val()
                 };
                 fetchRecords();
                 $('#filterModal').modal('hide');
@@ -504,119 +435,33 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
             // VIEW AND EDIT DETAILS
             $(document).on('click', '.view-details-btn', function() {
-                const img = $(this).data('bs-img');
-                const date = $(this).data('bs-date-approved');
-                const name = $(this).data('bs-name');
-                const profile_type = "EMPLOYEE";
-                const status = $(this).data('bs-status');
-                const rfid = $(this).data('bs-rfid');
+                const record_id = $(this).data('id');
+                const first_name = $(this).data('first-name');
+                const last_name = $(this).data('last-name');
+                const plate_number = $(this).data('plate-num');
+                const purpose = $(this).data('purpose');
+                const pass = $(this).data('vehicle-pass') !== undefined && $(this).data('vehicle-pass') !== "" ? $(this).data('vehicle-pass') : null;
 
-                $('#modal_1_profileImg').attr('src', img);
-                $('#details_date').text(date);
-                $('#details_name').text(name);
-                $('#details_type').text(profile_type);
-                $('#details_status').text(status);
-                $('#details_rfid').text(rfid);
+
+                // OPEN THE MODAL WITH POPULATED VALUES AND disabled inputs
+                $('#modal_1_firstName').val(first_name).removeClass('is-invalid');
+                $('#modal_1_lastName').val(last_name).removeClass('is-invalid');
+                $('#modal_1_plateNumber').val(plate_number).removeClass('is-invalid');
+                $('#modal_1_vehiclePass').val(pass);
+                $('#modal_1_purpose').val(purpose).removeClass('is-invalid');
+
+                $('#modal_1_firstName, #modal_1_lastName, #modal_1_plateNumber, #modal_1_vehiclePass, #modal_1_purpose').prop('disabled', true);
 
                 // Show the modal
-                $('#ProfileDetailsModal').modal('show');
+                $('#viewRecordModal').modal('show');
             });
 
-
-            // ARCHIVE RECORD
-            $(document).on('click', '.archive-btn', function() {
-
-                const attendanceId = $(this).data('bs-id');
-                const profileId = $(this).data('bs-profile-id');
-                const name = $(this).data('bs-name');
-                const date = $(this).data('bs-date');
-                const timeIn = $(this).data('bs-time-in');
-                const timeOut = $(this).data('bs-time-out');
-
-                // Confirmation dialog
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: `Do you want to ARCHIVE the ATTENDANCE of ${name} on ${date}? This action cannot be undone.`,
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'YES',
-                    cancelButtonText: 'NO',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Show a loading alert while processing
-                        Swal.fire({
-                            title: 'LOADING',
-                            text: 'Please wait.',
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                            },
-                        });
-
-                        // Send the AJAX request to archive the record
-                        $.ajax({
-                            url: 'archive_record.php', // The backend script to process the archive
-                            type: 'POST',
-                            data: {
-                                attendance_id: attendanceId,
-                                profile_id: profileId,
-                                name: name,
-                                date: date,
-                                time_in: timeIn,
-                                time_out: timeOut,
-                            },
-                            dataType: 'json',
-                            success: function(response) {
-                                Swal.close(); // Close the loading alert
-
-                                if (response.success) {
-                                    Swal.fire({
-                                        position: 'top',
-                                        title: 'Success!',
-                                        text: response.message,
-                                        icon: 'success',
-                                        timer: 2000,
-                                        timerProgressBar: true,
-                                        showConfirmButton: false,
-                                    });
-
-                                    // Refresh the visitor list or update the UI
-                                    fetchRecords();
-                                } else {
-                                    Swal.fire({
-                                        position: 'top',
-                                        title: 'Error!',
-                                        text: response.message,
-                                        icon: 'error',
-                                        timer: 2000,
-                                        timerProgressBar: true,
-                                        showConfirmButton: false,
-                                    });
-                                }
-                            },
-                            error: function() {
-                                Swal.fire({
-                                    position: 'top',
-                                    title: 'Error!',
-                                    text: 'Failed to process archive. Please try again.',
-                                    icon: 'error',
-                                    timer: 2000,
-                                    timerProgressBar: true,
-                                    showConfirmButton: false,
-                                });
-                            },
-                        });
-                    }
-                });
-
+            $('#modal_1_closeBtn').on('click', function() {
+                $('#viewRecordModal').modal('hide');
             });
-
 
         });
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 
 </html>

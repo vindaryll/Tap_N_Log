@@ -146,9 +146,9 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                         <div class="mb-3">
                             <label for="profileType" class="form-label"><strong>TYPE OF PROFILE</strong></label>
                             <select class="form-select" id="profileType" name="type_of_profile" required>
-                                <option value="OJT">On-the-job training</option>
-                                <option value="CFW">Cash for Work</option>
-                                <option value="EMPLOYEE">Employee</option>
+                                <option value="EMPLOYEE">EMPLOYEE</option>
+                                <option value="OJT">ON THE JOB TRAINEE</option>
+                                <option value="CFW">CASH FOR WORK</option>
                             </select>
                         </div>
 

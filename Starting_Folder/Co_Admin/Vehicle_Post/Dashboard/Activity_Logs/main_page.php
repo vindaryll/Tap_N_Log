@@ -39,6 +39,9 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
+    <!-- Real time session checker -->
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\status_script.php'; ?>
+
     <title>Activity logs | Record Post</title>
 
     <style>
@@ -483,6 +486,9 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
 
             // Initial fetch to populate the table
             fetchActivity();
+
+            // Check new records every 5 seconds
+            setInterval(fetchActivity, 5000);
 
 
         });

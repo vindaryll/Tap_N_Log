@@ -545,6 +545,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             // Initial Fetch
             fetchProfiles();
 
+            // Check new records every 5 seconds
+            setInterval(fetchProfiles, 5000);
+
             // PROFILE DETAILS MODAL 1
 
             let originalData = {}; // Object to store original modal values

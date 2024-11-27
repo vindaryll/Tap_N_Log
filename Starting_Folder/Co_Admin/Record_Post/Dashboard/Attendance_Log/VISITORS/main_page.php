@@ -40,6 +40,9 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <!-- Cropper.js CDN -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 
+    <!-- Real time session checker -->
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\status_script.php'; ?>
+
     <title>Visitor logs | Co-Admin for Record Post</title>
     <style>
         /* CARD CONTAINER FOR RESULT */

@@ -9,10 +9,12 @@ $station_id = 2; // VEHICLE POST
 $sql = "
     SELECT 
         ga.guard_id, 
-        CONCAT(ga.guard_id, ' - ', g.guard_name) AS co_admin 
+        CONCAT(ga.guard_id, ' - ', g.guard_name) AS co_admin
     FROM guard_accounts ga
     JOIN guards g ON ga.guard_id = g.guard_id
-    WHERE g.station_id = ? AND ga.status = 'ACTIVE'
+    JOIN activity_log al ON g.guard_id = al.guard_id
+    WHERE al.station_id = ?
+    GROUP BY ga.guard_id
 ";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $station_id);

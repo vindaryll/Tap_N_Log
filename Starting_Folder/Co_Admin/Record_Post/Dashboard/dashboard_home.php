@@ -40,6 +40,9 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
+    <!-- Real time session checker -->
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\status_script.php'; ?>
+
     <title>Home | Record Post</title>
 </head>
 
@@ -52,7 +55,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <div class="d-flex justify-content-center">
 
         <div class="container-fluid row col-sm-12 text-center">
-            <h2>Welcome back, <?php echo $_SESSION['username']?>!</h2>
+            <h2>Welcome back, <?php echo $_SESSION['username'] ?>!</h2>
 
             <div class="container">
                 <div class="row d-flex justify-content-center align-items-center mt-3">

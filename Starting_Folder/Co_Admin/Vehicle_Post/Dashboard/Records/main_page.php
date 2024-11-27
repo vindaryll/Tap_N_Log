@@ -39,6 +39,9 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
+    <!-- Real time session checker -->
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\status_script.php'; ?>
+
     <title>Records - Vehicles | Vehicle Post</title>
 
     <style>

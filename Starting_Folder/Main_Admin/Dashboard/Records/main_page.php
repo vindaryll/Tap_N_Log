@@ -1,20 +1,21 @@
 <?php
+
 session_start();
 
 // Include database connection
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-// Kapag hindi pa sila nakakalogin, dederetso sa login page
-if (!isset($_SESSION['record_guard_logged'])) {
+// If they haven't logged in yet
+if (!isset($_SESSION['admin_logged'])) {
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
     exit();
 }
 
-// kapag hindi belong sa Record Post, redirect sa landing page
-if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])) {
+if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_logged'])) {
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
     exit();
 }
+
 ?>
 
 <!doctype html>
@@ -39,10 +40,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-    <!-- Real time session checker -->
-    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\status_script.php'; ?>
-
-    <title>Records | Co-Admin for Record Post</title>
+    <title>Records | Main Admin</title>
     <style>
         /* BACK BUTTON */
         .back-icon {
@@ -65,7 +63,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 <body>
 
     <!-- Nav Bar -->
-    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Record_Post\Dashboard\navbar.php'; ?>
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Vehicle_Post\Dashboard\navbar.php'; ?>
 
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center px-2">
@@ -78,6 +76,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             <div class="container-fluid col-sm-12 mt-sm-1 mt-5">
                 <h2 class="text-center w-100">RECORDS</h2>
                 <div class="row d-flex justify-content-center align-items-center mt-3">
+
                     <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
                         <a href="VISITORS/main_page.php" class="btn btn-primary w-100 p-3">VISITORS</a>
                     </div>
@@ -87,8 +86,12 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
                         <a href="CFW/main_page.php" class="btn btn-primary w-100 p-3">CASH FOR WORK</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-md-3 mb-4">
                         <a href="OJT/main_page.php" class="btn btn-primary w-100 p-3">ON THE JOB TRAINEES</a>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
+                        <a href="VEHICLES/main_page.php" class="btn btn-primary w-100 p-3">VEHICLES</a>
                     </div>
                 </div>
             </div>
