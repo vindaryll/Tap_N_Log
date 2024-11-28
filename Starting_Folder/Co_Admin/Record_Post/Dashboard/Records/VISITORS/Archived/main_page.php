@@ -79,8 +79,10 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         }
 
         .table-responsive {
-            height: 400px;
+            height: calc(100vh - 280px);
             overflow-y: auto;
+            margin-bottom: 25px;
+            background-color: white;
         }
 
         .table thead th {

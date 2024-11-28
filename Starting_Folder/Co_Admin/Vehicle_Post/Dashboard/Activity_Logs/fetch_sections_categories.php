@@ -10,7 +10,7 @@ $data = [
     ],
     'categories' => [
         'VEHICLES' => ['INSERT', 'UPDATE', 'ARCHIVE'],
-        'ACCOUNTS' => ['UPDATE'], // Only ARCHIVE for ACCOUNTS
+        'ACCOUNTS' => ['UPDATE', 'LOGS'],
     ],
 ];
 

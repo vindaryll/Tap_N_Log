@@ -40,7 +40,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-    <title>Records | Main Admin</title>
+    <title>Activity Logs | Main Admin</title>
     <style>
         /* BACK BUTTON */
         .back-icon {
@@ -63,7 +63,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 <body>
 
     <!-- Nav Bar -->
-    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Main_Admin\Dashboard\navbar.php'; ?>
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Vehicle_Post\Dashboard\navbar.php'; ?>
 
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center px-2">
@@ -74,32 +74,22 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             </div>
 
             <div class="container-fluid col-sm-12 mt-sm-1 mt-5">
-                <h2 class="text-center w-100">RECORDS</h2>
+                <h2 class="text-center w-100">ACTIVITY LOGS</h2>
                 <div class="row d-flex justify-content-center align-items-center mt-3">
 
                     <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="VISITORS/main_page.php" class="btn btn-primary w-100 p-3">VISITORS</a>
+                        <a href="Co_Admin/main_page.php" class="btn btn-primary w-100 p-3">CO-ADMIN</a>
                     </div>
                     <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="EMPLOYEES/main_page.php" class="btn btn-primary w-100 p-3">EMPLOYEES</a>
+                        <a href="Main_Admin/main_page.php" class="btn btn-primary w-100 p-3">MAIN ADMIN</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="CFW/main_page.php" class="btn btn-primary w-100 p-3">CASH FOR WORK</a>
-                    </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-md-3 mb-4">
-                        <a href="OJT/main_page.php" class="btn btn-primary w-100 p-3">ON THE JOB TRAINEES</a>
-                    </div>
-
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="VEHICLES/main_page.php" class="btn btn-primary w-100 p-3">VEHICLES</a>
-                    </div>
+                    
                 </div>
             </div>
 
         </div>
 
     </div>
-
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

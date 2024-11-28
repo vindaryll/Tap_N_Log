@@ -1,14 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=, initial-scale=1.0">
     <title></title>
 </head>
+
 <body>
-    
+
 </body>
+
 </html>
 
 <?php
@@ -21,6 +23,16 @@ require_once $_SESSION['directory'] . '\Database\dbcon.php';
 function sanitizeInput($data)
 {
     return htmlspecialchars(stripslashes(trim($data)));
+}
+
+function logActivity($stationId, $coadminId, $station_name, $name, $conn)
+{
+    $sql = "INSERT INTO activity_log (section, details, category, station_id, guard_id)
+            VALUES ('ACCOUNTS', ?, 'LOGS', ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $details = "Login for Co-Admin\n\nId: " . $coadminId . "\nName: " . $name . "\nStation: " . $station_name;
+    $stmt->bind_param("sis", $details, $stationId, $coadminId);
+    $stmt->execute();
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -54,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    $sql = "SELECT g.*, ga.*
+    $sql = "SELECT g.*, ga.*, s.station_name
             FROM guards g
             JOIN guard_accounts ga ON g.guard_id = ga.guard_id
             JOIN stations s ON g.station_id = s.station_id
@@ -79,7 +91,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['vehicle_guard_logged'] = true;
             $_SESSION['guard_id'] = $row['guard_id'];
             $_SESSION['station_id'] = $row['station_id'];
+            $_SESSION['station_name'] = $row['station_name'];
             $_SESSION['username'] = $row['username'];
+            $_SESSION['name'] = $row['guard_name'];
+
+            // Log the login activity
+            logActivity($row['station_id'], $row['guard_id'], $row['station_name'], $row['guard_name'], $conn);
 
             echo "
             <script>

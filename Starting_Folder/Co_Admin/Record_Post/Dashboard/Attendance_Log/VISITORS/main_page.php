@@ -47,9 +47,9 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <style>
         /* CARD CONTAINER FOR RESULT */
         #results-container {
-            height: 400px;
+            height: calc(100vh - 340px); 
             overflow-y: auto;
-
+            margin-bottom: 10px;
         }
 
         .card-container .card {

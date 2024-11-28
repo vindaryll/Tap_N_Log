@@ -49,9 +49,9 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
     <style>
         /* CARD CONTAINER FOR RESULT */
         #results-container {
-            height: 400px;
+            height: calc(100vh - 340px); 
             overflow-y: auto;
-
+            margin-bottom: 10px;
         }
 
         .card-container .card {
@@ -101,8 +101,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
 
 <body>
 
-    <!-- Nav Bar -->
-    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Record_Post\Dashboard\navbar.php'; ?>
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Vehicle_Post\Dashboard\navbar.php'; ?>
 
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">

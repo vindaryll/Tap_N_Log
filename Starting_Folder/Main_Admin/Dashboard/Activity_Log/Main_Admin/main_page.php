@@ -4,21 +4,17 @@ session_start();
 // Include database connection
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-// Kapag hindi pa sila nakakalogin, dederetso sa login page
-if (!isset($_SESSION['record_guard_logged'])) {
+// If they haven't logged in yet
+if (!isset($_SESSION['admin_logged'])) {
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
     exit();
 }
 
-// kapag hindi belong sa Record Post, redirect sa landing page
-if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])) {
+if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_logged'])) {
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
     exit();
 }
-
-
 ?>
-
 <!doctype html>
 <html lang="en">
 
@@ -38,13 +34,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-    <!-- QR Code Library -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-
-    <!-- Real time session checker -->
-    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\status_script.php'; ?>
-
-    <title>Activity logs | Record Post</title>
+    <title>Main Admin - Activity logs | Main Admin</title>
 
     <style>
         .input-group {
@@ -53,35 +43,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
         .toggle-password {
             cursor: pointer;
-        }
-
-        /* FOR MODAL VIEW MODAL */
-        .profile-image-container {
-            width: 100%;
-            padding-top: 100%;
-            /* 1:1 Aspect Ratio */
-            position: relative;
-            overflow: hidden;
-            border: 1px solid #ddd;
-        }
-
-        .profile-image-container img {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Max Height for Modal to Prevent Overflow */
-        .modal-dialog {
-            max-height: 90vh;
-        }
-
-        .modal-content {
-            overflow-y: auto;
         }
 
         /* FOR TABLE */
@@ -104,8 +65,10 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         }
 
         .table-responsive {
-            height: 400px;
+            height: calc(100vh - 280px);
             overflow-y: auto;
+            margin-bottom: 25px;
+            background-color: white;
         }
 
         .table thead th {
@@ -134,26 +97,22 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             transform: scale(1.1);
         }
     </style>
-
 </head>
 
 <body>
     <!-- Nav Bar -->
-    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Record_Post\Dashboard\navbar.php'; ?>
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Main_Admin\Dashboard\navbar.php'; ?>
 
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
-
         <div class="container-fluid row col-sm-12 p-0">
-
             <div class="container col-sm-12">
                 <a href="#" class="back-icon" id="backbtn" style="position: absolute;"><i class="bi bi-arrow-left"></i></a>
             </div>
 
             <div class="container-fluid col-sm-12 mt-sm-0 mt-4 px-2">
-
                 <div class="container-fluid text-center">
-                    <h2 class="text-center w-100">RECORD CO-ADMINISTRATOR ACTIVITY LOG</h2>
+                    <h2 class="text-center w-100">MAIN ADMINISTRATOR ACTIVITY LOG</h2>
 
                     <!-- Textbox for search -->
                     <input type="text" id="searchTextbox" class="form-control mb-3" placeholder="Search by details or activity ID">
@@ -180,19 +139,16 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                                     <th>TIMESTAMP</th>
                                     <th>DETAILS</th>
                                     <th>CATEGORY</th>
-                                    <th>CO-ADMIN ID - NAME</th>
+                                    <th>ADMIN ID - USERNAME</th>
                                 </tr>
                             </thead>
-                            <tbody id="tableBody">
+                            <tbody id="activityTableBody">
                                 <!-- Results will be inserted here -->
-
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </div>
     <!-- END OF CONTAINER -->
@@ -216,37 +172,15 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                             <input type="date" id="to_dateInput" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="co-admin" class="form-label">CO-ADMINISTRATOR</label>
-                            <select id="co-admin" class="form-select">
-                                <option value="">ALL</option>
-                                <!-- populate it like this:
-                                <option value="1">1 - MELVIN DARYLL ALOCILLO</option>
-                                <option value="2">2 - PRINCESS MIKHAELA JOSE</option>
-                                <option value="3">3 - KEN ANGELO VELASQUEZ</option> -->
-                            </select>
-                        </div>
-                        <div class="mb-3">
                             <label for="section" class="form-label">SECTION</label>
                             <select id="section" class="form-select">
                                 <option value="">ALL</option>
-                                <!-- 
-                                <option value="CFW">CASH FOR WORK</option>
-                                <option value="OJT">ON THE JOB TRAINEES</option>
-                                <option value="EMPLOYEES">EMPLOYEES</option>
-                                <option value="VISITORS">VISITORS</option>
-                                <option value="ACCOUNTS">ACCOUNTS</option>
-                                 -->
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="category" class="form-label">CATEGORY</label>
                             <select id="category" class="form-select">
                                 <option value="">ALL</option>
-                                <!-- 
-                                <option value="INSERT">INSERT</option>
-                                <option value="UPDATE">UPDATE</option>
-                                <option value="ARCHIVE">ARCHIVE</option>
-                                 -->
                             </select>
                         </div>
                     </form>
@@ -284,117 +218,89 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         </div>
     </div>
 
-
-
-
     <script>
         $(document).ready(function() {
-
             $('#backbtn').on('click', function() {
-                window.location.href = '../dashboard_home.php';
+                window.location.href = '../main_page.php';
             });
 
-            // POPULATE DROP DOWNS: co-admin
-            function populateCoAdminDropdown() {
-                $.ajax({
-                    url: 'fetch_coadmins.php', // PHP script to fetch co-admin data
-                    type: 'GET',
-                    success: function(data) {
-                        $('#co-admin').html(data); // Populate the dropdown
-                    },
-                    error: function() {
-                        console.error('Error fetching co-admin data.');
-                    }
-                });
-            }
+            // Initialize filters, sort and search
+            let filters = {};
+            let sort = {};
+            let search = '';
 
-            populateCoAdminDropdown();
+            // Get today's date in local time
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const todayFormatted = `${year}-${month}-${day}`;
 
-            // POPULATE DROP DOWNS: section and category
-            let sectionCategoryMap = {};
+            // Set initial value and max attribute for date inputs
+            $('#from_dateInput, #to_dateInput').attr('max', todayFormatted);
 
-            // Fetch sections and categories dynamically
-            function fetchSectionsAndCategories() {
-                $.ajax({
-                    url: 'fetch_sections_categories.php', // Backend script
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        // Populate #section dropdown
-                        const sectionSelect = $('#section');
-                        sectionSelect.empty();
-                        sectionSelect.append('<option value="">ALL</option>'); // Default option
-                        data.sections.forEach(section => {
-                            sectionSelect.append(`<option value="${section.value}">${section.label}</option>`);
-                        });
-
-                        // Save categories mapping for validation
-                        sectionCategoryMap = data.categories;
-
-                        // Reset #category dropdown
-                        updateCategoryOptions();
-                    },
-                    error: function() {
-                        console.error('Error fetching sections and categories.');
-                    },
-                });
-            }
-
-            // Update category options based on selected section
-            function updateCategoryOptions() {
+            // Update categories based on selected section
+            function updateCategories() {
                 const selectedSection = $('#section').val();
                 const categorySelect = $('#category');
                 categorySelect.empty();
-                categorySelect.append('<option value="">ALL</option>'); // Default option
-
-                if (selectedSection && sectionCategoryMap[selectedSection]) {
-                    // Populate valid categories for the selected section
-                    sectionCategoryMap[selectedSection].forEach(category => {
+                categorySelect.append('<option value="">ALL</option>');
+                
+                if (selectedSection && window.categoriesData && window.categoriesData[selectedSection]) {
+                    window.categoriesData[selectedSection].forEach(category => {
                         categorySelect.append(`<option value="${category}">${category}</option>`);
                     });
                 }
             }
 
-            // Validate category when section changes
-            $('#section').on('change', function() {
-                updateCategoryOptions();
-            });
+            // Populate sections and categories
+            function populateSectionsCategories() {
+                $.ajax({
+                    url: 'fetch_sections_categories.php',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        // Populate sections
+                        const sectionSelect = $('#section');
+                        sectionSelect.empty();
+                        sectionSelect.append('<option value="">ALL</option>');
+                        data.sections.forEach(section => {
+                            sectionSelect.append(`<option value="${section.value}">${section.label}</option>`);
+                        });
 
-            // Initialize sections and categories
-            fetchSectionsAndCategories();
+                        // Store categories data
+                        window.categoriesData = data.categories;
+                        updateCategories();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching sections and categories:', error);
+                    }
+                });
+            }
 
-            // Get today's date in local time (correcting for time zone)
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
-            const day = String(today.getDate()).padStart(2, '0'); // Ensures the day is two digits
-            const todayFormatted = `${year}-${month}-${day}`; // Format as YYYY-MM-DD
+            // Event handler for section change
+            $('#section').on('change', updateCategories);
 
-            // Set initial value and max attribute for both inputs
-            $('#from_dateInput, #to_dateInput').attr('max', todayFormatted);
-
+            // Initial population
+            populateSectionsCategories();
 
             // VALIDATION OF DATE INPUTS
             function validateDateInput1() {
                 const fromDate = $('#from_dateInput').val();
                 const toDate = $('#to_dateInput').val();
 
-                // Convert dates only if both fields have values
                 if (fromDate && toDate) {
                     const fromDateValue = new Date(fromDate);
                     const toDateValue = new Date(toDate);
                     const todayDate = new Date(todayFormatted);
 
-                    // Check if from exceeds today's date
                     if (fromDateValue > todayDate) {
                         $('#from_dateInput').val(todayFormatted);
                     }
 
-                    // Check if fromDate is greater than
                     if (fromDateValue > toDateValue) {
                         $('#to_dateInput').val('');
                     }
-
                 }
             }
 
@@ -402,20 +308,17 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 const fromDate = $('#from_dateInput').val();
                 const toDate = $('#to_dateInput').val();
 
-                // Convert dates only if both fields have values
                 if (fromDate && toDate) {
                     const fromDateValue = new Date(fromDate);
                     const toDateValue = new Date(toDate);
                     const todayDate = new Date(todayFormatted);
 
-                    // Check if toDate exceeds today's date
                     if (toDateValue > todayDate) {
                         $('#to_dateInput').val(todayFormatted);
                     }
 
-                    // Check if fromDate is after toDate
-                    if (fromDateValue > toDateValue) {
-                        $('#from_dateInput').val('');
+                    if (toDateValue < fromDateValue) {
+                        $('#to_dateInput').val('');
                     }
                 }
             }
@@ -423,83 +326,76 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             $('#from_dateInput').on('input change', validateDateInput1);
             $('#to_dateInput').on('input change', validateDateInput2);
 
-            // Initialize filters and sort
-            let filters = {};
-            let sort = {};
-            let search = '';
-
-            // Function to fetch activity data
-            function fetchActivity() {
-                $.ajax({
-                    url: 'fetch_activity.php', // Backend script to handle fetching
-                    type: 'POST',
-                    data: {
-                        search: search,
-                        filters: filters,
-                        sort: sort,
-                    },
-                    success: function(data) {
-                        $('#tableBody').html(data); // Update the table body with the results
-                    },
-                    error: function() {
-                        console.error('Error fetching activity data.');
-                    }
-                });
-            }
-
-            // Live search functionality
-            $('#searchTextbox').on('keyup', function() {
-                search = $(this).val().trim();
+            // Event handlers
+            $('#searchTextbox').on('input', function() {
+                search = $(this).val();
                 fetchActivity();
             });
 
-            // Apply filters from the filter modal
             $('#applyFilters').on('click', function() {
                 filters = {
                     from_date: $('#from_dateInput').val(),
                     to_date: $('#to_dateInput').val(),
-                    co_admin: $('#co-admin').val(),
                     section: $('#section').val(),
-                    category: $('#category').val(),
+                    category: $('#category').val()
                 };
                 fetchActivity();
-                $('#filterModal').modal('hide'); // Close the modal after applying filters
+                $('#filterModal').modal('hide');
             });
 
-            // Reset filters
             $('#resetFilters').on('click', function() {
-                filters = {}; // Clear filters
-                $('#filterForm')[0].reset(); // Reset form inputs
+                // Reset filter inputs
+                $('#from_dateInput').val('');
+                $('#to_dateInput').val('');
+                $('#section').val('');
+                $('#category').val('');
+                
+                // Clear filters object
+                filters = {};
                 fetchActivity();
             });
 
-            // Apply sorting from the sort modal
             $('#applySort').on('click', function() {
                 sort = {
-                    timestamp: $('input[name="sortTimestamp"]:checked').val(),
+                    timestamp: $('input[name="sortTimestamp"]:checked').val()
                 };
                 fetchActivity();
-                $('#sortModal').modal('hide'); // Close the modal after applying sorting
+                $('#sortModal').modal('hide');
             });
 
-            // Reset sorting
             $('#resetSort').on('click', function() {
-                sort = {}; // Clear sorting
+                // Reset sort inputs
                 $('input[name="sortTimestamp"]').prop('checked', false);
+                
+                // Clear sort object
+                sort = {};
                 fetchActivity();
             });
 
-            // Initial fetch to populate the table
+            // Function to fetch activity data
+            function fetchActivity() {
+                $.ajax({
+                    url: 'fetch_activity.php',
+                    type: 'POST',
+                    data: {
+                        search: search,
+                        filters: filters,
+                        sort: sort
+                    },
+                    success: function(response) {
+                        $('#activityTableBody').html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching activity:', error);
+                    }
+                });
+            }
+
+            // Initial fetch
             fetchActivity();
-
-            // Check new records every 5 seconds
-            setInterval(fetchActivity, 5000);
-
-
         });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
-
 </html>

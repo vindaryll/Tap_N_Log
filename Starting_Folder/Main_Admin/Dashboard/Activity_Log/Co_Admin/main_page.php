@@ -17,7 +17,6 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 }
 
 ?>
-
 <!doctype html>
 <html lang="en">
 
@@ -40,7 +39,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-    <title>Records - Employees | Main Admin</title>
+    <title>Co-Admin - Activity logs | Main Admin</title>
 
     <style>
         .input-group {
@@ -49,35 +48,6 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
         .toggle-password {
             cursor: pointer;
-        }
-
-        /* FOR MODAL VIEW MODAL */
-        .profile-image-container {
-            width: 100%;
-            padding-top: 100%;
-            /* 1:1 Aspect Ratio */
-            position: relative;
-            overflow: hidden;
-            border: 1px solid #ddd;
-        }
-
-        .profile-image-container img {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Max Height for Modal to Prevent Overflow */
-        .modal-dialog {
-            max-height: 90vh;
-        }
-
-        .modal-content {
-            overflow-y: auto;
         }
 
         /* FOR TABLE */
@@ -100,9 +70,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         }
 
         .table-responsive {
-            height: calc(100vh - 320px);
+            height: calc(100vh - 280px);
             overflow-y: auto;
-            margin-bottom: 10px;
+            margin-bottom: 25px;
             background-color: white;
         }
 
@@ -136,8 +106,8 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 </head>
 
 <body>
-    <!-- Nav Bar -->
-    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Main_Admin\Dashboard\navbar.php'; ?>
+        <!-- Nav Bar -->
+        <?php require_once $_SESSION['directory'] . '\Starting_Folder\Main_Admin\Dashboard\navbar.php'; ?>
 
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
@@ -151,10 +121,10 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             <div class="container-fluid col-sm-12 mt-sm-0 mt-4 px-2">
 
                 <div class="container-fluid text-center">
-                    <h2 class="text-center w-100">EMPLOYEES RECORDS</h2>
+                    <h2 class="text-center w-100">RECORD CO-ADMINISTRATOR ACTIVITY LOG</h2>
 
                     <!-- Textbox for search -->
-                    <input type="text" id="searchTextbox" class="form-control mb-3" placeholder="Search by name or Logbook ID">
+                    <input type="text" id="searchTextbox" class="form-control mb-3" placeholder="Search by details or activity ID">
 
                     <!-- Filter and Sort Buttons -->
                     <div class="w-100 d-flex justify-content-start p-0 mb-3">
@@ -174,26 +144,17 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         <table class="table table-bordered">
                             <thead class="table-dark">
                                 <tr>
-                                    <th>LOGBOOK ID</th>
-                                    <th>DATE</th>
-                                    <th>NAME</th>
-                                    <th>TIME-IN</th>
-                                    <th>TIME-OUT</th>
-                                    <th>ACTION</th>
+                                    <th>ACTIVITY ID</th>
+                                    <th>TIMESTAMP</th>
+                                    <th>DETAILS</th>
+                                    <th>CATEGORY</th>
+                                    <th>CO-ADMIN ID - NAME</th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
                                 <!-- Results will be inserted here -->
-
                             </tbody>
                         </table>
-                    </div>
-
-                    <div class="row d-flex justify-content-start mt-2">
-                        <div class="col-md-3 col-sm-4 col-12 mb-2">
-
-                            <button type="button" id="goToArchive" class="btn btn-primary w-100 h-100 p-2">ARCHIVED RECORDS</button>
-                        </div>
                     </div>
 
                 </div>
@@ -208,7 +169,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="filterModalLabel">FILTER RECORDS</h5>
+                    <h5 class="modal-title" id="filterModalLabel">FILTER ACTIVITY</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -222,19 +183,46 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             <input type="date" id="to_dateInput" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="rfidFilter" class="form-label">RFID Status</label>
-                            <select id="rfidFilter" class="form-select">
-                                <option value="">BOTH</option>
-                                <option value="with_rfid">WITH RFID</option>
-                                <option value="without_rfid">WITHOUT RFID</option>
+                            <label for="station" class="form-label">STATION</label>
+                            <select id="station" class="form-select">
+                                <option value="">ALL</option>
+                                <!-- populate it like this:
+                                <option value="1">RECORD POST</option>
+                                <option value="2">VEHICLE POST</option> -->
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select id="status" class="form-select">
+                            <label for="co-admin" class="form-label">CO-ADMINISTRATOR</label>
+                            <select id="co-admin" class="form-select">
                                 <option value="">ALL</option>
-                                <option value="ACTIVE">ACTIVE</option>
-                                <option value="INACTIVE">INACTIVE</option>
+                                <!-- populate it like this:
+                                <option value="1">1 - MELVIN DARYLL ALOCILLO</option>
+                                <option value="2">2 - PRINCESS MIKHAELA JOSE</option>
+                                <option value="3">3 - KEN ANGELO VELASQUEZ</option> -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="section" class="form-label">SECTION</label>
+                            <select id="section" class="form-select">
+                                <option value="">ALL</option>
+                                <!-- 
+                                <option value="CFW">CASH FOR WORK</option>
+                                <option value="OJT">ON THE JOB TRAINEES</option>
+                                <option value="EMPLOYEES">EMPLOYEES</option>
+                                <option value="VISITORS">VISITORS</option>
+                                <option value="ACCOUNTS">ACCOUNTS</option>
+                                 -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">CATEGORY</label>
+                            <select id="category" class="form-select">
+                                <option value="">ALL</option>
+                                <!-- 
+                                <option value="INSERT">INSERT</option>
+                                <option value="UPDATE">UPDATE</option>
+                                <option value="ARCHIVE">ARCHIVE</option>
+                                 -->
                             </select>
                         </div>
                     </form>
@@ -252,36 +240,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="sortModalLabel">SORT RECORDS</h5>
+                    <h5 class="modal-title" id="sortModalLabel">SORT ACTIVITY</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-2">
-                        <label class="form-label">SORT BY DATE</label>
+                        <label class="form-label">SORT BY TIMESTAMP</label>
                         <div>
-                            <input type="radio" name="sortDate" value="asc"> Ascending<br>
-                            <input type="radio" name="sortDate" value="desc"> Descending
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label">SORT BY TIME-IN</label>
-                        <div>
-                            <input type="radio" name="sortTimeIn" value="asc"> Earliest<br>
-                            <input type="radio" name="sortTimeIn" value="desc"> Latest
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label">SORT BY TIME-OUT</label>
-                        <div>
-                            <input type="radio" name="sortTimeOut" value="asc"> Earliest<br>
-                            <input type="radio" name="sortTimeOut" value="desc"> Latest
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label">SORT BY NAME</label>
-                        <div>
-                            <input type="radio" name="sortName" value="asc"> A-Z<br>
-                            <input type="radio" name="sortName" value="desc"> Z-A
+                            <input type="radio" name="sortTimestamp" value="asc"> Ascending<br>
+                            <input type="radio" name="sortTimestamp" value="desc"> Descending
                         </div>
                     </div>
                 </div>
@@ -289,63 +256,6 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     <button type="button" id="resetSort" class="btn btn-danger">RESET</button>
                     <button type="button" id="applySort" class="btn btn-primary">APPLY</button>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Details Modal -->
-    <div class="modal fade" id="ProfileDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ProfileDetailsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><strong>EMPLOYEE DETAILS</strong></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-
-                        <!-- Profile Image Column (1:1 Ratio) -->
-                        <div class="col-lg-6 d-flex justify-content-center align-items-center">
-                            <div class="profile-image-container">
-                                <img id="modal_1_profileImg" src="/tapnlog/Image/LOGO_AND_ICONS/default_avatar.png" alt="Profile Picture" class="img-thumbnail">
-                            </div>
-                        </div>
-
-                        <!-- Details Column -->
-                        <div class="col-lg-6">
-                            <form id="profileForm" class=" mt-2 mt-lg-4">
-
-                                <!-- DATE APPROVED -->
-                                <div class="mb-3">
-                                    <p><strong>Date Approved: </strong><span id="details_date"> <!-- for populate --> </span></p>
-                                </div>
-
-                                <!-- FULL NAME -->
-                                <div class="mb-3">
-                                    <p><strong>Name: </strong><span id="details_name"> <!-- for populate --> </span></p>
-                                </div>
-
-                                <!-- TYPE OF PROFILE: EMPLOYEE -->
-                                <div class="mb-3">
-                                    <p><strong>Profile Type: </strong><span id="details_type"> <!-- for populate --> </span></p>
-                                </div>
-
-                                <!-- STATUS -->
-                                <div class="mb-3">
-                                    <p><strong>Status: </strong><span id="details_status"> <!-- for populate --> </span></p>
-                                </div>
-
-                                <!-- RFID NUMBER -->
-                                <div class="mb-3">
-                                    <p><strong>RFID Number: </strong><span id="details_rfid"> <!-- for populate --> </span></p>
-                                </div>
-
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
@@ -360,13 +270,97 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 window.location.href = '../main_page.php';
             });
 
-            $('#goToArchive').on('click', function() {
-                window.location.href = 'Archived/main_page.php';
-            });
+            // Initialize filters and sort
+            let filters = {};
+            let sort = {};
+            let search = '';
 
-            $('#modal_2_closeBtn').on('click', function() {
-                $('#viewRecordModal').modal('hide');
-            });
+            // POPULATE STATIONS DROPDOWN
+            function populateStations() {
+                $.ajax({
+                    url: 'fetch_stations.php', // PHP script to fetch station data
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        const stationSelect = $('#station');
+                        stationSelect.empty();
+                        stationSelect.append('<option value="">ALL</option>');
+                        data.forEach(function(station) {
+                            stationSelect.append(`<option value="${station.station_id}">${station.station_name}</option>`);
+                        });
+                        // After populating stations, update dependent dropdowns
+                        populateCoAdmins();
+                        populateSectionsCategories();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching stations:', error);
+                    }
+                });
+            }
+
+            // POPULATE CO-ADMINS DROPDOWN
+            function populateCoAdmins() {
+                const station_id = $('#station').val();
+                $.ajax({
+                    url: 'fetch_coadmins.php', // PHP script to fetch co-admin data
+                    type: 'GET',
+                    data: { station_id: station_id },
+                    dataType: 'json',
+                    success: function(data) {
+                        const coAdminSelect = $('#co-admin');
+                        coAdminSelect.empty();
+                        coAdminSelect.append('<option value="">ALL</option>');
+                        data.forEach(function(admin) {
+                            coAdminSelect.append(`<option value="${admin.guard_id}">${admin.co_admin}</option>`);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching co-admins:', error);
+                    }
+                });
+            }
+
+            // POPULATE SECTIONS AND CATEGORIES
+            function populateSectionsCategories() {
+                const station_id = $('#station').val();
+                $.ajax({
+                    url: 'fetch_sections_categories.php',
+                    type: 'GET',
+                    data: { station_id: station_id },
+                    dataType: 'json',
+                    success: function(data) {
+                        // Populate sections
+                        const sectionSelect = $('#section');
+                        sectionSelect.empty();
+                        sectionSelect.append('<option value="">ALL</option>');
+                        data.sections.forEach(section => {
+                            sectionSelect.append(`<option value="${section.value}">${section.label}</option>`);
+                        });
+
+                        // Store categories data
+                        window.categoriesData = data.categories;
+                        updateCategories();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching sections and categories:', error);
+                    }
+                });
+            }
+
+            // Update categories based on selected section
+            function updateCategories() {
+                const selectedSection = $('#section').val();
+                const categorySelect = $('#category');
+                categorySelect.empty();
+                categorySelect.append('<option value="">ALL</option>');
+                
+                if (selectedSection && window.categoriesData && window.categoriesData[selectedSection]) {
+                    window.categoriesData[selectedSection].forEach(category => {
+                        categorySelect.append(`<option value="${category}">${category}</option>`);
+                    });
+                }
+            }
+
 
             // Get today's date in local time (correcting for time zone)
             const today = new Date();
@@ -425,102 +419,92 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 }
             }
 
-
             $('#from_dateInput').on('input change', validateDateInput1);
             $('#to_dateInput').on('input change', validateDateInput2);
 
-            let filters = {};
-            let sort = {};
-            let search = '';
-
-            function fetchRecords() {
+            // Function to fetch activity data
+            function fetchActivity() {
                 $.ajax({
-                    url: 'fetch_records.php',
+                    url: 'fetch_activity.php',
                     type: 'POST',
                     data: {
                         search: search,
                         filters: filters,
                         sort: sort,
                     },
-                    success: function(data) {
-                        $('#tableBody').html(data);
+                    success: function(response) {
+                        $('#tableBody').html(response);
                     },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching activity data:', error);
+                        $('#tableBody').html('<tr><td colspan="5" class="text-center">Error loading data.</td></tr>');
+                    }
                 });
             }
 
-            // Live Search
-            $('#searchTextbox').on('keyup', function() {
-                search = $(this).val().trim();
-                fetchRecords();
+            // EVENT HANDLERS
+            // Station change
+            $('#station').on('change', function() {
+                populateCoAdmins();
+                populateSectionsCategories();
             });
 
-            // Apply Filters
+            // Section change
+            $('#section').on('change', updateCategories);
+
+            // Live search functionality
+            let searchTimeout;
+            $('#searchTextbox').on('keyup', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    search = $(this).val().trim();
+                    fetchActivity();
+                }, 500); // Debounce search for 500ms
+            });
+
+            // Apply filters
             $('#applyFilters').on('click', function() {
                 filters = {
+                    station_id: $('#station').val(),
                     from_date: $('#from_dateInput').val(),
                     to_date: $('#to_dateInput').val(),
-                    rfid_filter: $('#rfidFilter').val(), // Correct key for backend
-                    status: $('#status').val(),
+                    co_admin: $('#co-admin').val(),
+                    section: $('#section').val(),
+                    category: $('#category').val(),
                 };
-                fetchRecords();
+                fetchActivity();
                 $('#filterModal').modal('hide');
             });
 
-            // Apply Sort
-            $('#applySort').on('click', function() {
-                sort = {
-                    date: $('input[name="sortDate"]:checked').val(),
-                    time_in: $('input[name="sortTimeIn"]:checked').val(),
-                    time_out: $('input[name="sortTimeOut"]:checked').val(),
-                    name: $('input[name="sortName"]:checked').val()
-                };
-                fetchRecords();
-                $('#sortModal').modal('hide');
-            });
-
-            // Reset Filters
+            // Reset filters
             $('#resetFilters').on('click', function() {
                 filters = {};
                 $('#filterForm')[0].reset();
-                fetchRecords();
+                populateCoAdmins();
+                populateSectionsCategories();
+                fetchActivity();
             });
 
-            // Reset Sort
+            // Apply sorting
+            $('#applySort').on('click', function() {
+                sort = {
+                    timestamp: $('input[name="sortTimestamp"]:checked').val() || 'DESC',
+                };
+                fetchActivity();
+                $('#sortModal').modal('hide');
+            });
+
+            // Reset sorting
             $('#resetSort').on('click', function() {
-                sort = {};
-
-                // Reset the sorting radio buttons to default
-                $('input[name="sortDate"]').prop('checked', false);
-                $('input[name="sortName"]').prop('checked', false);
-                $('input[name="sortTimeIn"]').prop('checked', false);
-                $('input[name="sortTimeOut"]').prop('checked', false);
-                fetchRecords();
+                sort = { timestamp: 'DESC' };
+                $('input[name="sortTimestamp"]').prop('checked', false);
+                fetchActivity();
             });
 
-            // Initial Fetch
-            fetchRecords();
-
-            // VIEW AND EDIT DETAILS
-            $(document).on('click', '.view-details-btn', function() {
-                const img = $(this).data('bs-img');
-                const date = $(this).data('bs-date-approved');
-                const name = $(this).data('bs-name');
-                const profile_type = "EMPLOYEE";
-                const status = $(this).data('bs-status');
-                const rfid = $(this).data('bs-rfid');
-
-                $('#modal_1_profileImg').attr('src', img);
-                $('#details_date').text(date);
-                $('#details_name').text(name);
-                $('#details_type').text(profile_type);
-                $('#details_status').text(status);
-                $('#details_rfid').text(rfid);
-
-                // Show the modal
-                $('#ProfileDetailsModal').modal('show');
-            });
-
-
+            // Initialize everything
+            populateStations();
+            fetchActivity();
+            
         });
     </script>
 

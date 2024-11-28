@@ -17,21 +17,21 @@ $table_mapping = [
         'table' => 'cfw_profile',
         'img_column' => 'cfw_img',
         'rfid_column' => 'cfw_rfid',
-        'display_name' => 'Cash for Work',
+        'display_name' => 'CASH FOR WORK',
         'image_folder' => 'CFW' 
     ],
     'OJT' => [
         'table' => 'ojt_profile',
         'img_column' => 'ojt_img',
         'rfid_column' => 'ojt_rfid',
-        'display_name' => 'On the Job Trainee',
+        'display_name' => 'ON THE JOB TRAINEE',
         'image_folder' => 'OJT' 
     ],
     'EMPLOYEE' => [
         'table' => 'employees_profile',
         'img_column' => 'employee_img',
         'rfid_column' => 'employee_rfid',
-        'display_name' => 'Employee',
+        'display_name' => 'EMPLOYEE',
         'image_folder' => 'EMPLOYEES'
     ],
 ];

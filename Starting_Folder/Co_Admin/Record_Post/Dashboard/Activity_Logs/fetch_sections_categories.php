@@ -16,7 +16,7 @@ $data = [
         'OJT' => ['INSERT', 'UPDATE', 'ARCHIVE'],
         'EMPLOYEES' => ['INSERT', 'UPDATE', 'ARCHIVE'],
         'VISITORS' => ['INSERT', 'UPDATE', 'ARCHIVE'],
-        'ACCOUNTS' => ['UPDATE'], // Only ARCHIVE for ACCOUNTS
+        'ACCOUNTS' => ['UPDATE', 'LOGS'],
     ],
 ];
 

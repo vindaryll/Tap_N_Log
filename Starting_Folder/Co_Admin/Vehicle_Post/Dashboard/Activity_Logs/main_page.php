@@ -53,26 +53,6 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
             cursor: pointer;
         }
 
-        /* FOR MODAL VIEW MODAL */
-        .profile-image-container {
-            width: 100%;
-            padding-top: 100%;
-            /* 1:1 Aspect Ratio */
-            position: relative;
-            overflow: hidden;
-            border: 1px solid #ddd;
-        }
-
-        .profile-image-container img {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
         /* Max Height for Modal to Prevent Overflow */
         .modal-dialog {
             max-height: 90vh;
@@ -137,7 +117,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
 
 <body>
     <!-- Nav Bar -->
-    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Record_Post\Dashboard\navbar.php'; ?>
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Vehicle_Post\Dashboard\navbar.php'; ?>
 
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
@@ -234,7 +214,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="category" class="form-label">SECTION</label>
+                            <label for="category" class="form-label">CATEGORY</label>
                             <select id="category" class="form-select">
                                 <option value="">ALL</option>
                                 <!-- 

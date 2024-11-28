@@ -77,8 +77,10 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
         }
 
         .table-responsive {
-            height: 400px;
+            height: calc(100vh - 320px);
             overflow-y: auto;
+            margin-bottom: 10px;
+            background-color: white;
         }
 
         .table thead th {
@@ -108,8 +110,8 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
 
 <body>
     <!-- Nav Bar -->
-    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Record_Post\Dashboard\navbar.php'; ?>
-
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Vehicle_Post\Dashboard\navbar.php'; ?>
+    
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
 

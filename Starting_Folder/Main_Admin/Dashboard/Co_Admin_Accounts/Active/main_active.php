@@ -78,8 +78,9 @@ $stationsResult = $conn->query($stationsSql);
         }
 
         .table-responsive {
-            height: 400px;
+            height: calc(100vh - 320px); 
             overflow-y: auto;
+            margin-bottom: 10px;
         }
 
         .table thead th {

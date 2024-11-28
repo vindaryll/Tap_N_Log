@@ -47,31 +47,24 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <style>
         /* CARD CONTAINER FOR PROFILES */
         #profile-container {
-            height: 475px;
+            height: calc(100vh - 280px);
             overflow-y: auto;
-
+            margin-bottom: 10px;
         }
 
-        /* General card styling that applies to all sizes */
         .card-container .card {
             margin-bottom: 20px;
-            /* Adds space between cards */
             transition: transform 0.3s;
-            /* Smooth transform effect for hover */
         }
 
         .card-container .card:hover {
             transform: scale(1.03);
-            /* Slightly enlarges the card on hover */
         }
-
-        /* END FOR PROFILE CONTAINER */
 
         /* FOR MODAL VIEW MODAL */
         .profile-image-container {
             width: 100%;
             padding-top: 100%;
-            /* 1:1 Aspect Ratio */
             position: relative;
             overflow: hidden;
             border: 1px solid #ddd;
@@ -87,7 +80,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             object-fit: cover;
         }
 
-        /* Max Height for Modal to Prevent Overflow */
         .modal-dialog {
             max-height: 90vh;
         }
@@ -95,8 +87,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         .modal-content {
             overflow-y: auto;
         }
-
-        /* END FOR MODALS */
 
         /* BACK BUTTON */
         .back-icon {
@@ -111,8 +101,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             color: #145dbf;
             transform: scale(1.1);
         }
-
-        /* END FOR BACK BUTTON */
     </style>
 </head>
 

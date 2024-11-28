@@ -49,9 +49,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <style>
         /* CARD CONTAINER FOR PROFILES */
         #profile-container {
-            height: 475px;
+            height: calc(100vh - 280px);
             overflow-y: auto;
-
+            margin-bottom: 10px;
         }
 
         /* General card styling that applies to all sizes */
@@ -124,7 +124,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <?php require_once $_SESSION['directory'] . '\Starting_Folder\Main_Admin\Dashboard\navbar.php'; ?>
 
     <!-- START OF CONTAINER -->
-    <div class="d-flex justify-content-center">
+    <div class=" container-fluid d-flex justify-content-center">
 
         <div class="container-fluid row col-sm-12 px-2">
 

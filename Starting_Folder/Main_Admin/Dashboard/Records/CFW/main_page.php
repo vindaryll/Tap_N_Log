@@ -100,8 +100,10 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         }
 
         .table-responsive {
-            height: 400px;
+            height: calc(100vh - 320px);
             overflow-y: auto;
+            margin-bottom: 10px;
+            background-color: white;
         }
 
         .table thead th {
@@ -134,8 +136,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 </head>
 
 <body>
+    
     <!-- Nav Bar -->
-    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Record_Post\Dashboard\navbar.php'; ?>
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Main_Admin\Dashboard\navbar.php'; ?>
 
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
@@ -189,7 +192,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
                     <div class="row d-flex justify-content-start mt-2">
                         <div class="col-md-3 col-sm-4 col-12 mb-2">
-                            
+
                             <button type="button" id="goToArchive" class="btn btn-primary w-100 h-100 p-2">ARCHIVED RECORDS</button>
                         </div>
                     </div>
