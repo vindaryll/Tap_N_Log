@@ -355,10 +355,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 window.location.href = '../main_page.php';
             });
 
-            $('#goToArchive').on('click', function() {
-                window.location.href = 'Archived/main_page.php';
-            });
-
             $('#modal_2_closeBtn').on('click', function() {
                 $('#viewRecordModal').modal('hide');
             });

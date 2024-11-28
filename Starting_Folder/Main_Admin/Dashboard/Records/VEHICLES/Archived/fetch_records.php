@@ -14,7 +14,7 @@ $filters = $_POST['filters'] ?? [];
 $sort = $_POST['sort'] ?? [];
 $search = sanitizeInput($_POST['search'] ?? '');
 
-// current date
+// Current date
 $currentDateResult = $conn->query("SELECT CURDATE() AS today_date");
 $currentDateRow = $currentDateResult->fetch_assoc();
 $currentDate = $currentDateRow['today_date'];

@@ -40,7 +40,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-    <title>Records - Vehicles | Main Admin</title>
+
+    <title>Archived Records - On the job trainees | Main Admin</title>
+
     <style>
         .input-group {
             position: relative;
@@ -48,6 +50,35 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
         .toggle-password {
             cursor: pointer;
+        }
+
+        /* FOR MODAL VIEW MODAL */
+        .profile-image-container {
+            width: 100%;
+            padding-top: 100%;
+            /* 1:1 Aspect Ratio */
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        .profile-image-container img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Max Height for Modal to Prevent Overflow */
+        .modal-dialog {
+            max-height: 90vh;
+        }
+
+        .modal-content {
+            overflow-y: auto;
         }
 
         /* FOR TABLE */
@@ -100,12 +131,12 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             transform: scale(1.1);
         }
     </style>
+
 </head>
 
 <body>
-
     <!-- Nav Bar -->
-    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Vehicle_Post\Dashboard\navbar.php'; ?>
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Record_Post\Dashboard\navbar.php'; ?>
 
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">
@@ -119,7 +150,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             <div class="container-fluid col-sm-12 mt-sm-0 mt-4 px-2">
 
                 <div class="container-fluid text-center">
-                    <h2 class="text-center w-100">VEHICLE RECORDS</h2>
+                    <h2 class="text-center w-100">ON THE JOB TRAINEES ARCHIVED RECORDS</h2>
 
                     <!-- Textbox for search -->
                     <input type="text" id="searchTextbox" class="form-control mb-3" placeholder="Search by name or Logbook ID">
@@ -157,12 +188,6 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         </table>
                     </div>
 
-                    <div class="row d-flex justify-content-start mt-2">
-                        <div class="col-md-3 col-sm-4 col-12 mb-2">
-                            <button type="button" id="goToArchive" class="btn btn-primary w-100 h-100 p-2">ARCHIVED RECORDS</button>
-                        </div>
-                    </div>
-
                 </div>
             </div>
 
@@ -187,6 +212,22 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         <div class="mb-3">
                             <label for="to_dateInput" class="form-label">TO</label>
                             <input type="date" id="to_dateInput" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="rfidFilter" class="form-label">RFID Status</label>
+                            <select id="rfidFilter" class="form-select">
+                                <option value="">BOTH</option>
+                                <option value="with_rfid">WITH RFID</option>
+                                <option value="without_rfid">WITHOUT RFID</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select id="status" class="form-select">
+                                <option value="">ALL</option>
+                                <option value="ACTIVE">ACTIVE</option>
+                                <option value="INACTIVE">INACTIVE</option>
+                            </select>
                         </div>
                     </form>
                 </div>
@@ -229,7 +270,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         </div>
                     </div>
                     <div class="mb-2">
-                        <label class="form-label">SORT BY name</label>
+                        <label class="form-label">SORT BY NAME</label>
                         <div>
                             <input type="radio" name="sortName" value="asc"> A-Z<br>
                             <input type="radio" name="sortName" value="desc"> Z-A
@@ -244,44 +285,66 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         </div>
     </div>
 
-    <!-- View Vehicle Modal -->
-    <div class="modal fade" id="viewRecordModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="viewRecordModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <!-- Details Modal -->
+    <div class="modal fade" id="ProfileDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ProfileDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="viewRecordLabel">VEHICLE DETAILS</h5>
-                    <button type="button" class="btn-close" id="modal_1_closeBtn"></button>
+                    <h5 class="modal-title"><strong>ON THE JOB TRAINEE DETAILS</strong></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addRecordForm">
-                        <div class="mb-3">
-                            <label for="modal_1_firstName" class="form-label"><strong>FIRST NAME</strong></label>
-                            <input type="text" class="form-control" id="modal_1_firstName" disabled>
+                    <div class="row">
+
+                        <!-- Profile Image Column (1:1 Ratio) -->
+                        <div class="col-lg-6 d-flex justify-content-center align-items-center">
+                            <div class="profile-image-container">
+                                <img id="modal_1_profileImg" src="/tapnlog/Image/LOGO_AND_ICONS/default_avatar.png" alt="Profile Picture" class="img-thumbnail">
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="modal_1_lastName" class="form-label"><strong>LAST NAME</strong></label>
-                            <input type="text" class="form-control" id="modal_1_lastName" disabled>
+
+                        <!-- Details Column -->
+                        <div class="col-lg-6">
+                            <form id="profileForm" class=" mt-2 mt-lg-4">
+
+                                <!-- DATE APPROVED -->
+                                <div class="mb-3">
+                                    <p><strong>Date Approved: </strong><span id="details_date"> <!-- for populate --> </span></p>
+                                </div>
+
+                                <!-- FULL NAME -->
+                                <div class="mb-3">
+                                    <p><strong>Name: </strong><span id="details_name"> <!-- for populate --> </span></p>
+                                </div>
+
+                                <!-- TYPE OF PROFILE: OJT -->
+                                <div class="mb-3">
+                                    <p><strong>Profile Type: </strong><span id="details_type"> <!-- for populate --> </span></p>
+                                </div>
+
+                                <!-- STATUS -->
+                                <div class="mb-3">
+                                    <p><strong>Status: </strong><span id="details_status"> <!-- for populate --> </span></p>
+                                </div>
+
+                                <!-- RFID NUMBER -->
+                                <div class="mb-3">
+                                    <p><strong>RFID Number: </strong><span id="details_rfid"> <!-- for populate --> </span></p>
+                                </div>
+
+                            </form>
+
                         </div>
-                        <div class="mb-3">
-                            <label for="modal_1_plateNumber" class="form-label"><strong>PLATE NUMBER</strong></label>
-                            <input type="text" class="form-control" id="modal_1_plateNumber" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label for="modal_1_vehiclePass" class="form-label"><strong>VEHICLE PASS (Optional)</strong></label>
-                            <input type="text" class="form-control" id="modal_1_vehiclePass" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label for="modal_1_purpose" class="form-label"><strong>PURPOSE</strong></label>
-                            <textarea class="form-control" id="modal_1_purpose" rows="3" disabled></textarea>
-                        </div>
-                    </form>
+                    </div>
                 </div>
 
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+
     <script>
         $(document).ready(function() {
 
@@ -289,17 +352,8 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 window.location.href = '../main_page.php';
             });
 
-            $('#goToArchive').on('click', function() {
-                window.location.href = 'Archived/main_page.php';
-            });
-
-            $('#modal_1_firstName').on('input', function() {
-                $(this).val($(this).val().toUpperCase()); // Convert to uppercase
-            });
-
-            // Add event listener for the last name input
-            $('#modal_1_lastName').on('input', function() {
-                $(this).val($(this).val().toUpperCase()); // Convert to uppercase
+            $('#modal_2_closeBtn').on('click', function() {
+                $('#viewRecordModal').modal('hide');
             });
 
             // Get today's date in local time (correcting for time zone)
@@ -356,7 +410,6 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     if (fromDateValue > toDateValue) {
                         $('#from_dateInput').val('');
                     }
-
                 }
             }
 
@@ -393,7 +446,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             $('#applyFilters').on('click', function() {
                 filters = {
                     from_date: $('#from_dateInput').val(),
-                    to_date: $('#to_dateInput').val()
+                    to_date: $('#to_dateInput').val(),
+                    rfid_filter: $('#rfidFilter').val(), // Correct key for backend
+                    status: $('#status').val(),
                 };
                 fetchRecords();
                 $('#filterModal').modal('hide');
@@ -432,37 +487,162 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
             // Initial Fetch
             fetchRecords();
-            setInterval(fetchRecords, 10000);
 
             // VIEW AND EDIT DETAILS
             $(document).on('click', '.view-details-btn', function() {
-                const record_id = $(this).data('id');
-                const first_name = $(this).data('first-name');
-                const last_name = $(this).data('last-name');
-                const plate_number = $(this).data('plate-num');
-                const purpose = $(this).data('purpose');
-                const pass = $(this).data('vehicle-pass') !== undefined && $(this).data('vehicle-pass') !== "" ? $(this).data('vehicle-pass') : null;
+                const img = $(this).data('bs-img');
+                const date = $(this).data('bs-date-approved');
+                const name = $(this).data('bs-name');
+                const profile_type = "ON THE JOB TRAINEE";
+                const status = $(this).data('bs-status');
+                const rfid = $(this).data('bs-rfid');
 
-
-                // OPEN THE MODAL WITH POPULATED VALUES AND disabled inputs
-                $('#modal_1_firstName').val(first_name).removeClass('is-invalid');
-                $('#modal_1_lastName').val(last_name).removeClass('is-invalid');
-                $('#modal_1_plateNumber').val(plate_number).removeClass('is-invalid');
-                $('#modal_1_vehiclePass').val(pass);
-                $('#modal_1_purpose').val(purpose).removeClass('is-invalid');
-
-                $('#modal_1_firstName, #modal_1_lastName, #modal_1_plateNumber, #modal_1_vehiclePass, #modal_1_purpose').prop('disabled', true);
+                $('#modal_1_profileImg').attr('src', img);
+                $('#details_date').text(date);
+                $('#details_name').text(name);
+                $('#details_type').text(profile_type);
+                $('#details_status').text(status);
+                $('#details_rfid').text(rfid);
 
                 // Show the modal
-                $('#viewRecordModal').modal('show');
+                $('#ProfileDetailsModal').modal('show');
             });
 
-            $('#modal_1_closeBtn').on('click', function() {
-                $('#viewRecordModal').modal('hide');
+
+            // ARCHIVE RECORD
+            $(document).on('click', '.restore-btn', function() {
+
+                const attendanceId = $(this).data('bs-id');
+                const name = $(this).data('bs-name');
+                const date = $(this).data('bs-date');
+
+                Swal.fire({
+                    title: 'LOADING',
+                    text: 'Please wait.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                });
+
+                $.ajax({
+                    url: 'check_attendance.php',
+                    type: 'POST',
+                    data: {
+                        attendance_id: attendanceId,
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        Swal.close();
+
+                        if (response.success) {
+
+                            // Confirmation dialog
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: `Do you want to RESTORE the ATTENDANCE of ${name} on ${date}? This action cannot be undone.`,
+                                icon: 'question',
+                                showCancelButton: true,
+                                confirmButtonText: 'YES',
+                                cancelButtonText: 'NO',
+                                reverseButtons: true
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+
+                                    Swal.fire({
+                                        title: 'LOADING',
+                                        text: 'Please wait.',
+                                        allowOutsideClick: false,
+                                        didOpen: () => {
+                                            Swal.showLoading();
+                                        },
+                                    });
+
+                                    // Send the AJAX request to restore the record
+                                    $.ajax({
+                                        url: 'restore_record.php',
+                                        type: 'POST',
+                                        data: {
+                                            attendance_id: attendanceId,
+                                        },
+                                        dataType: 'json',
+                                        success: function(response) {
+                                            Swal.close();
+
+                                            if (response.success) {
+                                                Swal.fire({
+                                                    position: 'top',
+                                                    title: 'Success!',
+                                                    text: response.message,
+                                                    icon: 'success',
+                                                    timer: 2000,
+                                                    timerProgressBar: true,
+                                                    showConfirmButton: false,
+                                                });
+
+                                                // Refresh the visitor list or update the UI
+                                                fetchRecords();
+                                            } else {
+                                                Swal.fire({
+                                                    position: 'top',
+                                                    title: 'Error!',
+                                                    text: response.message,
+                                                    icon: 'error',
+                                                    timer: 2000,
+                                                    timerProgressBar: true,
+                                                    showConfirmButton: false,
+                                                });
+                                            }
+                                        },
+                                        error: function() {
+                                            Swal.close();
+                                            Swal.fire({
+                                                position: 'top',
+                                                title: 'Error!',
+                                                text: 'Failed to process archive. Please try again.',
+                                                icon: 'error',
+                                                timer: 2000,
+                                                timerProgressBar: true,
+                                                showConfirmButton: false,
+                                            });
+                                        },
+                                    });
+                                }
+                            });
+
+                        } else {
+                            Swal.fire({
+                                position: 'top',
+                                title: 'Error!',
+                                text: response.message,
+                                icon: 'error',
+                                timer: 2000,
+                                timerProgressBar: true,
+                                showConfirmButton: false,
+                            });
+                        }
+                    },
+                    error: function() {
+                        Swal.close();
+                        Swal.fire({
+                            position: 'top',
+                            title: 'Error!',
+                            text: 'Failed to check the profile attendance. Please try again.',
+                            icon: 'error',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                        });
+                    },
+                });
+
             });
+
 
         });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 
 </html>

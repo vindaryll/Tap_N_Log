@@ -424,6 +424,8 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             // Initial Fetch
             fetchRecords();
 
+            setInterval(fetchRecords, 10000);
+
             // VIEW AND EDIT DETAILS
             $(document).on('click', '.view-details-btn', function() {
                 const record_id = $(this).data('id');
