@@ -522,10 +522,9 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                             reverseButtons: true,
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                showAlert("Thank you!", "success"); // Show success message
-                                setTimeout(() => {
-                                    window.location.href = '/TAPNLOG/Starting_Folder/Landing_page/index.php';
-                                }, 1000);
+
+                                window.location.href = '/TAPNLOG/Starting_Folder/Landing_page/index.php';
+
                             }
                         });
 

@@ -1,9 +1,10 @@
 <?php
 session_start();
 
-// Check if the guard is logged in
 if (!isset($_SESSION['record_guard_logged'])) {
-    echo json_encode(['success' => false, 'message' => 'Unauthorized access.']);
+    header('Content-Type: text/html');
+    define('UNAUTHORIZED_ACCESS', true);
+    require_once $_SESSION['directory'] . '/unauthorized_access.php';
     exit();
 }
 

@@ -2,8 +2,9 @@
 // Start session
 session_start();
 
-// Include database connection
+// Include database connection and system log helper
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\system_log_helper.php';
 
 // Access PHPMailer
 require $_SESSION['directory'] . '\PHPMailer\src\Exception.php';
@@ -65,7 +66,7 @@ if (isset($_SESSION['otp_code']) && isset($_POST['emailOrUsername'])) {
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
         $email = $user['email'];
-        $username = $user['username'];
+        $username_ = $user['username'];
         
         // Use the existing OTP code in the session
         $otpCode = $_SESSION['otp_code'];
@@ -82,18 +83,18 @@ if (isset($_SESSION['otp_code']) && isset($_POST['emailOrUsername'])) {
             $mail->Port = 465;
 
             // Email settings
-            $mail->setFrom('no-reply@gmail.com', 'Tap_N_Log');
+            $mail->setFrom('no-reply@gmail.com', 'Tap-N-Log');
             $mail->addAddress($email);
             $mail->isHTML(true);
             $mail->Subject = 'OTP Code for Verification';
             $mail->Body = '
                             <div style="max-width: 600px; margin: auto; padding: 20px; font-family: Arial, sans-serif; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;">
                                 <div style="text-align: center; margin-bottom: 20px;">
-                                    <h2 style="color: #007bff;">Tap_N_Log</h2>
+                                    <h2 style="color: #007bff;">Tap-N-Log</h2>
                                     <p style="font-size: 18px; color: #555;">Password Reset Request</p>
                                 </div>
                                 <div style="padding: 20px; background-color: #ffffff; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-                                    <p style="color: #555;">Hello, ' . htmlspecialchars($username) . '!</p>
+                                    <p style="color: #555;">Hello, ' . htmlspecialchars($username_) . '!</p>
                                     <p style="color: #555;">Did you request to reset your password? If so, please use the OTP below to proceed with the reset:</p>
                                     <h3 style="color: #28a745; text-align: center;">Your OTP code is: <b>' . $otpCode . '</b></h3>
                                     <p style="color: #555;">If you did not request a password reset, please disregard this email.</p>
@@ -104,18 +105,48 @@ if (isset($_SESSION['otp_code']) && isset($_POST['emailOrUsername'])) {
 
             $mail->send();
 
+            // Log successful OTP resending
+            logSystemActivity(
+                $conn,
+                "Password reset OTP resent",
+                "SUCCESS",
+                "OTP code: $otpCode, resent to user: $username_ (Email: " . $email . ")"
+            );
+
             // Mask the email for the response
             $maskedEmail = maskEmail($email);
 
             $response['success'] = true;
             $response['message'] = 'OTP code successfully resent to '. $maskedEmail .'! Check your Email now.';
         } catch (Exception $e) {
+            // Log failed OTP resending
+            logSystemActivity(
+                $conn,
+                "Password reset OTP resending failed",
+                "FAILED",
+                "Failed to resend OTP to user: $username_. Error: " . $mail->ErrorInfo
+            );
             $response['message'] = 'Mailer Error: ' . $mail->ErrorInfo;
         }
     } else {
+        // Log invalid user for OTP resend
+        logSystemActivity(
+            $conn,
+            "Invalid user for OTP resend",
+            "FAILED",
+            "Attempted email/username: $emailOrUsername"
+        );
         $response['message'] = 'Email or username not found.';
     }
 } else {
+    // Log missing parameters for OTP resend
+    logSystemActivity(
+        $conn,
+        "Missing parameters for OTP resend",
+        "FAILED",
+        "OTP code in session: " . (isset($_SESSION['otp_code']) ? 'Yes' : 'No') . 
+        ", Email/Username provided: " . (isset($_POST['emailOrUsername']) ? 'Yes' : 'No')
+    );
     $response['message'] = 'OTP code is not set or email/username is missing.';
 }
 

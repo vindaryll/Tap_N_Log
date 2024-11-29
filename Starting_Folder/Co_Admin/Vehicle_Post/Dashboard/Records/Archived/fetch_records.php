@@ -4,14 +4,25 @@ session_start();
 // Include database connection
 require_once $_SESSION['directory'] . '/Database/dbcon.php';
 
+if (!isset($_SESSION['vehicle_guard_logged'])) {
+    header('Content-Type: text/html');
+    define('UNAUTHORIZED_ACCESS', true);
+    require_once $_SESSION['directory'] . '/unauthorized_access.php';
+    exit();
+}
+
 function sanitizeInput($data)
 {
     return htmlspecialchars(stripslashes(trim($data)));
 }
 
-// Retrieve filters, sort, and search parameters from POST request
-$filters = $_POST['filters'] ?? [];
-$sort = $_POST['sort'] ?? [];
+function sanitizeArray($array)
+{
+    return array_map('sanitizeInput', $array);
+}
+
+$filters = isset($_POST['filters']) && is_array($_POST['filters']) ? sanitizeArray($_POST['filters']) : [];
+$sort = isset($_POST['sort']) && is_array($_POST['sort']) ? sanitizeArray($_POST['sort']) : [];
 $search = sanitizeInput($_POST['search'] ?? '');
 
 // Base SQL query

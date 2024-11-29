@@ -4,17 +4,26 @@ session_start();
 // Include database connection
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-// Validate user session
-// if (!isset($_SESSION['vehicle_guard_logged'])) {
-//     http_response_code(401);
-//     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-//     exit();
-// }
+if (!isset($_SESSION['vehicle_guard_logged'])) {
+    header('Content-Type: text/html');
+    define('UNAUTHORIZED_ACCESS', true);
+    require_once $_SESSION['directory'] . '/unauthorized_access.php';
+    exit();
+}
 
-// Get POST data
-$search = $_POST['search'] ?? '';
-$filters = $_POST['filters'] ?? [];
-$sort = $_POST['sort'] ?? [];
+function sanitizeInput($data)
+{
+    return htmlspecialchars(stripslashes(trim($data)));
+}
+
+function sanitizeArray($array)
+{
+    return array_map('sanitizeInput', $array);
+}
+
+$filters = isset($_POST['filters']) && is_array($_POST['filters']) ? sanitizeArray($_POST['filters']) : [];
+$sort = isset($_POST['sort']) && is_array($_POST['sort']) ? sanitizeArray($_POST['sort']) : [];
+$search = sanitizeInput($_POST['search'] ?? '');
 
 // Base query with station_id filter
 $sql = "

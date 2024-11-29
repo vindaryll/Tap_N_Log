@@ -1,14 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=, initial-scale=1.0">
     <title></title>
 </head>
+
 <body>
-    
+
 </body>
+
 </html>
 
 <?php
@@ -18,12 +20,15 @@ session_start();
 // Include database connection
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
+require_once $_SESSION['directory'] . '\Database\system_log_helper.php';
+
 function sanitizeInput($data)
 {
     return htmlspecialchars(stripslashes(trim($data)));
 }
 
-function logActivity($stationId, $coadminId, $station_name, $name, $conn) {
+function logActivity($stationId, $coadminId, $station_name, $name, $conn)
+{
     $sql = "INSERT INTO activity_log (section, details, category, station_id, guard_id)
             VALUES ('ACCOUNTS', ?, 'LOGS', ?, ?)";
     $stmt = $conn->prepare($sql);
@@ -43,6 +48,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validate CAPTCHA
     if ($captchaAnswer != $_SESSION['captcha_answer']) {
+        // Log failed CAPTCHA attempt
+        logSystemActivity(
+            $conn,
+            "Failed login attempt - Invalid CAPTCHA",
+            "FAILED",
+            "Username/Email attempted: " . $usernameOrEmail
+        );
+
         echo "
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -96,6 +109,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Log the login activity
             logActivity($row['station_id'], $row['guard_id'], $row['station_name'], $row['guard_name'], $conn);
 
+            logSystemActivity(
+                $conn,
+                "Successful login - Record Post Admin",
+                "SUCCESS",
+                "Co-admin ID: " . $row['guard_id'] . ", Name: " . $row['guard_name'] . ", Station: " . $row['station_name']
+            );
+
             echo "
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
@@ -116,6 +136,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </script>";
             exit();
         } else {
+
+            logSystemActivity(
+                $conn,
+                "Failed login attempt - Invalid password",
+                "FAILED",
+                "Invalid password for Record Post Co-Admin user: " . $usernameOrEmail
+            );
+
             // Invalid password
             echo "
             <script>
@@ -138,7 +166,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
     } else {
+
         // No user found with that username or email
+        logSystemActivity(
+            $conn,
+            "Failed login attempt - User not found",
+            "FAILED",
+            "Record Post Co-Admin account not found for: " . $usernameOrEmail
+        );
+
         echo "
         <script>
             document.addEventListener('DOMContentLoaded', function() {

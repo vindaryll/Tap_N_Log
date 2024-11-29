@@ -4,14 +4,26 @@ session_start();
 // Include database connection
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-// Function to sanitize inputs
-function sanitizeInput($data) {
+if (!isset($_SESSION['record_guard_logged'])) {
+    header('Content-Type: text/html');
+    define('UNAUTHORIZED_ACCESS', true);
+    require_once $_SESSION['directory'] . '/unauthorized_access.php';
+    exit();
+}
+
+function sanitizeInput($data)
+{
     return htmlspecialchars(stripslashes(trim($data)));
 }
 
-// Filters and search from POST request
-$sort = $_POST['sort'] ?? [];
+function sanitizeArray($array)
+{
+    return array_map('sanitizeInput', $array);
+}
+
+$sort = isset($_POST['sort']) && is_array($_POST['sort']) ? sanitizeArray($_POST['sort']) : [];
 $search = sanitizeInput($_POST['search'] ?? '');
+
 
 // Build the query
 $query = "

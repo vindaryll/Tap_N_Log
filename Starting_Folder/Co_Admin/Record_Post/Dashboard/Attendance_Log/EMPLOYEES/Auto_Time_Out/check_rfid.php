@@ -5,6 +5,13 @@ session_start();
 // Include database connection
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
+if (!isset($_SESSION['record_guard_logged'])) {
+    header('Content-Type: text/html');
+    define('UNAUTHORIZED_ACCESS', true);
+    require_once $_SESSION['directory'] . '/unauthorized_access.php';
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Sanitize inputs
     $rfid = $conn->real_escape_string($_POST['rfid'] ?? '');

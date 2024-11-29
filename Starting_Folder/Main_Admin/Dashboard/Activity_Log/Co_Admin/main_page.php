@@ -504,6 +504,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             // Initialize everything
             populateStations();
             fetchActivity();
+            setInterval(fetchActivity, 5000);
             
         });
     </script>

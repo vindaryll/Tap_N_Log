@@ -2,6 +2,13 @@
 session_start();
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
+if (!isset($_SESSION['vehicle_guard_logged'])) {
+    header('Content-Type: text/html');
+    define('UNAUTHORIZED_ACCESS', true);
+    require_once $_SESSION['directory'] . '/unauthorized_access.php';
+    exit();
+}
+
 if (!isset($_POST['id']) || !is_numeric($_POST['id'])) {
     echo json_encode(['success' => false, 'message' => 'Invalid vehicle ID.']);
     exit();

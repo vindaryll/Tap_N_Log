@@ -360,6 +360,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
 
             // Initial Fetch
             fetchResults();
+            setInterval(fetchResults, 5000);
 
 
             // FEEDBACK MESSAGE FUNCTIONS FOR ADD VEHICLE MODAL

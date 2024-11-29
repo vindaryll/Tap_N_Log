@@ -4,6 +4,13 @@ session_start();
 // Include database connection
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
+if (!isset($_SESSION['record_guard_logged'])) {
+    header('Content-Type: text/html');
+    define('UNAUTHORIZED_ACCESS', true);
+    require_once $_SESSION['directory'] . '/unauthorized_access.php';
+    exit();
+}
+
 if (!isset($_POST['profile_id']) || !isset($_POST['rfid']) || !isset($_POST['name']) || !isset($_POST['method']) || !isset($_POST['date']) || !isset($_POST['time'])) {
     echo json_encode(['success' => false, 'message' => 'Invalid input parameters']);
     exit();

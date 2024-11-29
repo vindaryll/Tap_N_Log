@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,11 +14,11 @@
 // Start session
 session_start();
 
-// Include database connection
+// Include database connection and system log helper
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\system_log_helper.php';
 
-function sanitizeInput($data)
-{
+function sanitizeInput($data) {
     return htmlspecialchars(stripslashes(trim($data)));
 }
 
@@ -32,6 +31,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if the CAPTCHA answer is correct
     if ($captchaAnswer != $_SESSION['captcha_answer']) {
+        // Log failed CAPTCHA attempt
+        logSystemActivity(
+            $conn,
+            "Failed login attempt - Invalid CAPTCHA",
+            "FAILED",
+            "Username/Email attempted: " . $usernameOrEmail
+        );
+
         echo "
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -61,7 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if the query was successful and if any row was returned
     if ($result->num_rows > 0) {
-
         // Fetch the user data
         $row = $result->fetch_assoc();
 
@@ -70,7 +76,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // If the password is correct, set session variables and redirect
             $_SESSION['admin_logged'] = true;
             $_SESSION['admin_id'] = $row['admin_id'];
-
+            $_SESSION['username'] = $row['username'];
+            
+            // Log successful login in system_activity_log
+            logSystemActivity(
+                $conn,
+                "Successful login - Main Admin",
+                "SUCCESS",
+                "Main Admin login successful - ID: " . $row['admin_id'] . ", Username: " . $row['username']
+            );
+            
             echo "
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
@@ -91,6 +106,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </script>";
             exit();
         } else {
+            // Log invalid password attempt
+            logSystemActivity(
+                $conn,
+                "Failed login attempt - Invalid password",
+                "FAILED",
+                "Invalid password for Main Admin user: " . $usernameOrEmail
+            );
+
             // Invalid password
             echo "
             <script>
@@ -113,6 +136,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
     } else {
+        // Log user not found
+        logSystemActivity(
+            $conn,
+            "Failed login attempt - Admin not found",
+            "FAILED",
+            "Main Admin account not found for: " . $usernameOrEmail
+        );
+
         // No user found with that username or email
         echo "
         <script>
@@ -138,6 +169,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Close the database connection
     mysqli_close($conn);
 } else {
+
     // Redirect back to login if accessed directly
     echo "
     <script>
@@ -160,20 +192,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit();
 }
 ?>
-
-<!-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        Swal.fire({
-            title: 'Success!',
-            text: 'Login successful. Redirecting...',
-            icon: 'success',
-            timer: 1500,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            allowEscapeKey: false
-        }).then(() => {
-            window.location.href = '../Dashboard/dashboard_home.php';
-        });
-    });
-</script>"; -->

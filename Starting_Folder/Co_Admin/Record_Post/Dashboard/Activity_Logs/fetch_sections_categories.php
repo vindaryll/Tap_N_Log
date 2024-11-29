@@ -1,4 +1,13 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['record_guard_logged'])) {
+    header('Content-Type: text/html');
+    define('UNAUTHORIZED_ACCESS', true);
+    require_once $_SESSION['directory'] . '/unauthorized_access.php';
+    exit();
+}
+
 // Return JSON response for sections and categories
 header('Content-Type: application/json');
 

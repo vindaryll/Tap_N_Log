@@ -4,6 +4,13 @@ session_start();
 // Include database connection
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
+if (!isset($_SESSION['record_guard_logged'])) {
+    header('Content-Type: text/html');
+    define('UNAUTHORIZED_ACCESS', true);
+    require_once $_SESSION['directory'] . '/unauthorized_access.php';
+    exit();
+}
+
 // Check if necessary POST data is available
 if (!isset($_POST['first_name'], $_POST['last_name'], $_POST['purpose'], $_POST['phone_number'])) {
     echo json_encode(['success' => false, 'message' => 'Missing required fields']);

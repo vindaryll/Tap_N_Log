@@ -5,6 +5,13 @@ session_start();
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
 if (!isset($_SESSION['record_guard_logged'])) {
+    header('Content-Type: text/html');
+    define('UNAUTHORIZED_ACCESS', true);
+    require_once $_SESSION['directory'] . '/unauthorized_access.php';
+    exit();
+}
+
+if (!isset($_SESSION['record_guard_logged'])) {
     header("Location: /TAPNLOG/Starting_Folder/Landing_page/index.php");
     exit();
 }

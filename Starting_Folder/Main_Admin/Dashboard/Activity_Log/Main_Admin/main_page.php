@@ -393,6 +393,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
             // Initial fetch
             fetchActivity();
+            setInterval(fetchActivity, 5000);
         });
     </script>
 

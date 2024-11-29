@@ -17,8 +17,9 @@
 // Start session
 session_start();
 
-// Include database connection
+// Include database connection and system log helper
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\system_log_helper.php';
 
 function sanitizeInput($data)
 {
@@ -40,11 +41,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = sanitizeInput($_POST['password']);
     $captchaAnswer = sanitizeInput($_POST['captcha']);
 
-    // Include SweetAlert2 script
     echo "<script src=\"https://cdn.jsdelivr.net/npm/sweetalert2@11\"></script>";
 
     // Check if the CAPTCHA answer is correct
     if ($captchaAnswer != $_SESSION['captcha_answer']) {
+        // Log failed CAPTCHA attempt
+        logSystemActivity(
+            $conn,
+            "Failed login attempt - Invalid CAPTCHA",
+            "FAILED",
+            "Username/Email attempted: " . $usernameOrEmail
+        );
+
         echo "
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -95,7 +103,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['username'] = $row['username'];
             $_SESSION['name'] = $row['guard_name'];
 
-            // Log the login activity
+            // Log successful login in system_activity_log
+            logSystemActivity(
+                $conn,
+                "Successful login - Vehicle Post Co-Admin",
+                "SUCCESS",
+                "Co-Admin login successful - ID: " . $row['guard_id'] . ", Name: " . $row['guard_name'] . ", Station: " . $row['station_name']
+            );
+
+            // Log the login activity in activity_log
             logActivity($row['station_id'], $row['guard_id'], $row['station_name'], $row['guard_name'], $conn);
 
             echo "
@@ -118,7 +134,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </script>";
             exit();
         } else {
-            // Invalid password
+            // Log invalid password attempt
+            logSystemActivity(
+                $conn,
+                "Failed login attempt - Invalid password",
+                "FAILED",
+                "Invalid password for Vehicle Post Co-Admin user: " . $usernameOrEmail
+            );
+
             echo "
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
@@ -140,14 +163,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
     } else {
-        // No user found with that username or email
+        // Log user not found
+        logSystemActivity(
+            $conn,
+            "Failed login attempt - User not found",
+            "FAILED",
+            "Vehicle Post Co-Admin account not found for: " . $usernameOrEmail
+        );
+
         echo "
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire({
                     position: 'top',
                     title: 'Error!',
-                    text: 'Invalid Username or Password!',
+                    text: 'Invalid Username or Password! Please try again.',
                     icon: 'error',
                     timer: 1500,
                     timerProgressBar: true,

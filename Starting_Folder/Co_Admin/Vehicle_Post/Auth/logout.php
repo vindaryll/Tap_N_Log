@@ -15,8 +15,9 @@
 <?php
 session_start();
 
-// Include database connection
+// Include database connection and system log helper
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\system_log_helper.php';
 
 // Log logout activity
 if (isset($_SESSION['guard_id'], $_SESSION['station_id'])) {
@@ -24,6 +25,14 @@ if (isset($_SESSION['guard_id'], $_SESSION['station_id'])) {
     $station_id = $_SESSION['station_id'];
     $guard_name = $_SESSION['name'];
     $station_name = $_SESSION['station_name'];
+
+    // Log to system activity log
+    logSystemActivity(
+        $conn,
+        "User logout",
+        "SUCCESS",
+        "Co-Admin ID: $guard_id, Name: $guard_name, Station: $station_name"
+    );
 
     // Prepare the activity details for logging
     $details = "Logout for Co-Admin\n\nId: $guard_id\nName: $guard_name\nStation: $station_name";

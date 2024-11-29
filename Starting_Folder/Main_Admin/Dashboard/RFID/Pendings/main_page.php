@@ -1048,7 +1048,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                     "/TAPNLOG/Image/LOGO_AND_ICONS/default_avatar.png";
 
                                 // Handle null or undefined RFID
-                                const rfidValue = profile.rfid ? profile.rfid : "N/A";
+                                const rfidValue = profile.rfid ? profile.rfid : "NONE";
 
                                 // Create a card for each duplicate profile
                                 const card = `
@@ -1116,7 +1116,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 const rfid = $('#modal_1_rfid').val().trim();
 
                 // Prepare the RFID display value
-                const rfidDisplay = rfid ? rfid : "N/A";
+                const rfidDisplay = rfid ? rfid : "NONE";
                 const profileImgDisplay = `/tapnlog/Image/Pending/${profileImg}`;
 
                 // SweetAlert2 confirmation
@@ -1156,7 +1156,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 const rfid = $('#modal_1_rfid').val().trim();
 
                 // Prepare the RFID display value
-                const rfidDisplay = rfid ? rfid : "N/A";
+                const rfidDisplay = rfid ? rfid : "NONE";
                 const profileImgDisplay = `/tapnlog/Image/Pending/${profileImg}`;
 
                 // SweetAlert2 confirmation dialog with details

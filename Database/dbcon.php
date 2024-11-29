@@ -3,7 +3,7 @@
 $server = "localhost"; 
 $username = "root";     
 $password = "";         
-$database = "main_tapnlog";  
+$database = "tapnlog_final";  
 
 // Create a connection
 $conn = mysqli_connect($server, $username, $password, $database);

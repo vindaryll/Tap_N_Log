@@ -2,6 +2,13 @@
 session_start();
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
+if (!isset($_SESSION['record_guard_logged'])) {
+    header('Content-Type: text/html');
+    define('UNAUTHORIZED_ACCESS', true);
+    require_once $_SESSION['directory'] . '/unauthorized_access.php';
+    exit();
+}
+
 // Ensure RFID and client-side date are provided
 if (!isset($_POST['rfid']) || !isset($_POST['client_date'])) {
     echo json_encode(['success' => false, 'message' => 'Required data not provided']);

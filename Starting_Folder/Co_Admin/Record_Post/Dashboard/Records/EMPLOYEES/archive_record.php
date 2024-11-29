@@ -4,9 +4,14 @@ session_start();
 // Include database connection
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (!isset($_SESSION['record_guard_logged'])) {
+    header('Content-Type: text/html');
+    define('UNAUTHORIZED_ACCESS', true);
+    require_once $_SESSION['directory'] . '/unauthorized_access.php';
+    exit();
+}
 
-    error_log('Request Data: ' . print_r($_POST, true));
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Get POST data
     $attendance_id = $_POST['attendance_id'] ?? null;

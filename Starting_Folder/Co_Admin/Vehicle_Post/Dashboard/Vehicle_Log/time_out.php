@@ -4,11 +4,23 @@ session_start();
 // Include database connection
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
+if (!isset($_SESSION['vehicle_guard_logged'])) {
+    header('Content-Type: text/html');
+    define('UNAUTHORIZED_ACCESS', true);
+    require_once $_SESSION['directory'] . '/unauthorized_access.php';
+    exit();
+}
+
+function sanitizeInput($data)
+{
+    return htmlspecialchars(stripslashes(trim($data)));
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sanitize inputs
-    $record_id = $conn->real_escape_string($_POST['record_id'] ?? '');
-    $date = $conn->real_escape_string($_POST['date'] ?? '');
-    $time_out = $conn->real_escape_string($_POST['time_out'] ?? '');
+    $record_id = $conn->real_escape_string(sanitizeInput($_POST['record_id']) ?? '');
+    $date = $conn->real_escape_string(sanitizeInput($_POST['date']) ?? '');
+    $time_out = $conn->real_escape_string(sanitizeInput($_POST['time_out']) ?? '');
 
     if (empty($record_id) || empty($time_out)) {
         echo json_encode(['success' => false, 'message' => 'Invalid input data.']);

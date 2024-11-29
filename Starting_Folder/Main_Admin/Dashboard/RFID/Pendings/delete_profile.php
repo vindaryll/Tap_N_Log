@@ -1,5 +1,13 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['admin_logged'])) {
+    header('Content-Type: text/html');
+    define('UNAUTHORIZED_ACCESS', true);
+    require_once $_SESSION['directory'] . '/unauthorized_access.php';
+    exit();
+}
+
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['profile_id'])) {

@@ -2,11 +2,11 @@
 // Start session
 session_start();
 
-// Include database connection
+// Include database connection and system log helper
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\system_log_helper.php';
 
-function sanitizeInput($data)
-{
+function sanitizeInput($data) {
     return htmlspecialchars(stripslashes(trim($data)));
 }
 
@@ -21,6 +21,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Validate that the passwords match
         if ($newPassword !== $confirmNewPassword) {
+            // Log password mismatch
+            logSystemActivity(
+                $conn,
+                "Password reset failed",
+                "FAILED",
+                "Passwords do not match for user: $emailOrUsername"
+            );
             $response['message'] = 'Passwords do not match. Please try again.';
         } else {
             // Begin transaction
@@ -35,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     INNER JOIN stations s ON g.station_id = s.station_id
                     WHERE (ga.email = ? OR ga.username = ?) AND g.station_id = 2
                 ";
-
+                
                 $userStmt = $conn->prepare($userQuery);
                 $userStmt->bind_param("ss", $emailOrUsername, $emailOrUsername);
                 $userStmt->execute();
@@ -56,8 +63,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $updateStmt = $conn->prepare($updateQuery);
                     $updateStmt->bind_param("si", $hashedPassword, $guardId);
 
-
                     if ($updateStmt->execute()) {
+                        // Log successful password reset
+                        logSystemActivity(
+                            $conn,
+                            "Password reset",
+                            "SUCCESS",
+                            "Co-Admin ID: $guardId, Name: $guardName, Station: $stationName"
+                        );
+
                         // Log activity in the activity_log table
                         $logDetails = "Forgot password for Co-Admin\n\nId: $guardId\nName: $guardName\nStation: $stationName";
                         $logQuery = "INSERT INTO activity_log (section, details, category, station_id, guard_id) VALUES ('ACCOUNTS', ?, 'UPDATE', ?, ?)";
@@ -73,9 +87,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             throw new Exception('Failed to log activity.');
                         }
                     } else {
+                        // Log failed password update
+                        logSystemActivity(
+                            $conn,
+                            "Password reset failed",
+                            "FAILED",
+                            "Failed to update password for Co-Admin ID: $guardId"
+                        );
                         throw new Exception('Error resetting password.');
                     }
                 } else {
+                    // Log user not found
+                    logSystemActivity(
+                        $conn,
+                        "Password reset attempt",
+                        "FAILED",
+                        "User not found for: $emailOrUsername"
+                    );
                     throw new Exception('User not found.');
                 }
             } catch (Exception $e) {
@@ -85,6 +113,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     } else {
+        // Log missing parameters
+        logSystemActivity(
+            $conn,
+            "Password reset attempt",
+            "FAILED",
+            "Missing required parameters for password reset"
+        );
         $response['message'] = 'New password, confirmation, and email or username are required.';
     }
 
@@ -92,3 +127,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo json_encode($response);
     exit();
 }
+?>

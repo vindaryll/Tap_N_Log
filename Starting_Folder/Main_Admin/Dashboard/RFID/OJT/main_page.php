@@ -683,6 +683,8 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
             // Initial Fetch
             fetchProfiles();
+            
+            setInterval(fetchProfiles, 5000);
 
 
 

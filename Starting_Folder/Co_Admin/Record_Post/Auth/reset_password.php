@@ -2,10 +2,12 @@
 // Start session
 session_start();
 
-// Include database connection
+// Include database connection and system log helper
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\system_log_helper.php';
 
-function sanitizeInput($data) {
+function sanitizeInput($data)
+{
     return htmlspecialchars(stripslashes(trim($data)));
 }
 
@@ -34,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     INNER JOIN stations s ON g.station_id = s.station_id
                     WHERE (ga.email = ? OR ga.username = ?) AND g.station_id = 1
                 ";
-                
+
                 $userStmt = $conn->prepare($userQuery);
                 $userStmt->bind_param("ss", $emailOrUsername, $emailOrUsername);
                 $userStmt->execute();
@@ -57,6 +59,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                     if ($updateStmt->execute()) {
+
+                        logSystemActivity(
+                            $conn,
+                            "Password reset",
+                            "SUCCESS",
+                            "Co-Admin ID: $guardId, Name: $guardName, Station: $stationName"
+                        );
+
                         // Log activity in the activity_log table
                         $logDetails = "Forgot password for Co-Admin\n\nId: $guardId\nName: $guardName\nStation: $stationName";
                         $logQuery = "INSERT INTO activity_log (section, details, category, station_id, guard_id) VALUES ('ACCOUNTS', ?, 'UPDATE', ?, ?)";
@@ -75,6 +85,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         throw new Exception('Error resetting password.');
                     }
                 } else {
+                    logSystemActivity(
+                        $conn,
+                        "Password reset attempt",
+                        "FAILED",
+                        "User not found for: $emailOrUsername"
+                    );
                     throw new Exception('User not found.');
                 }
             } catch (Exception $e) {
@@ -91,4 +107,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo json_encode($response);
     exit();
 }
-?>

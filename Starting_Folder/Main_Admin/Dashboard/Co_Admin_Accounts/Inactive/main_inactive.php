@@ -113,7 +113,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             <div class="container-fluid col-sm-12 mt-sm-0 mt-4 px-2">
 
                 <div class="container-fluid text-center">
-                    <h2 class="text-center w-100">ACTIVE CO-ADMIN ACCOUNTS</h2>
+                    <h2 class="text-center w-100">INACTIVE CO-ADMIN ACCOUNTS</h2>
 
                     <!-- Textbox for search -->
                     <input type="text" id="search" class="form-control mb-3" placeholder="Search by guard name or ID">
@@ -237,15 +237,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="guardDetailsLabel">Guard Details</h5>
+                    <h5 class="modal-title" id="guardDetailsLabel">CO-ADMIN DETAILS</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p><strong>Guard Name:</strong> <span id="modalGuardName"></span></p>
-                    <p><strong>Station Name:</strong> <span id="modalStationName"></span></p>
-                    <p><strong>Username:</strong> <span id="modalUsername"></span></p>
-                    <p><strong>Email:</strong> <span id="modalEmail"></span></p>
-                    <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+                    <p><strong>CO-ADMIN NAME:</strong> <span id="modalGuardName"></span></p>
+                    <p><strong>STATION NAME:</strong> <span id="modalStationName"></span></p>
+                    <p><strong>USERNAME:</strong> <span id="modalUsername"></span></p>
+                    <p><strong>EMAIL:</strong> <span id="modalEmail"></span></p>
+                    <p><strong>STATUS:</strong> <span id="modalStatus"></span></p>
                 </div>
             </div>
         </div>
@@ -377,6 +377,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
             // Initial fetch
             fetchInactiveGuards();
+            setInterval(fetchInactiveGuards, 5000);
 
             // Back button
             $('#backbtn').on('click', function() {
@@ -398,7 +399,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         // Function to reactivate guard
         function reactivateGuard(guardId) {
             showConfirmation(
-                "Do you want to reactivate guard no: " + guardId + "?",
+                "Do you want to REACTIVATE account number: " + guardId + "?",
                 function() { // Callback to execute on confirmation
                     $.ajax({
                         url: 'reactivate_guard.php',

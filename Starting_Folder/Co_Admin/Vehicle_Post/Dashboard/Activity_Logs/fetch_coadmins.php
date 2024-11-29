@@ -1,9 +1,15 @@
 <?php
 session_start();
 
+if (!isset($_SESSION['vehicle_guard_logged'])) {
+    header('Content-Type: text/html');
+    define('UNAUTHORIZED_ACCESS', true);
+    require_once $_SESSION['directory'] . '/unauthorized_access.php';
+    exit();
+}
+
 // Include database connection
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
-
 
 $station_id = 2; // VEHICLE POST
 $sql = "

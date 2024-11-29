@@ -2,8 +2,9 @@
 // Start session
 session_start();
 
-// Include database connection
+// Include database connection and system log helper
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\system_log_helper.php';
 
 // Access PHPMailer
 require $_SESSION['directory'] . '\PHPMailer\src\Exception.php';
@@ -49,7 +50,7 @@ function sanitizeInput($data) {
 if (isset($_POST['emailOrUsername'])) {
     $emailOrUsername = sanitizeInput($_POST['emailOrUsername']);
 
-    // Check if the email or username exists in `guard_accounts` and belongs to `station_id = 2`
+    // Check if the email or username exists in guard_accounts and belongs to station_id = 2
     $query = "
         SELECT g.email, g.username, g.guard_id 
         FROM guard_accounts g
@@ -64,7 +65,7 @@ if (isset($_POST['emailOrUsername'])) {
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
         $email = $user['email'];
-        $username = $user['username'];
+        $username_ = $user['username'];
 
         // Generate a random 6-digit OTP
         $otpCode = rand(100000, 999999);
@@ -93,7 +94,7 @@ if (isset($_POST['emailOrUsername'])) {
                                     <p style="font-size: 18px; color: #555;">Password Reset Request</p>
                                 </div>
                                 <div style="padding: 20px; background-color: #ffffff; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-                                    <p style="color: #555;">Hello, ' . htmlspecialchars($username) . '!</p>
+                                    <p style="color: #555;">Hello, ' . htmlspecialchars($username_) . '!</p>
                                     <p style="color: #555;">Did you request to reset your password? If so, please use the OTP below to proceed with the reset:</p>
                                     <h3 style="color: #28a745; text-align: center;">Your OTP code is: <b>' . $otpCode . '</b></h3>
                                     <p style="color: #555;">If you did not request a password reset, please disregard this email.</p>
@@ -104,18 +105,47 @@ if (isset($_POST['emailOrUsername'])) {
 
             $mail->send();
 
+            // Log successful OTP sending
+            logSystemActivity(
+                $conn,
+                "Password reset OTP sent",
+                "SUCCESS",
+                "OTP code: $otpCode, sent to user: $username_ (Email: " . $email . ")"
+            );
+
             // Mask the email for the response
             $maskedEmail = maskEmail($email);
 
             $response['success'] = true;
             $response['message'] = 'OTP code has been successfully sent to ' . $maskedEmail . '! Check your email now.';
         } catch (Exception $e) {
+            // Log failed OTP sending
+            logSystemActivity(
+                $conn,
+                "Password reset OTP sending failed",
+                "FAILED",
+                "Failed to send OTP to user: $username_. Error: " . $mail->ErrorInfo
+            );
             $response['message'] = 'Mailer Error: ' . $mail->ErrorInfo;
         }
     } else {
+        // Log invalid user verification attempt
+        logSystemActivity(
+            $conn,
+            "Invalid user verification attempt",
+            "FAILED",
+            "Attempted email/username: $emailOrUsername"
+        );
         $response['message'] = 'Email or username not found, or not assigned to the specified station. Please try again.';
     }
 } else {
+    // Log missing input
+    logSystemActivity(
+        $conn,
+        "Missing input for user verification",
+        "FAILED",
+        "Email or username parameter missing"
+    );
     $response['message'] = 'Email or username is required.';
 }
 

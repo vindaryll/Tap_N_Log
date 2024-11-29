@@ -1,5 +1,13 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['admin_logged'])) {
+    header('Content-Type: text/html');
+    define('UNAUTHORIZED_ACCESS', true);
+    require_once $_SESSION['directory'] . '/unauthorized_access.php';
+    exit();
+}
+
 header('Content-Type: application/json'); // Set header for JSON response
 
 require_once $_SESSION['directory'] . '\Database\dbcon.php';

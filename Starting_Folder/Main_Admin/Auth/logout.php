@@ -14,15 +14,31 @@
 <?php
 session_start();
 
+// Include database connection and system log helper
+require_once $_SESSION['directory'] . '\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\system_log_helper.php';
+
+// Log logout activity
+if (isset($_SESSION['admin_id'])) {
+    $admin_id = $_SESSION['admin_id'];
+    $username = $_SESSION['username'];
+
+    // Log to system activity log
+    logSystemActivity(
+        $conn,
+        "User logout",
+        "SUCCESS",
+        "Main Admin logout - ID: $admin_id, Username: $username"
+    );
+}
+
 // Unset all variables and destroy the session
 session_unset();
 session_destroy();
 
-// Include SweetAlert2 script
-echo "<script src=\"https://cdn.jsdelivr.net/npm/sweetalert2@11\"></script>";
-
-// Show SweetAlert2 notification
+// Redirect to login page with SweetAlert
 echo "
+<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         Swal.fire({

@@ -252,12 +252,12 @@ $stationsResult = $conn->query($stationsSql);
     </div>
 
 
-    <!-- Modal for Adding Guard -->
+    <!-- Modal for Adding Co-admin -->
     <div class="modal fade" id="addGuardModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addGuardModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-center" id="addGuardModalLabel">Add New Co-Admin</h5>
+                    <h5 class="modal-title text-center" id="addGuardModalLabel">ADD NEW CO-ADMIN</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -267,25 +267,25 @@ $stationsResult = $conn->query($stationsSql);
                     <form id="addGuardForm">
 
                         <div class="mb-3">
-                            <label for="guard_name" class="form-label ">Co-Admin Name</label>
+                            <label for="guard_name" class="form-label "><strong>CO-ADMIN NAME</strong></label>
                             <input type="text" id="guard_name" name="guard_name" class="form-control" required>
                             <div id="addName-feedback" class="invalid-feedback"> <!-- Message will display here --> </div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="username" class="form-label ">Username</label>
+                            <label for="username" class="form-label "><strong>USERNAME</strong></label>
                             <input type="text" id="username" name="username" class="form-control" required>
                             <div id="addUsername-feedback" class="invalid-feedback"> <!-- Message will display here --> </div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="email" class="form-label ">Email</label>
+                            <label for="email" class="form-label "><strong>EMAIL</strong></label>
                             <input type="email" id="email" name="email" class="form-control" required>
                             <div id="addEmail-feedback" class="invalid-feedback"> <!-- Message will display here --> </div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="password" class="form-label ">Password</label>
+                            <label for="password" class="form-label "><strong>PASSWORD</strong></label>
                             <div class="input-group">
                                 <input type="password" id="password" name="password" class="form-control" required>
                                 <span class="input-group-text toggle-password">
@@ -296,7 +296,7 @@ $stationsResult = $conn->query($stationsSql);
                         </div>
 
                         <div class="mb-3">
-                            <label for="confirm_password" class="form-label ">Confirm Password</label>
+                            <label for="confirm_password" class="form-label "><strong>CONFIRM PASSWORD</strong></label>
                             <div class="input-group">
                                 <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
                                 <span class="input-group-text toggle-password">
@@ -307,7 +307,7 @@ $stationsResult = $conn->query($stationsSql);
                         </div>
 
                         <div class="mb-3">
-                            <label for="station" class="form-label ">Station</label>
+                            <label for="station" class="form-label "><strong>STATION</strong></label>
                             <select id="station" name="station" class="form-select" required>
                                 <?php
                                 $stationsResult->data_seek(0);
@@ -318,7 +318,7 @@ $stationsResult = $conn->query($stationsSql);
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" id="submitAddGuardButton" class="btn btn-primary">Add Guard</button>
+                            <button type="button" id="submitAddGuardButton" class="btn btn-primary">ADD CO-ADMIN</button>
                         </div>
                     </form>
                 </div>
@@ -332,7 +332,7 @@ $stationsResult = $conn->query($stationsSql);
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="guardDetailsLabel">Co-Admin Details</h5>
+                    <h5 class="modal-title" id="guardDetailsLabel">CO-ADMIN DETAILS</h5>
                     <button type="button" id="edit_closeButton" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -342,13 +342,13 @@ $stationsResult = $conn->query($stationsSql);
                         <input type="hidden" name="guard_id" id="guard_id">
 
                         <div class="mb-3">
-                            <label for="modalGuardName" class="form-label "><strong>Guard Name</strong></label>
+                            <label for="modalGuardName" class="form-label "><strong>CO-ADMIN NAME</strong></label>
                             <input type="text" class="form-control" id="modalGuardName" name="guard_name" disabled>
                             <div id="editName-feedback" class="invalid-feedback"> <!-- Message will display here --> </div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="modalStationName" class="form-label "><strong>Station Name</strong></label>
+                            <label for="modalStationName" class="form-label "><strong>STATION NAME</strong></label>
                             <select id="modalStationName" name="station" class="form-select" required disabled>
                                 <?php
                                 // Reset the station result to fetch again
@@ -360,13 +360,13 @@ $stationsResult = $conn->query($stationsSql);
                         </div>
 
                         <div class="mb-3">
-                            <label for="modalUsername" class="form-label "><strong>Username</strong></label>
+                            <label for="modalUsername" class="form-label "><strong>USERNAME</strong></label>
                             <input type="text" class="form-control" id="modalUsername" name="username" disabled>
                             <div id="editUsername-feedback" class="invalid-feedback"> <!-- Message will display here --> </div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="modalEmail" class="form-label "><strong>Email</strong></label>
+                            <label for="modalEmail" class="form-label "><strong>EMAIL</strong></label>
                             <input type="email" class="form-control" id="modalEmail" name="email" disabled>
                             <div id="editEmail-feedback" class="invalid-feedback"> <!-- Message will display here --> </div>
                         </div>
@@ -395,7 +395,7 @@ $stationsResult = $conn->query($stationsSql);
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="passwordChangeLabel">Change Password</h5>
+                    <h5 class="modal-title" id="passwordChangeLabel">CHANGE PASSWORD</h5>
                     <!-- No close button here -->
                 </div>
                 <div class="modal-body">
@@ -404,9 +404,8 @@ $stationsResult = $conn->query($stationsSql);
                         <input type="hidden" name="password_guard_name" id="password_guard_name">
 
                         <div class="mb-3">
-                            <label for="new_password" class="form-label "><strong>New Password</strong></label>
                             <div class="input-group">
-                                <input type="password" id="new_password" name="new_password" class="form-control" required>
+                                <input type="password" id="new_password" name="new_password" class="form-control" placeholder="New Password" required>
                                 <span class="input-group-text toggle-password">
                                     <i class="bi bi-eye-fill"></i>
                                 </span>
@@ -415,9 +414,8 @@ $stationsResult = $conn->query($stationsSql);
                         </div>
 
                         <div class="mb-3">
-                            <label for="confirm_new_password" class="form-label "><strong>Confirm Password</strong></label>
                             <div class="input-group">
-                                <input type="password" id="confirm_new_password" name="confirm_new_password" class="form-control" required>
+                                <input type="password" id="confirm_new_password" name="confirm_new_password" class="form-control" placeholder="Confirm Password" required>
                                 <span class="input-group-text toggle-password">
                                     <i class="bi bi-eye-fill"></i>
                                 </span>
@@ -425,8 +423,8 @@ $stationsResult = $conn->query($stationsSql);
                             <div id="changePassword-feedback2" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
                         </div>
 
-                        <button type="button" id="submitPasswordButton" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-secondary" id="goBackButton">Go Back</button>
+                        <button type="button" id="submitPasswordButton" class="btn btn-primary">SAVE</button>
+                        <button type="button" class="btn btn-secondary" id="goBackButton">CANCEL</button>
                     </form>
                 </div>
             </div>
@@ -481,7 +479,7 @@ $stationsResult = $conn->query($stationsSql);
         function deactivateGuard(guardId) {
             Swal.fire({
                 title: 'Are you sure?',
-                text: `Do you want to deactivate guard no: ${guardId}?`,
+                text: `Do you want to DEACTIVATE account number: ${guardId}?`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'YES',
@@ -669,10 +667,9 @@ $stationsResult = $conn->query($stationsSql);
                 fetchActiveGuards();
             });
 
-            fetchActiveGuards();
-
             // Initial fetch to populate the table
             fetchActiveGuards();
+            setInterval(fetchActiveGuards, 5000);
 
             // Using jQuery with onInput event to achieve live search
             $('#search').on('input', function() {
@@ -703,7 +700,7 @@ $stationsResult = $conn->query($stationsSql);
             });
 
 
-            // FOR ADD GUARDS FUNCTIONS   
+            // FOR ADD CO ADMIN FUNCTIONS   
 
             $('#addGuardModalButton').click(function() {
 
@@ -746,7 +743,7 @@ $stationsResult = $conn->query($stationsSql);
                 if (checkAddGuardButton()) {
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: 'Do you want to add this guard?',
+                        text: 'Do you want to ADD the account?',
                         icon: 'question',
                         showCancelButton: true,
                         confirmButtonText: 'YES',
@@ -851,7 +848,7 @@ $stationsResult = $conn->query($stationsSql);
                     // Show confirmation dialog if there are changes
                     Swal.fire({
                         title: 'Unsaved Changes Detected',
-                        text: 'You have unsaved changes. Are you sure you want to discard them?',
+                        text: 'You have unsaved changes. Are you sure you want to DISCARD the changes?',
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonText: 'YES, DISCARD CHANGES',
@@ -933,8 +930,8 @@ $stationsResult = $conn->query($stationsSql);
 
                     if (!isChanged) {
                         Swal.fire({
-                            title: 'No Changes Detected!',
-                            text: "You have not made any changes to the profile.",
+                            title: 'No Changes Detected',
+                            text: "You have not made any changes to the details.",
                             icon: 'info',
                             timer: 1500,
                             timerProgressBar: true,
@@ -946,7 +943,7 @@ $stationsResult = $conn->query($stationsSql);
                     // Confirmation dialog before saving
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: 'Do you want to save the changes?',
+                        text: 'Do you want to SAVE the changes?',
                         icon: 'question',
                         showCancelButton: true,
                         confirmButtonText: 'YES',
@@ -1162,7 +1159,7 @@ $stationsResult = $conn->query($stationsSql);
 
 
 
-            // FEEDBACK MESSAGE FUNCTIONS FOR ADD GUARD
+            // FEEDBACK MESSAGE FUNCTIONS FOR ADD CO-ADMIN
 
             // Add on input event handlers for immediate feedback
             $('#guard_name').on('input', validateName);

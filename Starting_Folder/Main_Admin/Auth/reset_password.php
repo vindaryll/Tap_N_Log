@@ -3,9 +3,9 @@
 // Start session
 session_start();
 
-// Include database connection
+// Include database connection and system log helper
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
-
+require_once $_SESSION['directory'] . '\Database\system_log_helper.php';
 
 function sanitizeInput($data) {
     return htmlspecialchars(stripslashes(trim($data)));
@@ -14,7 +14,7 @@ function sanitizeInput($data) {
 $response = ['success' => false, 'message' => ''];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['new_password']) && isset($_POST['confirm_new_password']) && isset($_POST['email_or_username'])) {
+    if (isset($_POST['new_password'], $_POST['confirm_new_password'], $_POST['email_or_username'])) {
         // Sanitize inputs
         $newPassword = sanitizeInput($_POST['new_password']);
         $confirmNewPassword = sanitizeInput($_POST['confirm_new_password']);
@@ -22,6 +22,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Validate that the passwords match
         if ($newPassword !== $confirmNewPassword) {
+            // Log password mismatch
+            logSystemActivity(
+                $conn,
+                "Password reset failed",
+                "FAILED",
+                "Passwords do not match for user: $emailOrUsername"
+            );
             $response['message'] = 'Passwords do not match. Please try again.';
         } else {
             // Begin transaction
@@ -49,9 +56,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt->bind_param("si", $hashedPassword, $adminId);
 
                     if ($stmt->execute()) {
+                        // Log successful password reset
+                        logSystemActivity(
+                            $conn,
+                            "Password reset",
+                            "SUCCESS",
+                            "Main Admin ID: $adminId, Username: $username"
+                        );
 
                         // Log activity in the admin_activity_log table
-                        $logDetails = "Forgot password\n\nId: $adminId\nUsername: $username";
+                        $logDetails = "Forgot password for Main Admin\n\nId: $adminId\nUsername: $username";
                         $logQuery = "INSERT INTO admin_activity_log (section, details, category) VALUES ('PERSONAL ACCOUNT', ?, 'UPDATE')";
                         $logStmt = $conn->prepare($logQuery);
                         $logStmt->bind_param("s", $logDetails);
@@ -65,10 +79,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             throw new Exception('Failed to log activity.');
                         }
                     } else {
+                        // Log failed password update
+                        logSystemActivity(
+                            $conn,
+                            "Password reset failed",
+                            "FAILED",
+                            "Failed to update password for Main Admin ID: $adminId"
+                        );
                         throw new Exception('Error resetting password.');
                     }
                 } else {
-                    throw new Exception('User not found.');
+                    // Log user not found
+                    logSystemActivity(
+                        $conn,
+                        "Password reset attempt",
+                        "FAILED",
+                        "Main admin account not found for: $emailOrUsername"
+                    );
+                    throw new Exception('Main admin account not found.');
                 }
             } catch (Exception $e) {
                 // Roll back transaction if any part fails
@@ -77,6 +105,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     } else {
+        // Log missing parameters
+        logSystemActivity(
+            $conn,
+            "Password reset attempt",
+            "FAILED",
+            "Missing required parameters for Main Admin password reset"
+        );
         $response['message'] = 'New password, confirmation, and email or username are required.';
     }
 

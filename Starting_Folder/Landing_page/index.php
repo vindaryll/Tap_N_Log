@@ -4,19 +4,18 @@ session_start();
 
 // to get the directory path for require purposes
 if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset($_SESSION['website_link'])) {
-    header("Location: /tapnlog/index.php");
+    header("Location: /TAPNLOG/Starting_Folder/index.php");
     exit();
 }
 
-
 // if already logged in, pupunta na sa kani-kanilang dashboard
 if (isset($_SESSION['vehicle_guard_logged'])) {
-    header("Location: /tapnlog/Starting_Folder/Co_Admin/Vehicle_Post/Dashboard/dashboard_home.php");
+    header("Location: /TAPNLOG/Starting_Folder/Co_Admin/Vehicle_Post/Dashboard/dashboard_home.php");
     exit();
 }
 
 if (isset($_SESSION['record_guard_logged'])) {
-    header("Location: /tapnlog/Starting_Folder/Co_Admin/Record_Post/Dashboard/dashboard_home.php");
+    header("Location: /TAPNLOG/Starting_Folder/Co_Admin/Record_Post/Dashboard/dashboard_home.php");
     exit();
 }
 
@@ -25,6 +24,17 @@ if (isset($_SESSION['admin_logged'])) {
     exit();
 }
 
+// Include system log helper
+require_once $_SESSION['directory'] . '\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\system_log_helper.php';
+
+// Log successful landing page access
+logSystemActivity(
+    $conn,
+    "Landing page access",
+    "SUCCESS",
+    "User accessed the landing page"
+);
 
 ?>
 
@@ -170,7 +180,6 @@ if (isset($_SESSION['admin_logged'])) {
             }
         }
     </style>
-
 
     <title>Landing Page</title>
 </head>
