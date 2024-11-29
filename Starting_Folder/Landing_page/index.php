@@ -4,7 +4,7 @@ session_start();
 
 // to get the directory path for require purposes
 if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset($_SESSION['website_link'])) {
-    header("Location: /TAPNLOG/Starting_Folder/index.php");
+    header("Location: /TAPNLOG/index.php");
     exit();
 }
 
