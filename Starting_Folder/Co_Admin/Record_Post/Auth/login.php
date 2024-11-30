@@ -4,7 +4,7 @@ session_start();
 
 // If already logged in, redirect to dashboard
 if (isset($_SESSION['record_guard_logged'])) {
-    header("Location: /tapnlog/Starting_Folder/Co_Admin/Record_Post/Dashboard/dashboard_home.php");
+    header("Location: /TAPNLOG/Starting_Folder/Co_Admin/Record_Post/Dashboard/dashboard_home.php");
     exit();
 }
 
@@ -249,7 +249,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
 
         <!-- Logo Section -->
         <div class="logo-container">
-            <img src="/tapnlog/image/logo_and_icons/logo_icon.png" alt="Tap-N-Log Logo">
+            <img src="/TAPNLOG/Image/logo_and_icons/logo_icon.png" alt="Tap-N-Log Logo">
             <h1>Record Post</h1>
         </div>
 

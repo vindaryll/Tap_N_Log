@@ -1,109 +1,180 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
-    <div class="container-fluid ms-3 me-3">
-        <!-- Logo with Dashboard Link -->
-        <a href="#" id="dashboard-link" class="navbar-brand">
-            <img src="/TAPNLOG/Image/LOGO_AND_ICONS/logo_icon.png" alt="Logo" style="width: 40px; height: auto;">
-        </a>
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+    <div class="container-fluid px-lg-5">
+        <!-- Mobile Logo (left-aligned) -->
+        <div class="d-lg-none">
+            <a href="#" id="dashboard-link2" class="navbar-brand">
+                <img src="/TAPNLOG/Image/LOGO_AND_ICONS/logo_icon.png" alt="Logo" width="40" height="40">
+                <span class="ms-2 fw-semibold">TAP-N-LOG</span>
+            </a>
+        </div>
 
-        <!-- Hamburger Toggle Button -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <!-- Hamburger Menu (right-aligned on mobile) -->
+        <button class="navbar-toggler border-0 d-lg-none ms-auto" type="button"
+            data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas"
+            aria-controls="navbarOffcanvas">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Navbar Items -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
+        <!-- Desktop Logo -->
+        <div class="col-2 d-none d-lg-block">
+            <a href="#" id="dashboard-link" class="navbar-brand">
+                <img src="/TAPNLOG/Image/LOGO_AND_ICONS/logo_icon.png" alt="Logo" width="40" height="40">
+                <span class="ms-2 fw-semibold">TAP-N-LOG</span>
+            </a>
+        </div>
 
-                <!-- Logout Button (Visible on Large Screens) -->
-                <li class="nav-item d-none d-lg-block">
-                    <a href="#" id="logout-link" class="nav-link">
-                        <i class="bi bi-box-arrow-right" style="font-size: 1.5rem; color: #1877f2;"></i>
+        <!-- Center Menu -->
+        <div class="col-8 d-none d-lg-block">
+            <ul class="navbar-nav justify-content-center">
+                <li class="nav-item mx-3 d-flex justify-content-center align-items-center">
+                    <a href="/TAPNLOG/Starting_Folder/Co_Admin/Vehicle_Post/Dashboard/Vehicle_Log/main_page.php" class="nav-link text-center">
+                        VEHICLE LOG
                     </a>
                 </li>
-
-                <!-- Logout Button -->
-                <li class="nav-item d-lg-none text-center">
-                    <a href="#" id="logout-link2" class="nav-link">Logout</a>
+                <li class="nav-item mx-3 d-flex justify-content-center align-items-center">
+                    <a href="/TAPNLOG/Starting_Folder/Co_Admin/Vehicle_Post/Dashboard/Records/main_page.php" class="nav-link text-center">
+                        RECORDS
+                    </a>
+                </li>
+                <li class="nav-item mx-3 d-flex justify-content-center align-items-center">
+                    <a href="/TAPNLOG/Starting_Folder/Co_Admin/Vehicle_Post/Dashboard/Activity_Logs/main_page.php" class="nav-link text-center">
+                        ACTIVITY LOGS
+                    </a>
                 </li>
             </ul>
+        </div>
+
+        <!-- Right Section -->
+        <div class="col-2 d-none d-lg-block text-end">
+            <a href="#" id="logout-link" class="btn btn-link text-decoration-none" style="color: #1877f2; font-weight: 500;">
+                <i class="bi bi-box-arrow-right fs-4 text-primary"></i>
+            </a>
         </div>
     </div>
 </nav>
 
-
-
+<!-- Right Offcanvas Menu -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel">
+    <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title" id="navbarOffcanvasLabel">Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="/TAPNLOG/Starting_Folder/Co_Admin/Vehicle_Post/Dashboard/Vehicle_Log/main_page.php" class="nav-link">
+                    <i class="bi bi-calendar-check me-2"></i>VEHICLE LOG
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/TAPNLOG/Starting_Folder/Co_Admin/Vehicle_Post/Dashboard/Records/main_page.php" class="nav-link">
+                    <i class="bi bi-file-text me-2"></i>RECORDS
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/TAPNLOG/Starting_Folder/Co_Admin/Vehicle_Post/Dashboard/Activity_Logs/main_page.php" class="nav-link">
+                    <i class="bi bi-clock-history me-2"></i>ACTIVITY LOGS
+                </a>
+            </li>
+            <li class="nav-item mt-3 border-top pt-3">
+                <a href="#" id="logout-link2" class="nav-link" style="color: #1877f2; font-weight: 500;">
+                    <i class="bi bi-box-arrow-right me-2"></i>LOGOUT
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
 
 <style>
+    /* Navbar Styles */
     .navbar {
-        background-color: white;
-        /* Background color */
-        position: sticky;
-        /* Makes the navbar sticky */
-        top: 0;
-        /* Sticks to the top of the viewport */
+        height: 70px;
         z-index: 1030;
-        /* Ensures it stays above other elements */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        /* Optional shadow for better visual hierarchy */
     }
 
-    .navbar-nav .nav-link {
-        color: red;
-        /* Default text color */
-        transition: all 0.3s ease;
-        /* Smooth transition */
-        height: 56px;
-        /* Set a fixed height for all nav links */
+    .navbar-brand {
         display: flex;
-        /* Use flex to center items */
         align-items: center;
-        /* Center items vertically */
-        justify-content: center;
-        /* Center text horizontally */
+        font-size: 1.25rem;
     }
 
-    .navbar-nav .nav-link:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        border-bottom: 5px solid 145dbd;
-        /* background-color: #145dbd; */
+    .navbar-brand img {
+        transition: transform 0.3s ease;
     }
 
-    /* Center alignment for medium and smaller screens */
-    @media (max-width: 992px) {
-        .navbar-nav {
-            flex-direction: column;
-            /* Stack items vertically */
-            align-items: center;
-            /* Center items horizontally */
-            width: 100%;
-            /* Full width for nav items */
+    .navbar-brand:hover img {
+        transform: scale(1.05);
+    }
+
+    /* Navigation Links */
+    .nav-link {
+        color: #444;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+        border-radius: 6px;
+    }
+
+    .nav-link:hover {
+        color: #1877f2;
+        background-color: rgba(24, 119, 242, 0.1);
+    }
+
+    .nav-link.active {
+        color: #1877f2;
+        background-color: rgba(24, 119, 242, 0.1);
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 991.98px) {
+        .navbar {
+            padding: 0.5rem 1rem;
         }
 
-        .navbar-nav .nav-item {
-            width: 100%;
-            /* Ensure full width for each item */
+        .navbar-toggler {
+            padding: 4px;
+            border: none;
         }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .offcanvas {
+            max-width: 300px;
+        }
+
+        .offcanvas-header {
+            padding: 1rem 1.5rem;
+            background-color: #f8f9fa;
+        }
+
+        .offcanvas-body {
+            padding: 1.5rem;
+        }
+
+        .offcanvas .nav-link {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    /* Add margin to main content to prevent navbar overlap */
+    body {
+        padding-top: 87px;
+    }
+
+    /* Smooth transitions */
+    .navbar,
+    .nav-link,
+    .navbar-brand,
+    .btn {
+        transition: all 0.3s ease;
     }
 </style>
 
 <script>
     $(document).ready(function() {
-
-        // Toggle password visibility
-        $(document).on('click', '.nav-toggle-password', function() {
-            let input = $(this).siblings('input');
-            let icon = $(this).find('i');
-
-            if (input.attr('type') === 'password') {
-                input.attr('type', 'text');
-                icon.removeClass('bi-eye-fill').addClass('bi-eye-slash-fill');
-            } else {
-                input.attr('type', 'password');
-                icon.removeClass('bi-eye-slash-fill').addClass('bi-eye-fill');
-            }
-        });
-
         $('#logout-link, #logout-link2').on('click', function(event) {
             event.preventDefault();
             Swal.fire({
@@ -116,14 +187,13 @@
                 reverseButtons: true,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = '/tapnlog/Starting_Folder/Co_Admin/Vehicle_Post/Auth/logout.php';
+                    window.location.href = '/TAPNLOG/Starting_Folder/Co_Admin/Vehicle_Post/Auth/logout.php';
                 }
             });
         });
 
-        $('#dashboard-link').on('click', function(event) {
+        $('#dashboard-link, #dashboard-link2').on('click', function(event) {
             event.preventDefault();
-
             Swal.fire({
                 title: 'Are you sure?',
                 text: 'Do you want to redirect to the home page?',
@@ -134,18 +204,17 @@
                 reverseButtons: true,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = '/tapnlog/Starting_Folder/Co_Admin/Vehicle_Post/Dashboard/dashboard_home.php';
+                    window.location.href = '/TAPNLOG/Starting_Folder/Co_Admin/Vehicle_Post/Dashboard/dashboard_home.php';
                 }
             });
         });
 
-        // Handle click events to add active class
-        $('.navbar-nav .nav-link').on('click', function() {
-            $('.navbar-nav .nav-link').removeClass('active'); // Remove active class from all
-            $(this).addClass('active'); // Add active class to clicked link
+        // Set active nav item based on current page
+        let currentPath = window.location.pathname;
+        $('.navbar-nav .nav-link').each(function() {
+            if ($(this).attr('href') === currentPath) {
+                $(this).addClass('active');
+            }
         });
-
-
-
     });
 </script>

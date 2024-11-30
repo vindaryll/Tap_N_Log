@@ -10,8 +10,6 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
     header("Location: /TAPNLOG/index.php");
     exit();
 }
-
-
 ?>
 
 <!DOCTYPE html>

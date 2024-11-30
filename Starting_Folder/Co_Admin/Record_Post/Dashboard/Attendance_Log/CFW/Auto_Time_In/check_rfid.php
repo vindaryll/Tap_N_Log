@@ -35,7 +35,7 @@ try {
     $stmt->bind_param('is', $profile['cfw_id'], $date_today);
     $stmt->execute();
     $attendance = $stmt->get_result()->fetch_assoc();
-    $imageDirectory = '/tapnlog/Image/CFW/';
+    $imageDirectory = '/TAPNLOG/Image/CFW/';
     
 
     if ($attendance) {

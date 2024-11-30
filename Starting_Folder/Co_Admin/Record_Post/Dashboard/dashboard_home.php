@@ -49,7 +49,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 <body>
 
     <!-- Nav Bar -->
-    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Record_Post\Dashboard\navbar.php'; ?>
+    <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Record_Post\Dashboard\navbar_2.php'; ?>
 
     <!-- START OF CONTAINER -->
     <div class="d-flex justify-content-center">

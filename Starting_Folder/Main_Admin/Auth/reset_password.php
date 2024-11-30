@@ -66,9 +66,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         // Log activity in the admin_activity_log table
                         $logDetails = "Forgot password for Main Admin\n\nId: $adminId\nUsername: $username";
-                        $logQuery = "INSERT INTO admin_activity_log (section, details, category) VALUES ('PERSONAL ACCOUNT', ?, 'UPDATE')";
+                        $logQuery = "INSERT INTO admin_activity_log (section, details, category, admin_id) VALUES ('PERSONAL ACCOUNT', ?, 'UPDATE', ?)";
                         $logStmt = $conn->prepare($logQuery);
-                        $logStmt->bind_param("s", $logDetails);
+                        $logStmt->bind_param("si", $logDetails, $adminId);
 
                         if ($logStmt->execute()) {
                             // Commit the transaction

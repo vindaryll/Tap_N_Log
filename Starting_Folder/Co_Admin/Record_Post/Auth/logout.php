@@ -33,7 +33,7 @@ if (isset($_SESSION['guard_id'], $_SESSION['station_id'])) {
         $conn,
         "User logout",
         "SUCCESS",
-        "Guard ID: $guard_id, Name: $guard_name, Station: $station_name"
+        "Co-admin ID: $guard_id, Name: $guard_name, Station: $station_name"
     );
 
     // Prepare the activity details for logging

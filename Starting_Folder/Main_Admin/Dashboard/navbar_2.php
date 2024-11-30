@@ -1,10 +1,11 @@
 <style>
-    /* Navbar Styles */
     .navbar {
-        height: 70px;
-        z-index: 1030;
         background-color: white;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 0;
+        z-index: 1030;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        height: 70px;
     }
 
     /* Brand/Logo Styles */
@@ -26,23 +27,19 @@
     }
 
     /* Navigation Links */
-    .nav-link {
+    .navbar-nav .nav-link {
         color: #444;
         font-weight: 500;
         padding: 0.5rem 1rem;
         transition: all 0.3s ease;
         border-radius: 6px;
+        gap: 0.5rem;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        justify-content: start;
     }
 
-    .nav-link:hover {
-        color: #1877f2;
-        background-color: rgba(24, 119, 242, 0.1);
-    }
-
-    .nav-link.active {
+    .navbar-nav .nav-link:hover {
         color: #1877f2;
         background-color: rgba(24, 119, 242, 0.1);
     }
@@ -53,26 +50,17 @@
             padding: 0 2rem;
         }
 
-        .navbar-nav {
-            gap: 1rem;
-        }
-
-        .nav-link {
-            font-size: 0.95rem;
-            padding: 0.5rem 1rem;
-        }
-
         /* Right section icons */
-        .col-2 .navbar-nav {
+        .navbar-nav.ms-auto {
             display: flex;
             flex-direction: row;
             justify-content: flex-end;
             align-items: center;
-            gap: 1.5rem;
+            gap: 0.5rem;
             height: 100%;
         }
 
-        .col-2 .nav-link {
+        .navbar-nav.ms-auto .nav-link {
             padding: 0.5rem;
             display: flex;
             align-items: center;
@@ -81,14 +69,9 @@
             top: 2px;
         }
 
-        .col-2 .bi {
+        .navbar-nav.ms-auto .bi {
             font-size: 1.5rem;
             color: #1877f2;
-        }
-
-        .col-2 .nav-link:hover {
-            background-color: rgba(24, 119, 242, 0.1);
-            border-radius: 6px;
         }
     }
 
@@ -130,14 +113,6 @@
     body {
         padding-top: 87px;
     }
-
-    /* Smooth transitions */
-    .navbar,
-    .nav-link,
-    .navbar-brand,
-    .btn {
-        transition: all 0.3s ease;
-    }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
@@ -159,52 +134,31 @@
 
         <!-- Desktop Logo -->
         <div class="col-2 d-none d-lg-block">
-            <a href="#" id="dashboard-link" class="navbar-brand">
+            <a href="#" id="dashboard-link2" class="navbar-brand">
                 <img src="/TAPNLOG/Image/LOGO_AND_ICONS/logo_icon.png" alt="Logo" width="40" height="40">
                 <span class="ms-2 fw-semibold">TAP-N-LOG</span>
             </a>
         </div>
 
-        <!-- Center Menu -->
-        <div class="col-8 d-none d-lg-block">
-            <ul class="navbar-nav justify-content-center">
-                <li class="nav-item mx-3 d-flex justify-content-center align-items-center">
-                    <a href="/TAPNLOG/Starting_Folder/Main_Admin/Dashboard/RFID/main_page.php" class="nav-link text-center">
-                        RFID PROFILES
-                    </a>
-                </li>
-                <li class="nav-item mx-3 d-flex justify-content-center align-items-center">
-                    <a href="/TAPNLOG/Starting_Folder/Main_Admin/Dashboard/Records/main_page.php" class="nav-link text-center">
-                        RECORDS
-                    </a>
-                </li>
-                <li class="nav-item mx-3 d-flex justify-content-center align-items-center">
-                    <a href="/TAPNLOG/Starting_Folder/Main_Admin/Dashboard/Co_Admin_Accounts/Active/main_active.php" class="nav-link text-center">
-                        CO-ADMIN ACCOUNTS
-                    </a>
-                </li>
-                <li class="nav-item mx-3 d-flex justify-content-center align-items-center">
-                    <a href="/TAPNLOG/Starting_Folder/Main_Admin/Dashboard/Activity_Log/main_page.php" class="nav-link text-center">
-                        ACTIVITY LOGS
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Right Items -->
-        <div class="col-2 d-none d-lg-block">
-            <ul class="navbar-nav">
-                <li class="nav-item">
+        <!-- Desktop Navbar Items -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <!-- QR Code Button (Visible on Large Screens) -->
+                <li class="nav-item d-none d-lg-block mx-2">
                     <a href="#" id="nav-showQRButton" class="nav-link">
                         <i class="bi bi-qr-code"></i>
                     </a>
                 </li>
-                <li class="nav-item">
+
+                <!-- Profile Icon with Modal Trigger (Visible on Large Screens) -->
+                <li class="nav-item d-none d-lg-block mx-2">
                     <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#nav_profileModal">
                         <i class="bi bi-person-circle"></i>
                     </a>
                 </li>
-                <li class="nav-item">
+
+                <!-- Logout Button (Visible on Large Screens) -->
+                <li class="nav-item d-none d-lg-block mx-2">
                     <a href="#" id="logout-link" class="nav-link">
                         <i class="bi bi-box-arrow-right"></i>
                     </a>
@@ -221,54 +175,25 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <!-- Navigation Links -->
-        <ul class="navbar-nav m-0">
-            <li class="nav-item">
-                <a href="/TAPNLOG/Starting_Folder/Main_Admin/Dashboard/RFID/main_page.php" class="nav-link">
-                    <i class="bi bi-person-badge me-2"></i>RFID PROFILES
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/TAPNLOG/Starting_Folder/Main_Admin/Dashboard/Records/main_page.php" class="nav-link">
-                    <i class="bi bi-file-text me-2"></i>RECORDS
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/TAPNLOG/Starting_Folder/Main_Admin/Dashboard/Co_Admin_Accounts/Active/main_active.php" class="nav-link">
-                    <i class="bi bi-people-fill me-2"></i>CO-ADMIN ACCOUNTS
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="/TAPNLOG/Starting_Folder/Main_Admin/Dashboard/Activity_Log/main_page.php" class="nav-link">
-                    <i class="bi bi-clock-history me-2"></i>ACTIVITY LOGS
-                </a>
-            </li>
-        </ul>
-
-        <!-- Divider -->
-        <hr class="my-3">
-
-        <!-- Settings and Logout -->
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a href="#" class="nav-link" style="color: #1877f2; font-weight: 500;" id="nav-showQRButton2">
-                    <i class="bi bi-link-45deg me-2"></i>WEBSITE LINK
+                <a href="#" id="nav-showQRButton2" style="color: #1877f2; font-weight: 500;" class="nav-link">
+                    <i class="bi bi-qr-code me-2"></i>WEBSITE LINK
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link" style="color: #1877f2; font-weight: 500;" data-bs-toggle="modal" data-bs-target="#nav_profileModal">
-                    <i class="bi bi-gear me-2"></i>ACCOUNT SETTINGS
+                <a href="#" style="color: #1877f2; font-weight: 500;" class="nav-link"  data-bs-toggle="modal" data-bs-target="#nav_profileModal">
+                    <i class="bi bi-person-circle me-2"></i>ACCOUNT SETTINGS
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" id="logout-link2" class="nav-link" style="color: #1877f2; font-weight: 500;">
+                <a href="#" style="color: #1877f2; font-weight: 500;" id="logout-link2" class="nav-link">
                     <i class="bi bi-box-arrow-right me-2"></i>LOGOUT
                 </a>
             </li>
         </ul>
     </div>
 </div>
-
 
 <!-- Profile Modal -->
 <div class="modal fade" id="nav_profileModal" tabindex="-1" aria-labelledby="nav_profileModalLabel" aria-hidden="true">
@@ -400,15 +325,6 @@
 <script>
     $(document).ready(function() {
 
-        // Set active nav item based on current page
-        let currentPath = window.location.pathname;
-        $('.navbar-nav .nav-link').each(function() {
-            if ($(this).attr('href') === currentPath) {
-                $(this).addClass('active');
-            }
-        });
-
-
         // Toggle password visibility
         $(document).on('click', '.nav-toggle-password', function() {
             let input = $(this).siblings('input');
@@ -440,7 +356,7 @@
             });
         });
 
-        $('#dashboard-link').on('click', function(event) {
+        $('#dashboard-link, #dashboard-link2').on('click', function(event) {
             event.preventDefault();
 
             Swal.fire({
@@ -456,6 +372,12 @@
                     window.location.href = '/tapnlog/Starting_Folder/Main_Admin/Dashboard/dashboard_home.php';
                 }
             });
+        });
+
+        // Handle click events to add active class
+        $('.navbar-nav .nav-link').on('click', function() {
+            $('.navbar-nav .nav-link').removeClass('active'); // Remove active class from all
+            $(this).addClass('active'); // Add active class to clicked link
         });
 
 
@@ -693,7 +615,7 @@
 
                                 $('#nav_modalOTP1').modal('hide');
 
-                                // Initially clear feed back messages and value
+                                // Initially clear the feedback message and value
                                 $('#nav_newEmail').val('');
                                 $('#nav_newEmail').removeClass('is-invalid');
                                 $('#nav_newEmail-feedback').text('').removeClass('invalid-feedback');
