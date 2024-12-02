@@ -278,29 +278,6 @@
             });
         });
 
-        $('#dashboard-link, #dashboard-link2').on('click', function(event) {
-            event.preventDefault();
-
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'Do you want to redirect to the home page?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'YES',
-                cancelButtonText: 'NO',
-                reverseButtons: true,
-                customClass: {
-                    confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
-                    cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
-                },
-                buttonsStyling: false,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = '/TAPNLOG/Starting_Folder/Co_Admin/Record_Post/Dashboard/dashboard_home.php';
-                }
-            });
-        });
-
         // Handle click events to add active class
         $('.navbar-nav .nav-link').on('click', function() {
             $('.navbar-nav .nav-link').removeClass('active'); // Remove active class from all

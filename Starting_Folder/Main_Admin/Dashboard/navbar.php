@@ -577,7 +577,7 @@
             });
         });
 
-        $('#dashboard-link').on('click', function(event) {
+        $('#dashboard-link, #dashboard-link2').on('click', function(event) {
             event.preventDefault();
 
             Swal.fire({
@@ -599,6 +599,7 @@
                 }
             });
         });
+
 
 
         // QR CODE
