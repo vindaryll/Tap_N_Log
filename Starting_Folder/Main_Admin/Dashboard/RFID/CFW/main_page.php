@@ -50,6 +50,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         /* CARD CONTAINER FOR PROFILES */
         #profile-container {
             height: calc(100vh - 280px);
+            width: calc(100% - 16px);
             overflow-y: auto;
             margin-bottom: 10px;
         }
@@ -113,8 +114,6 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             color: #145dbf;
             transform: scale(1.1);
         }
-
-        /* END FOR BACK BUTTON */
     </style>
 </head>
 
@@ -144,10 +143,10 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         <div class="col-md-6 col-12 m-0 p-0">
                             <div class="w-100 d-flex justify-content-start p-0 m-0">
                                 <div class="col-3 m-1 p-0">
-                                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#filterModal">FILTER</button>
+                                    <button class="btn btn-primary btn-custom w-100" data-bs-toggle="modal" data-bs-target="#filterModal">FILTER</button>
                                 </div>
                                 <div class="col-3 m-1 p-0">
-                                    <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#sortModal">SORT</button>
+                                    <button class="btn btn-secondary btn-custom w-100" data-bs-toggle="modal" data-bs-target="#sortModal">SORT</button>
                                 </div>
                             </div>
                         </div>
@@ -156,7 +155,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     <div class="row d-flex justify-content-center">
 
                         <!-- Profiles Section -->
-                        <div id="profile-container" class="row d-flex justify-content-center p-0">
+                        <div id="profile-container" class="row d-flex justify-content-center p-0 glass-scroll">
                             <!-- Profile Cards will be inserted here dynamically -->
                         </div>
 
@@ -174,21 +173,21 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="filterModalLabel">Filter Profiles</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="filterModalLabel"><strong>FILTER PROFILES</strong></h5>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="filterForm">
                         <div class="mb-3">
-                            <label for="from_dateInput" class="form-label">From</label>
+                            <label for="from_dateInput" class="form-label"><strong>FROM</strong></label>
                             <input type="date" id="from_dateInput" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="to_dateInput" class="form-label">To</label>
+                            <label for="to_dateInput" class="form-label"><strong>TO</strong></label>
                             <input type="date" id="to_dateInput" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
+                            <label for="status" class="form-label"><strong>STATUS</strong></label>
                             <select id="status" class="form-select">
                                 <option value="">ALL</option>
                                 <option value="ACTIVE">ACTIVE</option>
@@ -196,7 +195,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="rfidFilter" class="form-label">RFID Status</label>
+                            <label for="rfidFilter" class="form-label"><strong>RFID STATUS</strong></label>
                             <select id="rfidFilter" class="form-select">
                                 <option value="">BOTH</option>
                                 <option value="with_rfid">WITH RFID</option>
@@ -206,8 +205,18 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" id="resetFilters">Reset</button>
-                    <button type="button" class="btn btn-primary" id="applyFilters">Apply</button>
+
+                    <div class="w-100 mt-3">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="resetFilters" class="btn btn-danger btn-custom text-uppercase w-100">RESET</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button id="applyFilters" class="btn btn-primary btn-custom text-uppercase w-100">APPLY</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -218,12 +227,12 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="sortModalLabel">Sort Profiles</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="sortModalLabel"><strong>SORT PROFILES</strong></h5>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div>
-                        <label class="form-label">Sort by Date Approved:</label>
+                        <label class="form-label"><strong>SORT BY DATE APPROVED</strong></label>
                         <div>
                             <input type="radio" id="sortDateAsc" name="sortDate" value="asc">
                             <label for="sortDateAsc">Ascending</label><br>
@@ -233,7 +242,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         </div>
                     </div>
                     <div class="mt-3">
-                        <label class="form-label">Sort by Name:</label>
+                        <label class="form-label"><strong>SORT BY NAME</strong></label>
                         <div>
                             <input type="radio" id="sortNameAsc" name="sortName" value="asc">
                             <label for="sortNameAsc">A-Z</label><br>
@@ -244,8 +253,18 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" id="resetSort">Reset</button>
-                    <button type="button" class="btn btn-primary" id="applySort">Apply</button>
+
+                    <div class="w-100 mt-3">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="resetSort" class="btn btn-danger btn-custom text-uppercase w-100">RESET</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button id="applySort" class="btn btn-primary btn-custom text-uppercase w-100">APPLY</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -256,7 +275,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">PROFILE DETAILS</h5>
+                    <h5 class="modal-title"><strong>PROFILE DETAILS</strong></h5>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -305,15 +324,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
                             <!-- For Revert Button -->
                             <div id="revertOriginalBtn_cont" class="col-md-4 col-sm-12 p-1" style="display: none;">
-                                <button type="button" class="btn btn-warning w-100" id="revertOriginalBtn">REVERT ORIGINAL PICTURE</button>
+                                <button type="button" class="btn btn-warning btn-custom w-100" id="revertOriginalBtn">REVERT ORIGINAL PICTURE</button>
                             </div>
 
                             <!-- For Edit Buttons -->
                             <div id="cancelEditBtn_cont" class="col-md-6 col-sm-12 p-1">
-                                <button type="button" class="btn btn-danger w-100" id="cancelEditBtn">CANCEL</button>
+                                <button type="button" class="btn btn-danger btn-custom w-100" id="cancelEditBtn">CANCEL</button>
                             </div>
                             <div id="saveEditBtn_cont" class="col-md-6 col-sm-12 p-1">
-                                <button type="button" class="btn btn-success w-100" id="saveEditBtn">SAVE CHANGES</button>
+                                <button type="button" class="btn btn-success btn-custom w-100" id="saveEditBtn">SAVE CHANGES</button>
                             </div>
                         </div>
                     </div>
@@ -552,6 +571,11 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     confirmButtonText: 'UPLOAD',
                     cancelButtonText: 'CANCEL',
                     reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
                     didOpen: () => {
                         // Initialize file input behavior
                         $('#swalFileInput').change(function() {
@@ -773,7 +797,13 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         cancelButtonColor: '#d33',
                         confirmButtonText: 'YES',
                         cancelButtonText: 'NO',
-                        reverseButtons: true
+                        reverseButtons: true,
+                        customClass: {
+                            confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                            cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                        },
+                        buttonsStyling: false,
+
                     }).then((result) => {
 
                         if (result.isConfirmed) {
@@ -805,6 +835,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
                                     if (response.success) {
                                         Swal.fire({
+                                            position: 'top',
                                             title: 'Success!',
                                             text: response.message,
                                             icon: 'success',
@@ -818,6 +849,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                         $('#EditProfileDetailsModal').modal('hide');
                                     } else {
                                         Swal.fire({
+                                            position: 'top',
                                             title: 'Error!',
                                             text: response.message,
                                             icon: 'error',
@@ -830,6 +862,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                 error: function() {
                                     Swal.close(); // Close the loading alert
                                     Swal.fire({
+                                        position: 'top',
                                         title: 'Error!',
                                         text: 'An unexpected error occurred while updating the profile.',
                                         icon: 'error',
@@ -869,9 +902,15 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         text: 'You have unsaved changes. Are you sure you want to DISCARD the changes?',
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonText: 'YES, DISCARD CHANGES',
-                        cancelButtonText: 'NO, KEEP EDITING',
+                        confirmButtonText: 'YES',
+                        cancelButtonText: 'NO',
                         reverseButtons: true,
+                        customClass: {
+                            confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                            cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                        },
+                        buttonsStyling: false,
+
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $('#EditProfileDetailsModal').modal('hide'); // Close modal
@@ -896,7 +935,12 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     showCancelButton: true,
                     confirmButtonText: 'YES',
                     cancelButtonText: 'NO',
-                    reverseButtons: true
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
                 }).then((result) => {
 
                     if (result.isConfirmed) {
@@ -921,6 +965,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                         }
                                     } else {
                                         Swal.fire({
+                                            position: 'top',
                                             title: 'Error!',
                                             text: response.message || 'Unable to fetch RFID details.',
                                             icon: 'error',
@@ -932,6 +977,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                 },
                                 error: function() {
                                     Swal.fire({
+                                        position: 'top',
                                         title: 'Error!',
                                         text: 'An error occurred while checking RFID.',
                                         icon: 'error',
@@ -966,6 +1012,11 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     showDenyButton: true,
                     denyButtonText: 'LOST RFID',
                     reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        denyButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
                     didOpen: () => {
                         const inputElement = $('#returnedRFID');
 
@@ -1029,6 +1080,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         const result = JSON.parse(response);
 
                         Swal.fire({
+                            position: "top",
                             title: result.success ? 'Success!' : 'Error!',
                             text: result.message,
                             icon: result.success ? 'success' : 'error',
@@ -1044,6 +1096,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     error: function() {
                         Swal.close(); // Close the loading modal
                         Swal.fire({
+                            position: "top",
                             title: 'Error!',
                             text: 'An error occurred while deactivating the profile.',
                             icon: 'error',
@@ -1135,8 +1188,12 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             <input type="text" id="rfidInput" class="form-control mb-2" placeholder="Enter RFID Number">
                             <div id="rfid-feedback_reactivate" class="invalid-feedback d-none">RFID validation feedback.</div>
                         `,
-                    confirmButtonText: 'Reactivate',
+                    confirmButtonText: 'REACTIVATE',
                     showCancelButton: false,
+                    customClass: {
+                        confirmButton: 'col-12 btn btn-success btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
                     didOpen: () => {
                         const inputElement = $('#rfidInput');
 
@@ -1177,6 +1234,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             success: function(response) {
                                 const result = JSON.parse(response);
                                 Swal.fire({
+                                    position: 'top',
                                     title: result.success ? 'Success!' : 'Error!',
                                     text: result.message,
                                     icon: result.success ? 'success' : 'error',
@@ -1191,6 +1249,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             },
                             error: function() {
                                 Swal.fire({
+                                    position: 'top',
                                     title: 'Error!',
                                     text: 'An error occurred while reactivating the profile.',
                                     icon: 'error',

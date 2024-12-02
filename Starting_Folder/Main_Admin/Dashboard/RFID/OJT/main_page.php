@@ -48,9 +48,9 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         /* CARD CONTAINER FOR PROFILES */
         #profile-container {
             height: calc(100vh - 280px);
+            width: calc(100% - 16px);
             overflow-y: auto;
             margin-bottom: 10px;
-
         }
 
         .card-container .card {
@@ -144,7 +144,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     <div class="row d-flex justify-content-center">
 
                         <!-- Profiles Section -->
-                        <div id="profile-container" class="row d-flex justify-content-center p-0">
+                        <div id="profile-container" class="row d-flex justify-content-center p-0 glass-scroll">
                             <!-- Profile Cards will be inserted here dynamically -->
                         </div>
 
@@ -161,7 +161,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="filterModalLabel"><strong>FILTER PROFILES</strong></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="filterForm">
@@ -215,7 +215,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="sortModalLabel"><strong>SORT PROFILES</strong></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div>
@@ -558,8 +558,8 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     cancelButtonText: 'CANCEL',
                     reverseButtons: true,
                     customClass: {
-                        confirmButton: 'btn btn-success btn-custom text-uppercase',
-                        cancelButton: 'btn btn-danger btn-custom text-uppercase',
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
                     },
                     buttonsStyling: false,
                     didOpen: () => {
@@ -787,9 +787,8 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         cancelButtonText: 'NO',
                         reverseButtons: true,
                         customClass: {
-                            confirmButton: 'col-12 w-100 btn btn-success btn-custom text-uppercase',
-                            cancelButton: 'col-12 w-100 btn btn-danger btn-custom text-uppercase',
-                            actions: 'w-100 d-flex justify-content-center align-items-center'
+                            confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                            cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
                         },
                         buttonsStyling: false,
                     }).then((result) => {
@@ -823,6 +822,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
                                     if (response.success) {
                                         Swal.fire({
+                                            position: "top",
                                             title: 'Success!',
                                             text: response.message,
                                             icon: 'success',
@@ -836,6 +836,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                         $('#EditProfileDetailsModal').modal('hide');
                                     } else {
                                         Swal.fire({
+                                            position: "top",
                                             title: 'Error!',
                                             text: response.message,
                                             icon: 'error',
@@ -848,6 +849,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                 error: function() {
                                     Swal.close(); // Close the loading alert
                                     Swal.fire({
+                                        position: "top",
                                         title: 'Error!',
                                         text: 'An unexpected error occurred while updating the profile.',
                                         icon: 'error',
@@ -887,13 +889,12 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         text: 'You have unsaved changes. Are you sure you want to DISCARD the changes?',
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonText: 'YES, DISCARD CHANGES',
-                        cancelButtonText: 'NO, KEEP EDITING',
+                        confirmButtonText: 'YES',
+                        cancelButtonText: 'NO',
                         reverseButtons: true,
                         customClass: {
-                            confirmButton: 'col-12 w-100 btn btn-success btn-custom text-uppercase',
-                            cancelButton: 'col-12 w-100 btn btn-danger btn-custom text-uppercase',
-                            actions: 'w-100 d-flex justify-content-center align-items-center'
+                            confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                            cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
                         },
                         buttonsStyling: false,
                     }).then((result) => {
@@ -922,9 +923,8 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     cancelButtonText: 'NO',
                     reverseButtons: true,
                     customClass: {
-                        confirmButton: 'col-12 w-100 btn btn-success btn-custom text-uppercase',
-                        cancelButton: 'col-12 w-100 btn btn-danger btn-custom text-uppercase',
-                        actions: 'w-100 d-flex justify-content-center align-items-center'
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
                     },
                     buttonsStyling: false,
                 }).then((result) => {
@@ -951,6 +951,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                         }
                                     } else {
                                         Swal.fire({
+                                            position: "top",
                                             title: 'Error!',
                                             text: response.message || 'Unable to fetch RFID details.',
                                             icon: 'error',
@@ -962,6 +963,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                 },
                                 error: function() {
                                     Swal.fire({
+                                        position: "top",
                                         title: 'Error!',
                                         text: 'An error occurred while checking RFID.',
                                         icon: 'error',
@@ -997,9 +999,8 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     denyButtonText: 'LOST RFID',
                     reverseButtons: true,
                     customClass: {
-                        confirmButton: 'col-12 w-100 btn btn-success btn-custom text-uppercase',
-                        denyButton: 'col-12 w-100 btn btn-danger btn-custom text-uppercase',
-                        actions: 'w-100 d-flex justify-content-center align-items-center'
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        denyButton: 'col-5 btn btn-danger btn-custom text-uppercase',
                     },
                     buttonsStyling: false,
                     didOpen: () => {
@@ -1065,6 +1066,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         const result = JSON.parse(response);
 
                         Swal.fire({
+                            position: "top",
                             title: result.success ? 'Success!' : 'Error!',
                             text: result.message,
                             icon: result.success ? 'success' : 'error',
@@ -1080,6 +1082,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     error: function() {
                         Swal.close(); // Close the loading modal
                         Swal.fire({
+                            position: "top",
                             title: 'Error!',
                             text: 'An error occurred while deactivating the profile.',
                             icon: 'error',
@@ -1174,8 +1177,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     confirmButtonText: 'REACTIVATE',
                     showCancelButton: false,
                     customClass: {
-                        confirmButton: 'col-12 w-100 btn btn-success btn-custom text-uppercase',
-                        actions: 'w-100 d-flex justify-content-center align-items-center'
+                        confirmButton: 'col-12 btn btn-success btn-custom text-uppercase',
                     },
                     buttonsStyling: false,
                     didOpen: () => {
@@ -1218,6 +1220,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             success: function(response) {
                                 const result = JSON.parse(response);
                                 Swal.fire({
+                                    position: "top",
                                     title: result.success ? 'Success!' : 'Error!',
                                     text: result.message,
                                     icon: result.success ? 'success' : 'error',
@@ -1232,6 +1235,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                             },
                             error: function() {
                                 Swal.fire({
+                                    position: "top",
                                     title: 'Error!',
                                     text: 'An error occurred while reactivating the profile.',
                                     icon: 'error',
