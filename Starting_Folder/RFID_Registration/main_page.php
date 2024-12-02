@@ -65,27 +65,68 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
         /* Style for the Terms and Conditions link */
         #viewTerms {
             color: #007bff;
-            /* Bright blue for better visibility */
             text-decoration: underline;
-            /* Make it clear it's a link */
             font-weight: bold;
-            /* Emphasize the link */
             transition: color 0.3s ease;
-            /* Smooth transition on hover */
         }
 
         #viewTerms:hover {
             color: #0056b3;
-            /* Slightly darker blue on hover for contrast */
             text-decoration: none;
-            /* Remove underline on hover for effect */
         }
 
         /* Ensure the SweetAlert2 modal content is scrollable on mobile */
         .swal2-container .swal2-html-container {
-            max-height: 300px;
-            /* Adjust as necessary */
+            max-height: 350px;
             overflow-y: auto;
+        }
+
+
+
+        body {
+            background: url('/tapnlog/image/logo_and_icons/bsu-bg.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+        }
+
+        /* Customized buttons */
+        .btn-custom {
+            border: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            text-align: center;
+            box-shadow: 0 4px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-2px);
+        }
+
+        /* animation */
+        .up {
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .up:hover {
+            transform: translateY(-2px);
+        }
+
+        .swal2-popup .swal2-actions {
+            gap: 1rem;
+            width: 100%;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            max-width: 18em;
         }
     </style>
 
@@ -93,11 +134,11 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
 
 <body>
 
-    <div class="container mt-4">
+    <div class="container glass p-md-3 my-4">
         <div class="row d-flex justify-content-center align-items-center">
             <div class="col-lg-5 col-md-6 p-0 mb-3 mb-md-4 ms-md-5">
                 <div class="row d-flex justify-content-center align-items-center p-0 m-0">
-                    <div class="col-lg-2 col-md-2 col-sm-12 d-flex justify-content-center justify-content-md-end align-items-center">
+                    <div class="col-lg-2 col-md-2 col-sm-12 p-0 d-flex justify-content-center justify-content-md-end align-items-center">
                         <img src="/TAPNLOG/Image/LOGO_AND_ICONS/logo_icon.png" id="img_logo" class="img-fluid" alt="Logo" style="max-width: 60px; height: auto;">
                     </div>
                     <div class="col-lg-10 col-md-10 col-sm-12 d-flex justify-content-center justify-content-md-start align-items-center p-0 m-0">
@@ -115,10 +156,10 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                 <div id="profileImg-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
                 <div class="row justify-content-center">
                     <div class="col-md-6 col-sm-12 text-center">
-                        <button class="btn btn-primary mt-2 w-100" data-bs-toggle="modal" data-bs-target="#uploadModal">UPLOAD IMAGE</button>
+                        <button class="btn btn-primary btn-custom mt-2 w-100" data-bs-toggle="modal" data-bs-target="#uploadModal">UPLOAD IMAGE</button>
                     </div>
                     <div class="col-md-6 col-sm-12 text-center">
-                        <button class="btn btn-danger mt-2 w-100" id="removePicBtn">REMOVE IMAGE</button>
+                        <button class="btn btn-danger btn-custom mt-2 w-100" id="removePicBtn">REMOVE IMAGE</button>
                     </div>
                 </div>
             </div>
@@ -157,18 +198,24 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                                     <div class="col-12 p-0">
                                         <input type="checkbox" class="form-check-input" id="agreeTerms" disabled>
                                         <label class="form-check-label" for="agreeTerms">
-                                            I agree to the <a href="#" id="viewTerms">Terms and Conditions</a>.
+                                            I agree to the <a href="#" id="viewTerms"><span class="up">Terms and Conditions</span></a>.
                                         </label>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-
-                        <div class="d-flex flex-wrap gap-2">
-                            <button type="button" class="btn btn-secondary flex-fill" id="discardBtn">BACK</button>
-                            <button type="button" class="btn btn-success flex-fill" id="saveBtn">REGISTER</button>
+                        <div class="w-100 mt-3">
+                            <div class="row d-flex justify-content-center align-items-center">
+                                <div class="col-6 mb-2">
+                                    <button id="discardBtn" type="button" class="btn btn-secondary btn-custom text-uppercase w-100">BACK</button>
+                                </div>
+                                <div class="col-6 mb-2">
+                                    <button id="saveBtn" type="button" class="btn btn-success btn-custom text-uppercase w-100">REGISTER</button>
+                                </div>
+                            </div>
                         </div>
+
                     </form>
                 </div>
 
@@ -193,8 +240,18 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="cancelCrop">CANCEL</button>
-                    <button type="button" class="btn btn-primary" id="saveCrop">UPLOAD</button>
+
+                    <div class="w-100 mt-3">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="cancelCrop" class="btn btn-danger btn-custom text-uppercase w-100">CANCEL</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button id="saveCrop" class="btn btn-success btn-custom text-uppercase w-100">UPLOAD</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -286,7 +343,12 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                         showCancelButton: true,
                         confirmButtonText: 'YES',
                         cancelButtonText: 'NO',
-                        reverseButtons: true
+                        reverseButtons: true,
+                        customClass: {
+                            confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                            cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                        },
+                        buttonsStyling: false,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $('#profileImg').attr('src', '../../Image/logo_and_icons/default_avatar.png');
@@ -364,21 +426,49 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
 
                 Swal.fire({
                     title: 'Terms and Conditions',
-                    html: ` <div style="text-align: left; -webkit-overflow-scrolling: touch; touch-action: pan-y;">
-                            <p>Welcome to our service! By using this service, you agree to the following terms and conditions:</p>
-                            <ul>
-                                <li>You shall comply with all applicable laws and regulations.</li>
-                                <li>Do not misuse the platform or services.</li>
-                                <li>All content uploaded must be your original work or have proper authorization.</li>
-                                <li>We reserve the right to terminate accounts violating these terms.</li>
-                                <li>Your data will be handled per our privacy policy.</li>
-                            </ul>
-                            <p><strong>Scroll to the bottom to accept.</strong></p>
-                        </div>`,
+                    html: `
+                        <div style="text-align: left; -webkit-overflow-scrolling: touch; touch-action: pan-y; padding: 20px;">
+                            <h3 style="color: #2c3e50; margin-bottom: 15px; font-weight: 600;">Introduction</h3>
+                            <p style="margin-bottom: 20px; line-height: 1.6; text-align: justify;">Welcome to the RFID Registration System. This system is designed to streamline the registration and monitoring processes for Employees, Cash for Work staff, and On the Job Trainees (collectively referred to as "Users"). By accessing and using this system, you acknowledge and agree to the following Terms and Conditions governing the collection, use, and safeguarding of your personal data. These terms are intended to ensure transparency, compliance, and mutual understanding between the system administrators and its users. If you disagree with any part of these terms, we advise you to refrain from registering or using the system.</p>
+
+                            <h3 style="color: #2c3e50; margin: 25px 0 15px; font-weight: 600;">Data Collection and Usage</h3>
+                            <p style="margin-bottom: 15px; line-height: 1.6; text-align: justify;">During registration, the RFID Registration System collects and stores specific information to facilitate its functions effectively. The collected data includes personal details such as full name, type of profile, and a profile photo for identification purposes.</p>
+                            <p style="margin-bottom: 20px; line-height: 1.6; text-align: justify;">The collected information is used solely to generate and issue RFID cards for identification and monitoring, record attendance, work hours, and facility access, and ensure organizational security and operational efficiency. By registering, you also grant permission for the use of your profile photo, type of profile, and name for identification purposes and internal records management.</p>
+
+                            <h3 style="color: #2c3e50; margin: 25px 0 15px; font-weight: 600;">Data Protection and Privacy</h3>
+                            <p style="margin-bottom: 15px; line-height: 1.6; text-align: justify;">We are committed to safeguarding your personal data and ensuring its security. To this end, reasonable technical and organizational measures are in place to protect your information from unauthorized access, disclosure, or misuse. Your personal data will remain confidential and will only be shared with authorized personnel or third parties in compliance with Philippine laws and regulations or in response to requests from government authorities or law enforcement agencies.</p>
+                            <p style="margin-bottom: 20px; line-height: 1.6; text-align: justify;">Your data will be retained for the duration of your employment, program participation, or training. Once your engagement concludes, your information will be archived in accordance with our data retention policy and applicable legal requirements.</p>
+
+                            <h3 style="color: #2c3e50; margin: 25px 0 15px; font-weight: 600;">User Responsibilities</h3>
+                            <p style="margin-bottom: 15px; line-height: 1.6; text-align: justify;">As a user of the RFID Registration System, you are expected to adhere to the following responsibilities. It is your obligation to provide accurate and up-to-date information during registration, as any false or misleading data may lead to the rejection of your registration or result in disciplinary action.</p>
+                            <p style="margin-bottom: 15px; line-height: 1.6; text-align: justify;">The RFID issued to you is strictly for personal use and must not be shared, transferred, or tampered with. You are responsible for its safekeeping and must promptly report any loss, theft, or damage to the system administrator. In the event of a lost RFID card, you will be required to pay for its replacement in accordance with the system's policies.</p>
+                            <p style="margin-bottom: 20px; line-height: 1.6; text-align: justify;">Additionally, users are strictly prohibited from engaging in unauthorized activities such as using the RFID for unauthorized access, fraudulent purposes, or attempting to manipulate or interfere with the system's functionality.</p>
+
+                            <h3 style="color: #2c3e50; margin: 25px 0 15px; font-weight: 600;">Limitation of Liability</h3>
+                            <p style="margin-bottom: 20px; line-height: 1.6; text-align: justify;">While every effort is made to ensure the reliability and security of the RFID system, uninterrupted operation and error-free performance cannot be guaranteed. The organization is not liable for any damages or losses arising from system malfunctions, user negligence, or unauthorized use of the RFID.</p>
+
+                            <h3 style="color: #2c3e50; margin: 25px 0 15px; font-weight: 600;">Amendments</h3>
+                            <p style="margin-bottom: 20px; line-height: 1.6; text-align: justify;">We reserve the right to amend or update these Terms and Conditions at any time. Any changes will be communicated to users, and continued use of the RFID system will indicate your acceptance of the revised terms.</p>
+
+                            <h3 style="color: #2c3e50; margin: 25px 0 15px; font-weight: 600;">Governing Law and Jurisdiction</h3>
+                            <p style="margin-bottom: 20px; line-height: 1.6; text-align: justify;">These Terms and Conditions are governed by the laws of the Republic of the Philippines. Any disputes related to the RFID system shall fall under the jurisdiction of the courts located in Batangas City.</p>
+
+                            <h3 style="color: #2c3e50; margin: 25px 0 15px; font-weight: 600;">Contact Information</h3>
+                            <p style="margin-bottom: 10px; line-height: 1.6; text-align: justify;">For any inquiries, concerns, or assistance, please reach out to us through the following contact details:</p>
+                            <p style="margin-bottom: 20px; line-height: 1.6; text-align: left; color: #3498db;">Email: tapnlog.official@gmail.com</p>
+
+                            <p style="margin-bottom: 20px; line-height: 1.6; text-align: justify;">By completing the RFID registration process, you acknowledge that you have read, understood, and agreed to these Terms and Conditions. To proceed, you must scroll to the bottom of this document and click the "Accept" button, which will automatically check the Terms and Conditions box as confirmation of your acceptance.</p>
+                        </div>
+                    `,
                     showCancelButton: true,
                     confirmButtonText: 'ACCEPT',
                     cancelButtonText: 'CANCEL',
                     reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
                     didOpen: () => {
                         const container = document.querySelector('.swal2-html-container');
                         const confirmButton = Swal.getConfirmButton();
@@ -515,9 +605,14 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                             text: 'You have unsaved changes. Are you sure you want to DISCARD the changes?',
                             icon: 'warning',
                             showCancelButton: true,
-                            confirmButtonText: 'YES, DISCARD CHANGES',
-                            cancelButtonText: 'NO, KEEP EDITING',
+                            confirmButtonText: 'YES',
+                            cancelButtonText: 'NO',
                             reverseButtons: true,
+                            customClass: {
+                                confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                                cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                            },
+                            buttonsStyling: false,
                         }).then((result) => {
                             if (result.isConfirmed) {
 
@@ -567,7 +662,13 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                     showCancelButton: true,
                     confirmButtonText: confirmText,
                     cancelButtonText: cancelText,
-                    reverseButtons: true
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
+
                 }).then((result) => {
                     if (result.isConfirmed) {
                         callback(); // Execute the callback function if confirmed

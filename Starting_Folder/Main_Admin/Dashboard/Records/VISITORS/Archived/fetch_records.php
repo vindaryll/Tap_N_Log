@@ -101,7 +101,7 @@ if ($result->num_rows > 0) {
                 if ($showRestoreButton) {
                     echo"
                     <div class='col-lg-6 h-100 my-1'>
-                        <button class='btn btn-info w-100 h-100 p-2 view-details-btn'
+                        <button class='btn btn-info btn-custom w-100 h-100 p-2 view-details-btn'
                             data-first-name='{$row['first_name']}'
                             data-last-name='{$row['last_name']}'
                             data-phone-num='{$row['phone_num']}'
@@ -111,7 +111,7 @@ if ($result->num_rows > 0) {
                         </button>
                     </div>
                     <div class='col-lg-6 h-100 my-1'>
-                        <button class='btn btn-danger w-100 h-100 p-2 restore-btn'
+                        <button class='btn btn-danger btn-custom w-100 h-100 p-2 restore-btn'
                             data-id='{$row['visitor_id']}'
                             data-name='{$row['first_name']} {$row['last_name']}'
                             data-date='{$formattedDate}'>
@@ -122,7 +122,7 @@ if ($result->num_rows > 0) {
                 else{
                     echo"
                     <div class='col-lg-12 h-100 my-1'>
-                        <button class='btn btn-info w-100 h-100 p-2 view-details-btn'
+                        <button class='btn btn-info btn-custom w-100 h-100 p-2 view-details-btn'
                             data-first-name='{$row['first_name']}'
                             data-last-name='{$row['last_name']}'
                             data-phone-num='{$row['phone_num']}'

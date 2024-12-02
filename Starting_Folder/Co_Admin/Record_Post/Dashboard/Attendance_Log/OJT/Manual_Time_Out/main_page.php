@@ -383,6 +383,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
             // Initial Fetch
             fetchProfiles();
+            setInterval(fetchProfiles, 5000);
 
 
             $('#cancelBtn').on('click', function() {

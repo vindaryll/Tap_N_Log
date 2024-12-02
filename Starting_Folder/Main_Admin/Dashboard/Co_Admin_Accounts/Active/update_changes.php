@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $logDetails = [];
 
         // Build log header
-        $logHeader = "Update Co-admin Details\n\nGuard ID: $guard_id\nGuard Name: $guard_name\n\n";
+        $logHeader = "Update Co-admin Details\n\nID: $guard_id\nName: $guard_name\n\n";
 
         // Check and prepare updates for guards table
         if ($currentGuardData['guard_name'] !== $guard_name) {

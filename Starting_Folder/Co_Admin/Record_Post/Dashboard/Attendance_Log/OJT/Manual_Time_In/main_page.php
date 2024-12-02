@@ -366,6 +366,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
             // Initial Fetch
             fetchProfiles();
+            setInterval(fetchProfiles, 5000);
 
             // Time In Button Click
             $(document).on('click', '.time-in-btn', function() {

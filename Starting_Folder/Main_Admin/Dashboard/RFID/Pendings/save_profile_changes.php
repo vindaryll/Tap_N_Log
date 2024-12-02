@@ -10,6 +10,7 @@ if (!isset($_SESSION['admin_logged'])) {
 
 // Include the database connection
 require_once $_SESSION['directory'] . '\Database\dbcon.php';
+require_once $_SESSION['directory'] . '\Database\system_log_helper.php';
 
 // Check if the required fields are set in the POST request
 if (!isset($_POST['profile_id'], $_POST['first_name'], $_POST['last_name'], $_POST['type_of_profile'])) {
@@ -74,6 +75,16 @@ $stmt = $conn->prepare($updateQuery);
 $stmt->bind_param("sssi", $first_name, $last_name, $type_of_profile, $profile_id);
 
 if ($stmt->execute()) {
+
+    logSystemActivity(
+        $conn,
+        "Profile updated successfully",
+        "SUCCESS",
+        "Profile ID: " . $profile_id . " - Updated from '" .
+            $currentProfile['first_name'] . " " . $currentProfile['last_name'] . " (" . $currentProfile['type_of_profile'] . ")' to '" .
+            $first_name . " " . $last_name . " (" . $type_of_profile . ")'"
+    );
+    
     echo json_encode(['success' => true, 'message' => 'Profile updated successfully.']);
 } else {
     echo json_encode(['success' => false, 'message' => 'Failed to update profile.']);

@@ -492,6 +492,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
             // Initial Fetch
             fetchRecords();
+            setInterval(fetchRecords, 5000);
 
             // VIEW AND EDIT DETAILS
             $(document).on('click', '.view-details-btn', function() {
@@ -512,97 +513,6 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 // Show the modal
                 $('#ProfileDetailsModal').modal('show');
             });
-
-
-            // ARCHIVE RECORD
-            $(document).on('click', '.archive-btn', function() {
-
-                const attendanceId = $(this).data('bs-id');
-                const profileId = $(this).data('bs-profile-id');
-                const name = $(this).data('bs-name');
-                const date = $(this).data('bs-date');
-                const timeIn = $(this).data('bs-time-in');
-                const timeOut = $(this).data('bs-time-out');
-
-                // Confirmation dialog
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: `Do you want to ARCHIVE the ATTENDANCE of ${name} on ${date}? This action cannot be undone.`,
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'YES',
-                    cancelButtonText: 'NO',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Show a loading alert while processing
-                        Swal.fire({
-                            title: 'LOADING',
-                            text: 'Please wait.',
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                            },
-                        });
-
-                        // Send the AJAX request to archive the record
-                        $.ajax({
-                            url: 'archive_record.php', // The backend script to process the archive
-                            type: 'POST',
-                            data: {
-                                attendance_id: attendanceId,
-                                profile_id: profileId,
-                                name: name,
-                                date: date,
-                                time_in: timeIn,
-                                time_out: timeOut,
-                            },
-                            dataType: 'json',
-                            success: function(response) {
-                                Swal.close(); // Close the loading alert
-
-                                if (response.success) {
-                                    Swal.fire({
-                                        position: 'top',
-                                        title: 'Success!',
-                                        text: response.message,
-                                        icon: 'success',
-                                        timer: 2000,
-                                        timerProgressBar: true,
-                                        showConfirmButton: false,
-                                    });
-
-                                    // Refresh the visitor list or update the UI
-                                    fetchRecords();
-                                } else {
-                                    Swal.fire({
-                                        position: 'top',
-                                        title: 'Error!',
-                                        text: response.message,
-                                        icon: 'error',
-                                        timer: 2000,
-                                        timerProgressBar: true,
-                                        showConfirmButton: false,
-                                    });
-                                }
-                            },
-                            error: function() {
-                                Swal.fire({
-                                    position: 'top',
-                                    title: 'Error!',
-                                    text: 'Failed to process archive. Please try again.',
-                                    icon: 'error',
-                                    timer: 2000,
-                                    timerProgressBar: true,
-                                    showConfirmButton: false,
-                                });
-                            },
-                        });
-                    }
-                });
-
-            });
-
 
         });
     </script>

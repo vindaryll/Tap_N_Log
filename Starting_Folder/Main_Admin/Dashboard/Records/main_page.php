@@ -77,21 +77,21 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 <h2 class="text-center w-100">RECORDS</h2>
                 <div class="row d-flex justify-content-center align-items-center mt-3">
 
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="VISITORS/main_page.php" class="btn btn-primary w-100 p-3">VISITORS</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
+                        <a href="VISITORS/main_page.php" class="btn btn-primary btn-custom w-100 p-3">VISITORS</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="EMPLOYEES/main_page.php" class="btn btn-primary w-100 p-3">EMPLOYEES</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-3">
+                        <a href="EMPLOYEES/main_page.php" class="btn btn-primary btn-custom w-100 p-3">EMPLOYEES</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="CFW/main_page.php" class="btn btn-primary w-100 p-3">CASH FOR WORK</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
+                        <a href="CFW/main_page.php" class="btn btn-primary btn-custom w-100 p-3">CASH FOR WORK</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-md-3 mb-4">
-                        <a href="OJT/main_page.php" class="btn btn-primary w-100 p-3">ON THE JOB TRAINEES</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
+                        <a href="OJT/main_page.php" class="btn btn-primary btn-custom w-100 p-3">ON THE JOB TRAINEES</a>
                     </div>
 
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="VEHICLES/main_page.php" class="btn btn-primary w-100 p-3">VEHICLES</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-2 mt-md-3 mt-5">
+                        <a href="VEHICLES/main_page.php" class="btn btn-primary btn-custom w-100 p-3">VEHICLES</a>
                     </div>
                 </div>
             </div>

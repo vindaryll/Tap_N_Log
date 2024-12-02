@@ -82,7 +82,7 @@ if ($result->num_rows > 0) {
             <td>
                 <div class='row d-flex justify-content-center align-items-center m-0 p-0'>
                     <div class='col-12 h-100 my-1'>
-                        <button class='btn btn-info w-100 h-100 p-2 view-details-btn'
+                        <button class='btn btn-info btn-custom w-100 h-100 p-2 view-details-btn'
                             data-id='{$row['visitor_id']}'
                             data-first-name='{$row['first_name']}'
                             data-last-name='{$row['last_name']}'

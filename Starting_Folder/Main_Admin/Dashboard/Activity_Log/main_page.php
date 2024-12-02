@@ -77,11 +77,11 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 <h2 class="text-center w-100">ACTIVITY LOGS</h2>
                 <div class="row d-flex justify-content-center align-items-center mt-3">
 
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="Co_Admin/main_page.php" class="btn btn-primary w-100 p-3">CO-ADMIN</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
+                        <a href="Co_Admin/main_page.php" class="btn btn-primary btn-custom w-100 p-3">CO-ADMIN</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="Main_Admin/main_page.php" class="btn btn-primary w-100 p-3">MAIN ADMIN</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
+                        <a href="Main_Admin/main_page.php" class="btn btn-primary btn-custom w-100 p-3">MAIN ADMIN</a>
                     </div>
                     
                 </div>

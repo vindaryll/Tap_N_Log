@@ -111,7 +111,40 @@
 
     /* Add margin to main content to prevent navbar overlap */
     body {
+        background: url('/tapnlog/image/logo_and_icons/bsu-bg.png') no-repeat center center fixed;
+        background-size: cover;
         padding-top: 87px;
+    }
+
+    /* Customized buttons */
+    .btn-custom {
+        border: none;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        text-align: center;
+        box-shadow: 0 4px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-custom:hover {
+        transform: translateY(-2px);
+    }
+
+    /* animation */
+    .up {
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+    }
+
+    .up:hover {
+        transform: translateY(-2px);
+    }
+
+    .swal2-popup .swal2-actions {
+        gap: 1rem;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+        max-width: 18em;
     }
 </style>
 
@@ -119,7 +152,7 @@
     <div class="container-fluid px-lg-5">
         <!-- Mobile Logo (left-aligned) -->
         <div class="d-lg-none">
-            <a href="#" id="dashboard-link" class="navbar-brand">
+            <a href="#" id="dashboard-link" class="navbar-brand up">
                 <img src="/TAPNLOG/Image/LOGO_AND_ICONS/logo_icon.png" alt="Logo" width="40" height="40">
                 <span class="ms-2 fw-semibold">TAP-N-LOG</span>
             </a>
@@ -134,7 +167,7 @@
 
         <!-- Desktop Logo -->
         <div class="col-2 d-none d-lg-block">
-            <a href="#" id="dashboard-link2" class="navbar-brand">
+            <a href="#" id="dashboard-link2" class="navbar-brand up">
                 <img src="/TAPNLOG/Image/LOGO_AND_ICONS/logo_icon.png" alt="Logo" width="40" height="40">
                 <span class="ms-2 fw-semibold">TAP-N-LOG</span>
             </a>
@@ -145,21 +178,21 @@
             <ul class="navbar-nav ms-auto">
                 <!-- QR Code Button (Visible on Large Screens) -->
                 <li class="nav-item d-none d-lg-block mx-2">
-                    <a href="#" id="nav-showQRButton" class="nav-link">
+                    <a href="#" id="nav-showQRButton" class="nav-link up">
                         <i class="bi bi-qr-code"></i>
                     </a>
                 </li>
 
                 <!-- Profile Icon with Modal Trigger (Visible on Large Screens) -->
                 <li class="nav-item d-none d-lg-block mx-2">
-                    <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#nav_profileModal">
+                    <a href="#" class="nav-link up" data-bs-toggle="modal" data-bs-target="#nav_profileModal">
                         <i class="bi bi-person-circle"></i>
                     </a>
                 </li>
 
                 <!-- Logout Button (Visible on Large Screens) -->
                 <li class="nav-item d-none d-lg-block mx-2">
-                    <a href="#" id="logout-link" class="nav-link">
+                    <a href="#" id="logout-link" class="nav-link up">
                         <i class="bi bi-box-arrow-right"></i>
                     </a>
                 </li>
@@ -172,7 +205,7 @@
 <div class="offcanvas offcanvas-end" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel">
     <div class="offcanvas-header border-bottom">
         <h5 class="offcanvas-title" id="navbarOffcanvasLabel">Menu</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <button type="button" class="btn-close up" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
         <ul class="navbar-nav">
@@ -182,7 +215,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" style="color: #1877f2; font-weight: 500;" class="nav-link"  data-bs-toggle="modal" data-bs-target="#nav_profileModal">
+                <a href="#" style="color: #1877f2; font-weight: 500;" class="nav-link" data-bs-toggle="modal" data-bs-target="#nav_profileModal">
                     <i class="bi bi-person-circle me-2"></i>ACCOUNT SETTINGS
                 </a>
             </li>
@@ -200,12 +233,12 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="nav_profileModalLabel">Account Settings</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="nav_profileModalLabel">ACCOUNT SETTINGS</h5>
+                <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <button type="button" class="btn btn-primary w-100 mb-2" id="nav_sendCodeBtn1">CHANGE EMAIL</button>
-                <button type="button" class="btn btn-secondary w-100" id="nav_changePasswordBtn">CHANGE PASSWORD</button>
+                <button type="button" class="btn btn-primary btn-custom w-100 mb-2" id="nav_sendCodeBtn1">CHANGE EMAIL</button>
+                <button type="button" class="btn btn-secondary btn-custom w-100" id="nav_changePasswordBtn">CHANGE PASSWORD</button>
             </div>
         </div>
     </div>
@@ -225,9 +258,20 @@
                     <div id="nav_otpCode1-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
                 </div>
 
-                <button id="nav_submitOtpBtn1" class="btn btn-primary mt-3">SUBMIT</button>
-                <button id="nav_resendCodeBtn1" class="btn btn-warning mt-3" disabled>RESEND CODE</button>
-                <button id="nav_backBtn1" class="btn btn-secondary mt-3">BACK</button>
+                <div class="w-100 mt-3">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-12 col-sm-3 mb-2">
+                            <button id="nav_backBtn1" class="btn btn-secondary btn-custom text-uppercase w-100">BACK</button>
+                        </div>
+                        <div class="col-12 col-sm-6 mb-2">
+                            <button id="nav_resendCodeBtn1" class="btn btn-warning btn-custom text-uppercase w-100" disabled>RESEND CODE</button>
+                        </div>
+                        <div class="col-12 col-sm-3 mb-2">
+                            <button id="nav_submitOtpBtn1" class="btn btn-primary btn-custom text-uppercase w-100">SUBMIT</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -239,7 +283,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="nav_modalNewEmailLabel">CHANGE EMAIL</h5>
-                <button type="button" class="btn-close" id="Nav_closeNewEmailBtn"></button>
+                <button type="button" class="btn-close up" id="Nav_closeNewEmailBtn"></button>
             </div>
             <div class="modal-body">
 
@@ -248,7 +292,9 @@
                     <div id="nav_newEmail-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
                 </div>
 
-                <button id="nav_sendCodeBtn2" class="btn btn-primary mt-3">SEND CODE</button>
+                <div class="col-12 d-flex justify-content-end">
+                    <button id="nav_sendCodeBtn2" class="btn btn-primary btn-custom col-6 mt-3">SEND CODE</button>
+                </div>
             </div>
         </div>
     </div>
@@ -268,9 +314,19 @@
                     <div id="nav_otpCode2-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
                 </div>
 
-                <button id="nav_submitOtpBtn2" class="btn btn-primary mt-3">SUBMIT</button>
-                <button id="nav_resendCodeBtn2" class="btn btn-warning mt-3" disabled>RESEND CODE</button>
-                <button id="nav_backBtn2" class="btn btn-secondary mt-3">BACK</button>
+                <div class="w-100 mt-3">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-12 col-sm-3 mb-2">
+                            <button id="nav_backBtn2" class="btn btn-secondary btn-custom text-uppercase w-100">BACK</button>
+                        </div>
+                        <div class="col-12 col-sm-6 mb-2">
+                            <button id="nav_resendCodeBtn2" class="btn btn-warning btn-custom text-uppercase w-100" disabled>RESEND CODE</button>
+                        </div>
+                        <div class="col-12 col-sm-3 mb-2">
+                            <button id="nav_submitOtpBtn2" class="btn btn-primary btn-custom text-uppercase w-100">SUBMIT</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -315,8 +371,16 @@
                     <div id="nav_confirm_password-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
                 </div>
 
-                <button id="nav_submitChangePasswordBtn" class="btn btn-primary mt-3">SUBMIT</button>
-                <button id="nav_discardChangePasswordBtn" class="btn btn-secondary mt-3">DISCARD</button>
+                <div class="w-100 mt-3">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-6 mb-2">
+                            <button id="nav_discardChangePasswordBtn" class="btn btn-danger btn-custom text-uppercase w-100">DISCARD</button>
+                        </div>
+                        <div class="col-6 mb-2">
+                            <button id="nav_submitChangePasswordBtn" class="btn btn-primary btn-custom text-uppercase w-100">SUBMIT</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -349,6 +413,11 @@
                 confirmButtonText: 'YES',
                 cancelButtonText: 'NO',
                 reverseButtons: true,
+                customClass: {
+                    confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                    cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                },
+                buttonsStyling: false,
             }).then((result) => {
                 if (result.isConfirmed) {
                     window.location.href = '/tapnlog/Starting_Folder/Main_Admin/Auth/logout.php';
@@ -367,6 +436,11 @@
                 confirmButtonText: 'YES',
                 cancelButtonText: 'NO',
                 reverseButtons: true,
+                customClass: {
+                    confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                    cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                },
+                buttonsStyling: false,
             }).then((result) => {
                 if (result.isConfirmed) {
                     window.location.href = '/tapnlog/Starting_Folder/Main_Admin/Dashboard/dashboard_home.php';
@@ -406,14 +480,18 @@
                                     Swal.fire({
                                         title: 'Scan this QR Code',
                                         html: `
-                                    <div style="text-align: center;">
-                                        <img src="${url}" alt="QR Code" style="width: 200px; height: 200px; margin-bottom: 15px;">
-                                        <p style="margin-top: 10px;">Or type this link:</p>
-                                        <a href="${websiteLink}" target="_blank" style="color: #1877f2; font-weight: bold;">${websiteLink}</a>
-                                    </div>
-                                `,
+                                                <div style="text-align: center;">
+                                                    <img src="${url}" alt="QR Code" style="width: 200px; height: 200px; margin-bottom: 15px;">
+                                                    <p style="margin-top: 10px;">Or type this link:</p>
+                                                    <a href="${websiteLink}" target="_blank" style="color: #1877f2; font-weight: bold;">${websiteLink}</a>
+                                                </div>
+                                        `,
                                         showConfirmButton: true,
-                                        confirmButtonText: 'Close',
+                                        confirmButtonText: 'CLOSE',
+                                        customClass: {
+                                            confirmButton: 'col-12 btn btn-primary btn-custom text-uppercase',
+                                        },
+                                        buttonsStyling: false,
                                         showClass: {
                                             popup: 'animate__animated animate__zoomIn animate__faster',
                                         },
@@ -578,6 +656,11 @@
                 confirmButtonText: 'YES',
                 cancelButtonText: 'NO',
                 reverseButtons: true,
+                customClass: {
+                    confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                    cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                },
+                buttonsStyling: false,
             }).then((result) => {
                 if (result.isConfirmed) {
                     clearInterval(resendTimeout1);
@@ -773,6 +856,11 @@
                 confirmButtonText: 'YES',
                 cancelButtonText: 'NO',
                 reverseButtons: true,
+                customClass: {
+                    confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                    cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                },
+                buttonsStyling: false,
             }).then((result) => {
                 if (result.isConfirmed) {
                     $('#nav_modalNewEmail').modal('hide');
@@ -907,6 +995,11 @@
                 confirmButtonText: 'YES',
                 cancelButtonText: 'NO',
                 reverseButtons: true,
+                customClass: {
+                    confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                    cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                },
+                buttonsStyling: false,
             }).then((result) => {
                 if (result.isConfirmed) {
                     clearInterval(resendTimeout2);
@@ -1039,6 +1132,11 @@
                                     confirmButtonText: 'YES',
                                     cancelButtonText: 'NO',
                                     reverseButtons: true,
+                                    customClass: {
+                                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                                    },
+                                    buttonsStyling: false,
                                 }).then((result) => {
                                     if (result.isConfirmed) {
 
@@ -1328,6 +1426,11 @@
                     confirmButtonText: 'YES',
                     cancelButtonText: 'NO',
                     reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
@@ -1401,6 +1504,11 @@
                 confirmButtonText: 'YES',
                 cancelButtonText: 'NO',
                 reverseButtons: true,
+                customClass: {
+                    confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                    cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                },
+                buttonsStyling: false,
             }).then((result) => {
                 if (result.isConfirmed) {
                     $('#nav_modalChangePassword').modal('hide');
@@ -1491,8 +1599,6 @@
                 return true;
             }
         }
-
-
 
     });
 </script>

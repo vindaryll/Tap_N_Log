@@ -359,6 +359,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
             // Initial Fetch
             fetchResults();
+            setInterval(fetchResults, 5000);
 
 
             // FEEDBACK MESSAGE FUNCTIONS FOR ADD VISITOR MODAL

@@ -73,12 +73,9 @@ $stationsResult = $conn->query($stationsSql);
             vertical-align: middle;
         }
 
-        table.table tbody tr:hover {
-            background-color: #5abed6;
-        }
-
         .table-responsive {
-            height: calc(100vh - 320px); 
+            background-color: white;
+            height: calc(100vh - 320px);
             overflow-y: auto;
             margin-bottom: 10px;
         }
@@ -86,8 +83,13 @@ $stationsResult = $conn->query($stationsSql);
         .table thead th {
             position: sticky;
             top: 0;
-            background-color: #343a40;
+            background-color: #217AEA;
             color: white;
+            z-index: 1;
+        }
+
+        table.table tbody tr:hover {
+            background-color: #DBE7FF;
         }
 
         /* BACK BUTTON */
@@ -133,10 +135,10 @@ $stationsResult = $conn->query($stationsSql);
                         <div class="col-md-6 col-12 m-0 p-0">
                             <div class="w-100 d-flex justify-content-start p-0 m-0">
                                 <div class="col-3 m-1 p-0">
-                                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#filterModal">FILTER</button>
+                                    <button class="btn btn-primary btn-custom w-100" data-bs-toggle="modal" data-bs-target="#filterModal">FILTER</button>
                                 </div>
                                 <div class="col-3 m-1 p-0">
-                                    <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#sortModal">SORT</button>
+                                    <button class="btn btn-secondary btn-custom w-100" data-bs-toggle="modal" data-bs-target="#sortModal">SORT</button>
                                 </div>
                             </div>
                         </div>
@@ -163,12 +165,10 @@ $stationsResult = $conn->query($stationsSql);
 
                     <div class="row d-flex justify-content-between mb-2">
                         <div class="col-md-4 col-12 mb-2">
-                            <!-- Inactive guard button -->
-                            <button type="button" id="goToInactive" class="btn btn-primary w-100 h-100 p-2">INACTIVE CO-ADMIN ACCOUNTS</button>
+                            <button type="button" id="goToInactive" class="btn btn-primary btn-custom w-100 h-100 p-2">INACTIVE CO-ADMIN ACCOUNTS</button>
                         </div>
                         <div class="col-md-4 col-12 mb-2">
-                            <!-- Add Guard Button -->
-                            <button type="button" id="addGuardModalButton" class="btn btn-success w-100 h-100 p-2" data-bs-toggle="modal" data-bs-target="#addGuardModal">ADD CO-ADMIN</button>
+                            <button type="button" id="addGuardModalButton" class="btn btn-success btn-custom w-100 h-100 p-2" data-bs-toggle="modal" data-bs-target="#addGuardModal">ADD CO-ADMIN</button>
                         </div>
                     </div>
 
@@ -184,23 +184,23 @@ $stationsResult = $conn->query($stationsSql);
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="filterModalLabel">Filter Guards</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="filterModalLabel"><strong>FILTER ACCOUNTS</strong></h5>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="filterForm">
                         <div class="mb-3">
-                            <label for="from_dateInput" class="form-label">From</label>
+                            <label for="from_dateInput" class="form-label"><strong>FROM</strong></label>
                             <input type="date" id="from_dateInput" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="to_dateInput" class="form-label">To</label>
+                            <label for="to_dateInput" class="form-label"><strong>TO</strong></label>
                             <input type="date" id="to_dateInput" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="filterStationSelect" class="form-label">Station</label>
+                            <label for="filterStationSelect" class="form-label"><strong>STATIONS</strong></label>
                             <select id="filterStationSelect" class="form-select">
-                                <option value="">All Stations</option>
+                                <option value="">ALL STATIONS</option>
                                 <?php
                                 $stationsResult->data_seek(0);
                                 while ($station = $stationsResult->fetch_assoc()) {
@@ -212,8 +212,18 @@ $stationsResult = $conn->query($stationsSql);
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="resetFilters" class="btn btn-danger">Reset</button>
-                    <button type="button" id="applyFilters" class="btn btn-primary">Apply</button>
+
+                    <div class="w-100 mt-3">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="resetFilters" class="btn btn-danger btn-custom text-uppercase w-100">RESET</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button id="applyFilters" class="btn btn-primary btn-custom text-uppercase w-100">APPLY</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -224,19 +234,19 @@ $stationsResult = $conn->query($stationsSql);
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="sortModalLabel">Sort Guards</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="sortModalLabel"><strong>SORT ACCOUNTS</strong></h5>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div>
-                        <label class="form-label">Sort by Date:</label>
+                        <label class="form-label"><strong>SORT BY DATE</strong></label>
                         <div>
                             <input type="radio" name="sortDate" value="asc"> Ascending<br>
                             <input type="radio" name="sortDate" value="desc"> Descending
                         </div>
                     </div>
                     <div class="mt-3">
-                        <label class="form-label">Sort by Name:</label>
+                        <label class="form-label"><strong>SORT BY NAME</strong></label>
                         <div>
                             <input type="radio" name="sortName" value="asc"> A-Z<br>
                             <input type="radio" name="sortName" value="desc"> Z-A
@@ -244,8 +254,18 @@ $stationsResult = $conn->query($stationsSql);
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="resetSort" class="btn btn-danger">Reset</button>
-                    <button type="button" id="applySort" class="btn btn-primary">Apply</button>
+
+                    <div class="w-100 mt-3">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="resetSort" class="btn btn-danger btn-custom text-uppercase w-100">RESET</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button id="applySort" class="btn btn-primary btn-custom text-uppercase w-100">APPLY</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -257,8 +277,8 @@ $stationsResult = $conn->query($stationsSql);
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-center" id="addGuardModalLabel">ADD NEW CO-ADMIN</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title text-center" id="addGuardModalLabel"><strong>ADD NEW CO-ADMIN</strong></h5>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
@@ -318,7 +338,9 @@ $stationsResult = $conn->query($stationsSql);
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" id="submitAddGuardButton" class="btn btn-primary">ADD CO-ADMIN</button>
+                            <div class="col-12 d-flex justify-content-end">
+                                <button type="button" id="submitAddGuardButton" class="btn btn-primary btn-custom col-6 mt-3">ADD CO-ADMIN</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -332,8 +354,8 @@ $stationsResult = $conn->query($stationsSql);
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="guardDetailsLabel">CO-ADMIN DETAILS</h5>
-                    <button type="button" id="edit_closeButton" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="guardDetailsLabel"><strong>CO-ADMIN DETAILS</strong></h5>
+                    <button type="button" id="edit_closeButton" class="btn-close up btn-cont-1" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
@@ -375,15 +397,28 @@ $stationsResult = $conn->query($stationsSql);
                 </div>
                 <div class="modal-footer">
 
-                    <!-- Change password button -->
-                    <button type="button" id="changePasswordButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#passwordChangeModal">
-                        CHANGE PASSWORD
-                    </button>
+                    <div class="w-100 mt-3 btn-cont-1">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="changePasswordButton" class="btn btn-primary btn-custom text-uppercase w-100" data-bs-toggle="modal" data-bs-target="#passwordChangeModal">CHANGE PASSWORD</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button id="editButton" class="btn btn-primary btn-custom text-uppercase w-100">EDIT</button>
+                            </div>
+                        </div>
+                    </div>
 
-                    <!-- Edit Button to enable inputs -->
-                    <button type="button" id="editButton" class="btn btn-primary">EDIT</button>
-                    <button type="button" id="saveButton" class="btn btn-success" style="display:none;">SAVE</button>
-                    <button type="button" id="discardButton" class="btn btn-danger" style="display:none;">CANCEL</button>
+                    <div class="w-100 mt-3 btn-cont-2">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="discardButton" class="btn btn-danger btn-custom text-uppercase w-100">CANCEL</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button type="button" id="saveButton" class="btn btn-success btn-custom text-uppercase w-100">SAVE</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -405,7 +440,7 @@ $stationsResult = $conn->query($stationsSql);
 
                         <div class="mb-3">
                             <div class="input-group">
-                                <input type="password" id="new_password" name="new_password" class="form-control" placeholder="New Password" required>
+                                <input type="password" id="new_password" name="new_password" class="form-control" placeholder="New Password" tabindex="1" required>
                                 <span class="input-group-text toggle-password">
                                     <i class="bi bi-eye-fill"></i>
                                 </span>
@@ -415,17 +450,28 @@ $stationsResult = $conn->query($stationsSql);
 
                         <div class="mb-3">
                             <div class="input-group">
-                                <input type="password" id="confirm_new_password" name="confirm_new_password" class="form-control" placeholder="Confirm Password" required>
+                                <input type="password" id="confirm_new_password" name="confirm_new_password" class="form-control" placeholder="Confirm Password" tabindex="2" required>
                                 <span class="input-group-text toggle-password">
                                     <i class="bi bi-eye-fill"></i>
                                 </span>
                             </div>
                             <div id="changePassword-feedback2" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
                         </div>
-
-                        <button type="button" id="submitPasswordButton" class="btn btn-primary">SAVE</button>
-                        <button type="button" class="btn btn-secondary" id="goBackButton">CANCEL</button>
                     </form>
+                </div>
+                <div class="modal-footer">
+
+                    <div class="w-100 mt-3 btn-cont-1">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="goBackButton" class="btn btn-danger btn-custom text-uppercase w-100" tabindex="4">CANCEL</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button id="submitPasswordButton" class="btn btn-success btn-custom text-uppercase w-100" tabindex="3">SAVE</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -449,9 +495,8 @@ $stationsResult = $conn->query($stationsSql);
             $('#modalUsername').removeClass('is-invalid');
             $('#modalEmail').removeClass('is-invalid');
 
-            // Hide Save and Discard buttons, show Edit button initially
-            $('#saveButton, #discardButton').hide();
-            $('#editButton, #changePasswordButton').show();
+            $('.btn-cont-1').show(); // edit and change pass
+            $('.btn-cont-2').hide(); // save and discard
 
             // Show the modal
             $('#guardDetailsModal').modal('show');
@@ -484,7 +529,12 @@ $stationsResult = $conn->query($stationsSql);
                 showCancelButton: true,
                 confirmButtonText: 'YES',
                 cancelButtonText: 'NO',
-                reverseButtons: true
+                reverseButtons: true,
+                customClass: {
+                    confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                    cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                },
+                buttonsStyling: false,
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
@@ -731,7 +781,8 @@ $stationsResult = $conn->query($stationsSql);
             });
 
             // Handle the Save button click (submit the form)
-            $('#submitAddGuardButton').click(function() {
+            $('#submitAddGuardButton').click(function(e) {
+                e.preventDefault();
 
                 // Check feedback messages
                 validateName();
@@ -740,21 +791,29 @@ $stationsResult = $conn->query($stationsSql);
                 validatePassword();
                 validateConfirmPassword();
 
-                if (checkAddGuardButton()) {
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: 'Do you want to ADD the account?',
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'YES',
-                        cancelButtonText: 'NO',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $('#addGuardForm').submit();
-                        }
-                    });
+                if (!checkAddGuardButton()) {
+                    return;
                 }
+                
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Do you want to ADD the account?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'YES',
+                    cancelButtonText: 'NO',
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#addGuardForm').submit();
+                    }
+                });
+
 
             });
 
@@ -824,8 +883,8 @@ $stationsResult = $conn->query($stationsSql);
                 $('#modalGuardName, #modalStationName, #modalUsername, #modalEmail').prop('disabled', false);
 
                 // Show Save and Discard buttons, hide Edit and Change Password button
-                $('#saveButton, #discardButton').show();
-                $('#editButton, #changePasswordButton').hide();
+                $('.btn-cont-1').hide(); // edit and change pass
+                $('.btn-cont-2').show(); // save and discard
             });
 
             // Event listener for the discard button
@@ -851,9 +910,14 @@ $stationsResult = $conn->query($stationsSql);
                         text: 'You have unsaved changes. Are you sure you want to DISCARD the changes?',
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonText: 'YES, DISCARD CHANGES',
-                        cancelButtonText: 'NO, KEEP EDITING',
+                        confirmButtonText: 'YES',
+                        cancelButtonText: 'NO',
                         reverseButtons: true,
+                        customClass: {
+                            confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                            cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                        },
+                        buttonsStyling: false,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             // Revert inputs to original values
@@ -882,8 +946,8 @@ $stationsResult = $conn->query($stationsSql);
                 $('#modalGuardName, #modalStationName, #modalUsername, #modalEmail').prop('disabled', true);
 
                 // Hide Save and Discard buttons, show Edit button
-                $('#saveButton, #discardButton').hide();
-                $('#editButton, #changePasswordButton').show();
+                $('.btn-cont-1').show(); // edit and change pass
+                $('.btn-cont-2').hide(); // save and discard
             }
 
 
@@ -900,8 +964,8 @@ $stationsResult = $conn->query($stationsSql);
                 $('#modalEmail').val(current.email);
 
                 // Hide Save and Discard buttons, show Edit button
-                $('#saveButton, #discardButton').hide();
-                $('#editButton, #changePasswordButton').show();
+                $('.btn-cont-1').show(); // edit and change pass
+                $('.btn-cont-2').hide(); // save and discard
             });
 
             // Handle the Save button click (submit the form)
@@ -948,7 +1012,12 @@ $stationsResult = $conn->query($stationsSql);
                         showCancelButton: true,
                         confirmButtonText: 'YES',
                         cancelButtonText: 'NO',
-                        reverseButtons: true, // Optional: Switch button positions
+                        reverseButtons: true,
+                        customClass: {
+                            confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                            cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                        },
+                        buttonsStyling: false,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $('#editGuardForm').submit(); // Trigger the form submission
@@ -957,8 +1026,8 @@ $stationsResult = $conn->query($stationsSql);
                             $('#modalGuardName, #modalStationName, #modalUsername, #modalEmail').prop('disabled', true);
 
                             // Hide buttons
-                            $('#saveButton, #discardButton').hide();
-                            $('#editButton, #changePasswordButton').show();
+                            $('.btn-cont-1').show(); // edit and change pass
+                            $('.btn-cont-2').hide(); // save and discard
                         }
                     });
                 }
@@ -1089,12 +1158,17 @@ $stationsResult = $conn->query($stationsSql);
                 const passwordGuardName = $('#password_guard_name').val();
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: `Do you want to change the password of guard no: ${passwordGuardId}?`,
+                    text: `Do you want to change the password of Account no: ${passwordGuardId}?`,
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'YES',
                     cancelButtonText: 'NO',
-                    reverseButtons: true
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
@@ -1162,11 +1236,11 @@ $stationsResult = $conn->query($stationsSql);
             // FEEDBACK MESSAGE FUNCTIONS FOR ADD CO-ADMIN
 
             // Add on input event handlers for immediate feedback
-            $('#guard_name').on('input', validateName);
-            $('#username').on('input', validateUsername);
-            $('#email').on('input', validateEmail);
-            $('#password').on('input', validatePassword);
-            $('#confirm_password').on('input', validateConfirmPassword);
+            $('#guard_name').on('input keyup', validateName);
+            $('#username').on('input keyup', validateUsername);
+            $('#email').on('input keyup', validateEmail);
+            $('#password').on('input keyup', validatePassword);
+            $('#confirm_password').on('input keyup', validateConfirmPassword);
 
             function validateName() {
                 const name = $('#guard_name').val().trim();
@@ -1205,12 +1279,15 @@ $stationsResult = $conn->query($stationsSql);
                     feedbackMessage = 'Username cannot be empty.';
                 } else if (username.length < 8) {
                     feedbackMessage = 'Username must be at least 8 characters long.';
+                } else if (username.includes(' ')) {
+                    feedbackMessage = 'Username cannot contain spaces.';
                 }
 
                 // Display feedback message if there are errors
                 if (feedbackMessage) {
                     $('#addUsername-feedback').text(feedbackMessage).addClass('invalid-feedback');
                     $('#username').addClass('is-invalid'); // Mark input as invalid
+                    return;
                 } else {
                     $('#username').removeClass('is-invalid'); // Remove invalid class
                 }
@@ -1252,6 +1329,7 @@ $stationsResult = $conn->query($stationsSql);
                 if (feedbackMessage) {
                     $('#addEmail-feedback').text(feedbackMessage).addClass('invalid-feedback');
                     $('#email').addClass('is-invalid'); // Mark input as invalid
+                    return;
                 } else {
                     $('#email').removeClass('is-invalid'); // Remove invalid class
                 }
@@ -1340,9 +1418,9 @@ $stationsResult = $conn->query($stationsSql);
 
             // FEEDBACK MESSAGE FUNCTIONS FOR EDIT GUARD DETAILS
 
-            $('#modalGuardName').on('input', validateEditName);
-            $('#modalUsername').on('input', validateEditUsername);
-            $('#modalEmail').on('input', validateEditEmail);
+            $('#modalGuardName').on('input keyup', validateEditName);
+            $('#modalUsername').on('input keyup', validateEditUsername);
+            $('#modalEmail').on('input keyup', validateEditEmail);
 
             function validateEditName() {
                 const name = $('#modalGuardName').val().trim();
@@ -1376,11 +1454,14 @@ $stationsResult = $conn->query($stationsSql);
                     feedbackMessage = 'Username cannot be empty.';
                 } else if (username.length < 8) {
                     feedbackMessage = 'Username must be at least 8 characters long.';
+                } else if (username.includes(' ')) {
+                    feedbackMessage = 'Username cannot contain spaces.';
                 }
 
                 if (feedbackMessage) {
                     $('#editUsername-feedback').text(feedbackMessage).addClass('invalid-feedback');
                     $('#modalUsername').addClass('is-invalid'); // Mark input as invalid
+                    return;
                 } else {
                     $('#modalUsername').removeClass('is-invalid');
                 }
@@ -1416,6 +1497,7 @@ $stationsResult = $conn->query($stationsSql);
                 if (feedbackMessage) {
                     $('#editEmail-feedback').text(feedbackMessage).addClass('invalid-feedback');
                     $('#modalEmail').addClass('is-invalid'); // Mark input as invalid
+                    return;
                 } else {
                     $('#modalEmail').removeClass('is-invalid');
                 }
@@ -1452,8 +1534,8 @@ $stationsResult = $conn->query($stationsSql);
 
             // FEEDBACK MESSAGE FUNCTIONS FOR CHANGE PASSWORD
 
-            $('#new_password').on('input', validateNewPassword);
-            $('#confirm_new_password').on('input', validateConfirmNewPassword);
+            $('#new_password').on('input keyup', validateNewPassword);
+            $('#confirm_new_password').on('input keyup', validateConfirmNewPassword);
 
             function validateNewPassword() {
                 const password = $('#new_password').val();

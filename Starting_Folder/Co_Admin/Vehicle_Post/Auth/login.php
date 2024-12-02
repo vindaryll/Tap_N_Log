@@ -48,6 +48,8 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
     <title>Vehicle Post Login Page</title>
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
         /* Style for password inputs */
         .input-group {
             position: relative;
@@ -58,11 +60,10 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
         }
 
         /* Style for login container */
-
-        /* General Facebook theme */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
+            font-family: 'Inter', sans-serif !important;
+            background: url('/tapnlog/image/logo_and_icons/bsu-bg.png') no-repeat center center fixed;
+            background-size: cover;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -123,17 +124,6 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
 
         .form-label {
             font-weight: bold;
-        }
-
-        .btn-primary {
-            background-color: #1877f2;
-            border: none;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        .btn-primary:hover {
-            background-color: #145dbf;
-            transform: scale(1.02);
         }
 
         .input-group-text {
@@ -234,6 +224,38 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                 left: 20px;
             }
         }
+
+        /* Customized buttons */
+        .btn-custom {
+            border: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            text-align: center;
+            box-shadow: 0 4px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-2px);
+        }
+
+        /* animation */
+        .up {
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .up:hover {
+            transform: translateY(-2px);
+        }
+
+        .swal2-popup .swal2-actions {
+            gap: 1rem;
+            width: 100%;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            max-width: 18em;
+        }
     </style>
 </head>
 
@@ -277,10 +299,10 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                 <div id="captcha-feedback" class="invalid-feedback"></div>
             </div>
 
-            <button type="button" id="loginBtn" class="btn btn-primary w-100">Login</button>
+            <button type="button" id="loginBtn" class="btn btn-primary btn-custom w-100">Login</button>
         </form>
 
-        <a href="#" class="forgot-password-link" id="forgotPasswordButton" data-bs-toggle="modal" data-bs-target="#modalForgotPassword">Forgot Password?</a>
+        <a href="#" class="forgot-password-link up" id="forgotPasswordButton" data-bs-toggle="modal" data-bs-target="#modalForgotPassword">Forgot Password?</a>
     </div>
 
     <!-- Modal 1: Enter Email/Username -->
@@ -288,8 +310,8 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalForgotPasswordLabel">Forgot Password</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="modalForgotPasswordLabel">FORGOT PASSWORD</h5>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
@@ -298,7 +320,9 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                         <div id="emailOrUsername-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
                     </div>
 
-                    <button id="sendCodeBtn" class="btn btn-primary mt-3">Send Code</button>
+                    <div class="col-12 d-flex justify-content-end">
+                        <button id="sendCodeBtn" class="btn btn-primary btn-custom col-6 mt-3">SEND CODE</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -309,7 +333,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalOTPLabel">Enter OTP Code</h5>
+                    <h5 class="modal-title" id="modalOTPLabel">FORGOT PASSWORD</h5>
                 </div>
                 <div class="modal-body">
 
@@ -318,9 +342,20 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                         <div id="otpCode-feedback" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
                     </div>
 
-                    <button id="submitOtpBtn" class="btn btn-primary mt-3">Submit</button>
-                    <button id="resendCodeBtn" class="btn btn-warning mt-3" disabled>Resend Code</button>
-                    <button id="backBtn" class="btn btn-secondary mt-3">Back</button>
+                    <div class="w-100 mt-3">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-12 col-sm-3 mb-2">
+                                <button id="backBtn" class="btn btn-secondary btn-custom text-uppercase w-100">BACK</button>
+                            </div>
+                            <div class="col-12 col-sm-6 mb-2">
+                                <button id="resendCodeBtn" class="btn btn-warning btn-custom text-uppercase w-100" disabled>RESEND CODE</button>
+                            </div>
+                            <div class="col-12 col-sm-3 mb-2">
+                                <button id="submitOtpBtn" class="btn btn-primary btn-custom text-uppercase w-100">SUBMIT</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -331,8 +366,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalResetPasswordLabel">Reset Password</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="modalResetPasswordLabel">RESET PASSWORD</h5>
                 </div>
                 <div class="modal-body">
 
@@ -357,8 +391,16 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                             <div id="changePassword-feedback2" class="invalid-feedback" style="display: block;"> <!-- Message will display here --> </div>
                         </div>
 
-                        <button id="submitResetBtn" class="btn btn-primary mt-3">Submit</button>
-                        <button id="discardBtn" class="btn btn-secondary mt-3">Discard</button>
+                        <div class="w-100 mt-3">
+                            <div class="row d-flex justify-content-center align-items-center">
+                                <div class="col-6 mb-2">
+                                    <button id="discardBtn" class="btn btn-danger btn-custom text-uppercase w-100">Discard</button>
+                                </div>
+                                <div class="col-6 mb-2">
+                                    <button id="submitResetBtn" class="btn btn-primary btn-custom text-uppercase w-100">Submit</button>
+                                </div>
+                            </div>
+                        </div>
 
                     </form>
 
@@ -401,13 +443,6 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                     // Trigger the login form
                     $('#loginForm').submit();
                 }
-            });
-
-            // Add hover effect on login button
-            $('#loginBtn').hover(function() {
-                $(this).addClass('animate__animated animate__pulse');
-            }, function() {
-                $(this).removeClass('animate__animated animate__pulse');
             });
 
 
@@ -942,7 +977,13 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                     showCancelButton: true,
                     confirmButtonText: confirmText,
                     cancelButtonText: cancelText,
-                    reverseButtons: true
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
+
                 }).then((result) => {
                     if (result.isConfirmed) {
                         callback(); // Execute the callback function if confirmed

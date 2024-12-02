@@ -59,10 +59,6 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             vertical-align: middle;
         }
 
-        table.table tbody tr:hover {
-            background-color: #5abed6;
-        }
-
         .table-responsive {
             height: calc(100vh - 280px);
             overflow-y: auto;
@@ -73,8 +69,13 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         .table thead th {
             position: sticky;
             top: 0;
-            background-color: #343a40;
+            background-color: #217AEA;
             color: white;
+            z-index: 1;
+        }
+
+        table.table tbody tr:hover {
+            background-color: #DBE7FF;
         }
 
         /* BACK BUTTON */
@@ -90,7 +91,6 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             color: #145dbf;
             transform: scale(1.1);
         }
-
     </style>
 
 </head>
@@ -123,10 +123,10 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                         <div class="col-md-6 col-12 m-0 p-0">
                             <div class="w-100 d-flex justify-content-start p-0 m-0">
                                 <div class="col-3 m-1 p-0">
-                                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#filterModal">FILTER</button>
+                                    <button class="btn btn-primary btn-custom w-100" data-bs-toggle="modal" data-bs-target="#filterModal">FILTER</button>
                                 </div>
                                 <div class="col-3 m-1 p-0">
-                                    <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#sortModal">SORT</button>
+                                    <button class="btn btn-secondary btn-custom w-100" data-bs-toggle="modal" data-bs-target="#sortModal">SORT</button>
                                 </div>
                             </div>
                         </div>
@@ -161,23 +161,23 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="filterModalLabel">Filter Guards</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="filterModalLabel"><strong>FILTER ACCOUNTS</strong></h5>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="filterForm">
                         <div class="mb-3">
-                            <label for="from_dateInput" class="form-label">From</label>
+                            <label for="from_dateInput" class="form-label"><strong>FROM</strong></label>
                             <input type="date" id="from_dateInput" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="to_dateInput" class="form-label">To</label>
+                            <label for="to_dateInput" class="form-label"><strong>TO</strong></label>
                             <input type="date" id="to_dateInput" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="filterStationSelect" class="form-label">Station</label>
+                            <label for="filterStationSelect" class="form-label"><strong>STATIONS</strong></label>
                             <select id="filterStationSelect" class="form-select">
-                                <option value="">All Stations</option>
+                                <option value="">ALL STATIONS</option>
                                 <?php
                                 $stationsSql = "SELECT station_id, station_name FROM stations";
                                 $stationsResult = $conn->query($stationsSql);
@@ -190,8 +190,18 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="resetFilters" class="btn btn-danger">Reset</button>
-                    <button type="button" id="applyFilters" class="btn btn-primary">Apply</button>
+
+                    <div class="w-100 mt-3">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="resetFilters" class="btn btn-danger btn-custom text-uppercase w-100">RESET</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button id="applyFilters" class="btn btn-primary btn-custom text-uppercase w-100">APPLY</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -202,19 +212,19 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="sortModalLabel">Sort Guards</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="sortModalLabel"><strong>SORT ACCOUNTS</strong></h5>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div>
-                        <label class="form-label">Sort by Date:</label>
+                        <label class="form-label"><strong>SORT BY DATE</strong></label>
                         <div>
                             <input type="radio" name="sortDate" value="asc"> Ascending<br>
                             <input type="radio" name="sortDate" value="desc"> Descending
                         </div>
                     </div>
                     <div class="mt-3">
-                        <label class="form-label">Sort by Name:</label>
+                        <label class="form-label"><strong>SORT BY NAME</strong></label>
                         <div>
                             <input type="radio" name="sortName" value="asc"> A-Z<br>
                             <input type="radio" name="sortName" value="desc"> Z-A
@@ -222,8 +232,18 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="resetSort" class="btn btn-danger">Reset</button>
-                    <button type="button" id="applySort" class="btn btn-primary">Apply</button>
+
+                    <div class="w-100 mt-3">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="resetSort" class="btn btn-danger btn-custom text-uppercase w-100">RESET</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button id="applySort" class="btn btn-primary btn-custom text-uppercase w-100">APPLY</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -237,8 +257,8 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="guardDetailsLabel">CO-ADMIN DETAILS</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="guardDetailsLabel"><strong>CO-ADMIN DETAILS</strong></h5>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p><strong>CO-ADMIN NAME:</strong> <span id="modalGuardName"></span></p>
@@ -446,7 +466,12 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 showCancelButton: true,
                 confirmButtonText: confirmText,
                 cancelButtonText: cancelText,
-                reverseButtons: true
+                reverseButtons: true,
+                customClass: {
+                    confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                    cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                },
+                buttonsStyling: false,
             }).then((result) => {
                 if (result.isConfirmed) {
                     callback(); // Execute the callback function if confirmed

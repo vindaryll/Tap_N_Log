@@ -78,7 +78,7 @@ if ($result->num_rows > 0) {
 
         $buttonHtml = $row['status'] === 'ACTIVE' ? "
             <div class='col-6'>
-                <button type='button' class='btn btn-warning w-100 edit-btn'
+                <button type='button' class='btn btn-warning btn-custom w-100 edit-btn'
                     data-id='{$row['ojt_id']}'
                     data-first-name='{$row['first_name']}'
                     data-last-name='{$row['last_name']}'
@@ -88,14 +88,14 @@ if ($result->num_rows > 0) {
                 </button>
             </div>
             <div class='col-6'>
-                <button type='button' class='btn btn-danger w-100 status-btn'
+                <button type='button' class='btn btn-danger btn-custom w-100 status-btn'
                     data-id='{$row['ojt_id']}' data-status='INACTIVE'>
                     DEACTIVATE
                 </button>
             </div>
         " : "
             <div class='col-12'>
-                <button type='button' class='btn btn-success w-100 status-btn'
+                <button type='button' class='btn btn-success btn-custom w-100 status-btn'
                     data-id='{$row['ojt_id']}' data-status='ACTIVE'>
                     REACTIVATE
                 </button>

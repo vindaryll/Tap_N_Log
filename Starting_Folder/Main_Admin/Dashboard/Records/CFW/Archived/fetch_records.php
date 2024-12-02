@@ -137,7 +137,7 @@ if ($result && $result->num_rows > 0) {
                     echo "
                     <div class='col-lg-6 h-100 my-1'>
                         <button
-                            class='btn btn-info view-details-btn h-100 w-100'
+                            class='btn btn-info btn-custom view-details-btn h-100 w-100'
                             data-bs-img='$img'
                             data-bs-date-approved='$date_approved'
                             data-bs-name='$full_name'
@@ -148,7 +148,7 @@ if ($result && $result->num_rows > 0) {
                     </div>
                     <div class='col-lg-6 my-1'>
                         <button
-                            class='btn btn-success restore-btn h-100 w-100'
+                            class='btn btn-success btn-custom restore-btn h-100 w-100'
                             data-bs-id='{$attendance_id}'
                             data-bs-name='{$full_name}'
                             data-bs-date='{$date}'>
@@ -160,7 +160,7 @@ if ($result && $result->num_rows > 0) {
                     echo "
                     <div class='col-lg-12 my-1'>
                         <button
-                            class='btn btn-info view-details-btn h-100 w-100'
+                            class='btn btn-info btn-custom view-details-btn h-100 w-100'
                             data-bs-img='$img'
                             data-bs-date-approved='$date_approved'
                             data-bs-name='$full_name'
@@ -183,15 +183,3 @@ if ($result && $result->num_rows > 0) {
 
 $conn->close();
 ?>
-
-
-
-<div class='col-lg-6 my-1'>
-    <button
-        class='btn btn-success restore-btn h-100 w-100'
-        data-id='{$attendance_id}'
-        data-name='{$full_name}'
-        data-date='{$date}'>
-        RESTORE
-    </button>
-</div>

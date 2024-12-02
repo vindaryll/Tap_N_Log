@@ -51,17 +51,17 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
     <div class="container">
         <div class="row d-flex justify-content-center align-items-center mt-3">
-            <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                <a href="RFID/main_page.php" class="btn btn-primary w-100 p-3">RFID PROFILES</a>
+            <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
+                <a href="RFID/main_page.php" class="btn btn-primary btn-custom w-100 p-3">RFID PROFILES</a>
             </div>
-            <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                <a href="Records/main_page.php" class="btn btn-primary w-100 p-3">RECORDS</a>
+            <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
+                <a href="Records/main_page.php" class="btn btn-primary btn-custom w-100 p-3">RECORDS</a>
             </div>
-            <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                <a href="Co_Admin_Accounts/Active/main_active.php" class="btn btn-primary w-100 p-3">CO-ADMIN ACCOUNTS</a>
+            <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
+                <a href="Co_Admin_Accounts/Active/main_active.php" class="btn btn-primary btn-custom w-100 p-3">CO-ADMIN ACCOUNTS</a>
             </div>
-            <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                <a href="Activity_Log/main_page.php" class="btn btn-primary w-100 p-3">ACTIVITY LOGS</a>
+            <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
+                <a href="Activity_Log/main_page.php" class="btn btn-primary btn-custom w-100 p-3">ACTIVITY LOGS</a>
             </div>
         </div>
     </div>

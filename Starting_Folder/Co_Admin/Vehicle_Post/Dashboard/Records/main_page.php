@@ -454,6 +454,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
 
             // Initial Fetch
             fetchRecords();
+            setInterval(fetchRecords, 5000);
 
 
 
