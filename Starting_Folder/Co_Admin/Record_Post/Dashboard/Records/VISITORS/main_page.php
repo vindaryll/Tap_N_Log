@@ -276,7 +276,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="viewRecordLabel">VISITOR DETAILS</h5>
+                    <h5 class="modal-title" id="viewRecordLabel"><strong>VISITOR DETAILS</strong></h5>
                     <button type="button" class="btn-close up btn-cont-1" id="modal_1_closeBtn"></button>
                 </div>
                 <div class="modal-body">

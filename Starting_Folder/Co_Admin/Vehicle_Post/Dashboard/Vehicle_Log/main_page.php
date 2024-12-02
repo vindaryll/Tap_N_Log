@@ -49,7 +49,8 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
     <style>
         /* CARD CONTAINER FOR RESULT */
         #results-container {
-            height: calc(100vh - 340px); 
+            height: calc(100vh - 340px);
+            width: calc(100% - 16px);
             overflow-y: auto;
             margin-bottom: 10px;
         }
@@ -124,7 +125,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                         <div class="col-md-6 col-12 m-0 p-0">
                             <div class="w-100 d-flex justify-content-start p-0 m-0">
                                 <div class="col-3 m-1 p-0">
-                                    <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#sortModal">SORT</button>
+                                    <button class="btn btn-secondary btn-custom w-100" data-bs-toggle="modal" data-bs-target="#sortModal">SORT</button>
                                 </div>
                             </div>
                         </div>
@@ -133,7 +134,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                     <div class="row d-flex justify-content-center">
 
                         <!-- Result Section -->
-                        <div id="results-container" class="row d-flex justify-content-center p-0">
+                        <div id="results-container" class="row d-flex justify-content-center p-0 glass-scroll">
                             <!-- Result Cards will be inserted here dynamically -->
 
                         </div>
@@ -142,8 +143,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
 
                     <div class="row d-flex justify-content-start mt-2">
                         <div class="col-md-3 col-sm-4 col-12 mb-2">
-                            <!-- Add Guard Button -->
-                            <button type="button" id="addRecord" class="btn btn-primary w-100 h-100 p-2">ADD NEW VEHICLE</button>
+                            <button type="button" id="addRecord" class="btn btn-primary btn-custom w-100 h-100 p-2">ADD NEW VEHICLE</button>
                         </div>
                     </div>
 
@@ -158,13 +158,13 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="sortModalLabel">Sort Profiles</h5>
+                    <h5 class="modal-title" id="sortModalLabel"><strong>SORT PROFILES</strong></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
                     <div class="mt-3">
-                        <label class="form-label">SORT BY TIME:</label>
+                        <label class="form-label"><strong>SORT BY TIME</strong></label>
                         <div>
                             <input type="radio" id="sortTimeInAsc" name="sortTimeIn" value="asc">
                             <label for="sortTimeInAsc">EARLIEST FIRST</label><br>
@@ -175,7 +175,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                     </div>
 
                     <div class="mt-3">
-                        <label class="form-label">SORT BY NAME:</label>
+                        <label class="form-label"><strong>SORT BY NAME</strong></label>
                         <div>
                             <input type="radio" id="sortNameAsc" name="sortName" value="asc">
                             <label for="sortNameAsc">A-Z</label><br>
@@ -186,8 +186,18 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" id="resetSort">Reset</button>
-                    <button type="button" class="btn btn-primary" id="applySort">Apply</button>
+
+                    <div class="w-100 mt-3">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="resetSort" class="btn btn-danger btn-custom text-uppercase w-100">RESET</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button id="applySort" class="btn btn-primary btn-custom text-uppercase w-100">APPLY</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -198,7 +208,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
         <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addRecordModalLabel">VEHICLE DETAILS</h5>
+                    <h5 class="modal-title" id="addRecordModalLabel"><strong>VEHICLE DETAILS</strong></h5>
                     <button type="button" class="btn-close" id="modal_1_closeBtn"></button>
                 </div>
                 <div class="modal-body">
@@ -230,7 +240,9 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="saveNewRecord">TIME IN</button>
+                    <div class="col-12 d-flex justify-content-end">
+                        <button type="button" id="saveNewRecord" class="btn btn-primary btn-custom col-6 mt-3">TIME IN</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -241,8 +253,8 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="viewRecordLabel">VEHICLE DETAILS</h5>
-                    <button type="button" class="btn-close" id="modal_2_closeBtn"></button>
+                    <h5 class="modal-title" id="viewRecordLabel"><strong>VEHICLE DETAILS</strong></h5>
+                    <button type="button" class="btn-close up btn-cont-1" id="modal_2_closeBtn"></button>
                 </div>
                 <div class="modal-body">
                     <form id="addRecordForm">
@@ -273,9 +285,24 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" id="editBtn">EDIT</button>
-                    <button type="button" class="btn btn-danger" id="cancelBtn" style="display:none;">CANCEL</button>
-                    <button type="button" class="btn btn-success" id="saveEditBtn" style="display:none;">SAVE CHANGES</button>
+
+                    <div class="w-100 mt-3 btn-cont-1">
+                        <div class=" col-12 d-flex justify-content-end">
+                            <button type="button" id="editBtn" class="btn btn-warning btn-custom col-6">EDIT</button>
+                        </div>
+                    </div>
+
+                    <div class="w-100 mt-3 btn-cont-2">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="cancelBtn" class="btn btn-danger btn-custom text-uppercase w-100">CANCEL</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button type="button" id="saveEditBtn" class="btn btn-success btn-custom text-uppercase w-100">SAVE CHANGES</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -618,7 +645,13 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                     showCancelButton: true,
                     confirmButtonText: 'YES',
                     cancelButtonText: 'NO',
-                    reverseButtons: true
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
+
                 }).then((result) => {
                     if (result.isConfirmed) {
 
@@ -698,9 +731,15 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                         text: `You have unsaved attendance log. Are you sure you want to DISCARD the input?`,
                         icon: 'question',
                         showCancelButton: true,
-                        confirmButtonText: 'YES, DISCARD',
-                        cancelButtonText: 'NO, KEEP EDITING',
-                        reverseButtons: true
+                        confirmButtonText: 'YES',
+                        cancelButtonText: 'NO',
+                        reverseButtons: true,
+                        customClass: {
+                            confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                            cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                        },
+                        buttonsStyling: false,
+
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $('#addRecordModal').modal('hide');
@@ -754,8 +793,9 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                             $('#modal_2_purpose').val(current.purpose).removeClass('is-invalid');
                             $('#modal_2_purpose-feedback').text('').removeClass('invalid-feedback');
 
-                            $('#editBtn, #modal_2_closeBtn').show();
-                            $('#cancelBtn, #saveEditBtn').hide();
+                            $('.btn-cont-1').show(); // edit and close
+                            $('.btn-cont-2').hide(); // cancel and save
+
                             $('#modal_2_firstName, #modal_2_lastName, #modal_2_plateNumber, #modal_2_vehiclePass, #modal_2_purpose').prop('disabled', true);
 
                             // Show the modal
@@ -793,8 +833,10 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
 
             $('#editBtn').on('click', function() {
 
-                $('#editBtn, #modal_2_closeBtn').hide();
-                $('#cancelBtn, #saveEditBtn').show();
+
+                $('.btn-cont-1').hide(); // edit and close
+                $('.btn-cont-2').show(); // cancel and save
+
                 $('#modal_2_firstName, #modal_2_lastName, #modal_2_plateNumber, #modal_2_vehiclePass, #modal_2_purpose').prop('disabled', false);
             });
 
@@ -809,8 +851,10 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                 if (current.first_name === first_name && current.last_name === last_name &&
                     current.plate_number === plate_number && current.pass === pass && current.purpose === purpose
                 ) {
-                    $('#editBtn, #modal_2_closeBtn').show();
-                    $('#cancelBtn, #saveEditBtn').hide();
+
+                    $('.btn-cont-1').show(); // edit and close
+                    $('.btn-cont-2').hide(); // cancel and save
+
                     $('#modal_2_firstName, #modal_2_lastName, #modal_2_plateNumber, #modal_2_vehiclePass, #modal_2_purpose').prop('disabled', true);
                     return;
                 }
@@ -821,9 +865,15 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                     text: 'You have unsaved changes. Are you sure you want to DISCARD the changes?',
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'YES, DISCARD CHANGES',
-                    cancelButtonText: 'NO, KEEP EDITING',
+                    confirmButtonText: 'YES',
+                    cancelButtonText: 'NO',
                     reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
+
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // REVERT VALUES AND DISABLE INPUTS
@@ -837,8 +887,9 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                         $('#modal_2_purpose').val(current.purpose).removeClass('is-invalid');
                         $('#modal_2_purpose-feedback').text('').removeClass('invalid-feedback');
 
-                        $('#editBtn, #modal_2_closeBtn').show();
-                        $('#cancelBtn, #saveEditBtn').hide();
+                        $('.btn-cont-1').show(); // edit and close
+                        $('.btn-cont-2').hide(); // cancel and save
+
                         $('#modal_2_firstName, #modal_2_lastName, #modal_2_plateNumber, #modal_2_vehiclePass, #modal_2_purpose').prop('disabled', true);
                     }
                 });
@@ -884,11 +935,15 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                     text: "Do you want to SAVE the changes?",
                     icon: 'question',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
                     confirmButtonText: 'YES',
                     cancelButtonText: 'NO',
-                    reverseButtons: true
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
+
                 }).then((result) => {
                     if (result.isConfirmed) {
 
@@ -938,8 +993,9 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                                     $('#modal_2_vehiclePass').val(data_update.pass);
                                     $('#modal_2_purpose').val(data_update.purpose);
 
-                                    $('#editBtn, #modal_2_closeBtn').show();
-                                    $('#cancelBtn, #saveEditBtn').hide();
+                                    $('.btn-cont-1').show(); // edit and close
+                                    $('.btn-cont-2').hide(); // cancel and save
+
                                     $('#modal_2_firstName, #modal_2_lastName, #modal_2_plateNumber, #modal_2_vehiclePass, #modal_2_purpose').prop('disabled', true);
 
                                 } else {
@@ -994,7 +1050,13 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                     showCancelButton: true,
                     confirmButtonText: 'YES',
                     cancelButtonText: 'NO',
-                    reverseButtons: true
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
+
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Show a loading alert while processing
@@ -1067,7 +1129,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
             $(document).on('click', '.archive-btn', function() {
                 const vehicleId = $(this).data('id'); // Get the vehicle ID from the button
                 const full_name = $(this).data('name');
-                
+
                 // Confirmation dialog
                 Swal.fire({
                     title: 'Are you sure?',
@@ -1076,7 +1138,13 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                     showCancelButton: true,
                     confirmButtonText: 'YES',
                     cancelButtonText: 'NO',
-                    reverseButtons: true
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
+
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Show a loading alert while processing

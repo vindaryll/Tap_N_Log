@@ -141,10 +141,10 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                         <div class="col-md-6 col-12 m-0 p-0">
                             <div class="w-100 d-flex justify-content-start p-0 m-0">
                                 <div class="col-3 m-1 p-0">
-                                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#filterModal">FILTER</button>
+                                    <button class="btn btn-primary btn-custom w-100" data-bs-toggle="modal" data-bs-target="#filterModal">FILTER</button>
                                 </div>
                                 <div class="col-3 m-1 p-0">
-                                    <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#sortModal">SORT</button>
+                                    <button class="btn btn-secondary btn-custom w-100" data-bs-toggle="modal" data-bs-target="#sortModal">SORT</button>
                                 </div>
                             </div>
                         </div>
@@ -180,21 +180,21 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="filterModalLabel">FILTER ACTIVITY</h5>
+                    <h5 class="modal-title" id="filterModalLabel"><strong>FILTER ACTIVITY</strong></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="filterForm">
                         <div class="mb-3">
-                            <label for="from_dateInput" class="form-label">FROM</label>
+                            <label for="from_dateInput" class="form-label"><strong>FROM</strong></label>
                             <input type="date" id="from_dateInput" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="to_dateInput" class="form-label">TO</label>
+                            <label for="to_dateInput" class="form-label"><strong>TO</strong></label>
                             <input type="date" id="to_dateInput" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="co-admin" class="form-label">CO-ADMINISTRATOR</label>
+                            <label for="co-admin" class="form-label"><strong>CO-ADMINISTRATOR</strong></label>
                             <select id="co-admin" class="form-select">
                                 <option value="">ALL</option>
                                 <!-- populate it like this:
@@ -204,7 +204,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="section" class="form-label">SECTION</label>
+                            <label for="section" class="form-label"><strong>SECTION</strong></label>
                             <select id="section" class="form-select">
                                 <option value="">ALL</option>
                                 <!-- 
@@ -214,7 +214,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="category" class="form-label">CATEGORY</label>
+                            <label for="category" class="form-label"><strong>CATEGORY</strong></label>
                             <select id="category" class="form-select">
                                 <option value="">ALL</option>
                                 <!-- 
@@ -227,8 +227,18 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="resetFilters" class="btn btn-danger">RESET</button>
-                    <button type="button" id="applyFilters" class="btn btn-primary">APPLY</button>
+
+                    <div class="w-100 mt-3">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="resetFilters" class="btn btn-danger btn-custom text-uppercase w-100">RESET</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button id="applyFilters" class="btn btn-primary btn-custom text-uppercase w-100">APPLY</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -239,12 +249,12 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="sortModalLabel">SORT ACTIVITY</h5>
+                    <h5 class="modal-title" id="sortModalLabel"><strong>SORT ACTIVITY</strong></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-2">
-                        <label class="form-label">SORT BY TIMESTAMP</label>
+                        <label class="form-label"><strong>SORT BY TIMESTAMP</strong></label>
                         <div>
                             <input type="radio" name="sortTimestamp" value="asc"> Ascending<br>
                             <input type="radio" name="sortTimestamp" value="desc"> Descending
@@ -252,8 +262,18 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="resetSort" class="btn btn-danger">RESET</button>
-                    <button type="button" id="applySort" class="btn btn-primary">APPLY</button>
+
+                    <div class="w-100 mt-3">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="resetSort" class="btn btn-danger btn-custom text-uppercase w-100">RESET</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button id="applySort" class="btn btn-primary btn-custom text-uppercase w-100">APPLY</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

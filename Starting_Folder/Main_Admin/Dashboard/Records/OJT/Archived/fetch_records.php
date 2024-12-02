@@ -183,15 +183,3 @@ if ($result && $result->num_rows > 0) {
 
 $conn->close();
 ?>
-
-
-
-<div class='col-lg-6 my-1'>
-    <button
-        class='btn btn-success restore-btn h-100 w-100'
-        data-id='{$attendance_id}'
-        data-name='{$full_name}'
-        data-date='{$date}'>
-        RESTORE
-    </button>
-</div>

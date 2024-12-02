@@ -111,7 +111,7 @@ if ($result->num_rows > 0) {
                         </button>
                     </div>
                     <div class='col-lg-6 h-100 my-1'>
-                        <button class='btn btn-danger btn-custom w-100 h-100 p-2 restore-btn'
+                        <button class='btn btn-success btn-custom w-100 h-100 p-2 restore-btn'
                             data-id='{$row['visitor_id']}'
                             data-name='{$row['first_name']} {$row['last_name']}'
                             data-date='{$formattedDate}'>
