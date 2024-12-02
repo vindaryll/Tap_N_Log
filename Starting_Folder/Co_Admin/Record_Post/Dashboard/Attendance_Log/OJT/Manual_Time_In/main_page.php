@@ -48,9 +48,11 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         /* CARD CONTAINER FOR PROFILES */
         #profile-container {
             height: calc(100vh - 280px);
+            width: calc(100% - 16px);
             overflow-y: auto;
             margin-bottom: 10px;
         }
+
 
         .card-container .card {
             margin-bottom: 20px;
@@ -130,10 +132,10 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                         <div class="col-md-6 col-12 m-0 p-0">
                             <div class="w-100 d-flex justify-content-start p-0 m-0">
                                 <div class="col-3 m-1 p-0">
-                                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#filterModal">FILTER</button>
+                                    <button class="btn btn-primary btn-custom w-100" data-bs-toggle="modal" data-bs-target="#filterModal">FILTER</button>
                                 </div>
                                 <div class="col-3 m-1 p-0">
-                                    <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#sortModal">SORT</button>
+                                    <button class="btn btn-secondary btn-custom w-100" data-bs-toggle="modal" data-bs-target="#sortModal">SORT</button>
                                 </div>
                             </div>
                         </div>
@@ -142,7 +144,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     <div class="row d-flex justify-content-center">
 
                         <!-- Profiles Section -->
-                        <div id="profile-container" class="row d-flex justify-content-center p-0">
+                        <div id="profile-container" class="row d-flex justify-content-center p-0 glass-scroll">
                             <!-- Profile Cards will be inserted here dynamically -->
                         </div>
 
@@ -160,13 +162,13 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="filterModalLabel">Filter Profiles</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="filterModalLabel"><strong>FILTER PROFILES</strong></h5>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="filterForm">
                         <div class="mb-3">
-                            <label for="rfidFilter" class="form-label">RFID Status</label>
+                            <label for="rfidFilter" class="form-label"><strong>RFID STATUS</strong></label>
                             <select id="rfidFilter" class="form-select">
                                 <option value="">BOTH</option>
                                 <option value="with_rfid">WITH RFID</option>
@@ -176,8 +178,18 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" id="resetFilters">Reset</button>
-                    <button type="button" class="btn btn-primary" id="applyFilters">Apply</button>
+
+                    <div class="w-100 mt-3">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="resetFilters" class="btn btn-danger btn-custom text-uppercase w-100">RESET</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button id="applyFilters" class="btn btn-primary btn-custom text-uppercase w-100">APPLY</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -188,13 +200,13 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="sortModalLabel">Sort Profiles</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="sortModalLabel"><strong>SORT PROFILES</strong></h5>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
                     <div class="mt-3">
-                        <label class="form-label">Sort by Name:</label>
+                        <label class="form-label"><strong>SORT BY NAME</strong></label>
                         <div>
                             <input type="radio" id="sortNameAsc" name="sortName" value="asc">
                             <label for="sortNameAsc">A-Z</label><br>
@@ -205,8 +217,18 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" id="resetSort">Reset</button>
-                    <button type="button" class="btn btn-primary" id="applySort">Apply</button>
+
+                    <div class="w-100 mt-3">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="resetSort" class="btn btn-danger btn-custom text-uppercase w-100">RESET</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button id="applySort" class="btn btn-primary btn-custom text-uppercase w-100">APPLY</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -275,10 +297,10 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
                             <!-- For Edit Buttons -->
                             <div id="cancel_cont" class="col-md-6 col-sm-12 p-1">
-                                <button type="button" class="btn btn-danger w-100" id="cancelBtn">CANCEL</button>
+                                <button type="button" class="btn btn-danger btn-custom w-100" id="cancelBtn">CANCEL</button>
                             </div>
                             <div id="saveBtn_cont" class="col-md-6 col-sm-12 p-1">
-                                <button type="button" class="btn btn-success w-100" id="saveBtn">TIME-IN</button>
+                                <button type="button" class="btn btn-success btn-custom w-100" id="saveBtn">TIME-IN</button>
                             </div>
                         </div>
                     </div>
@@ -425,7 +447,12 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     showCancelButton: true,
                     confirmButtonText: 'YES',
                     cancelButtonText: 'NO',
-                    reverseButtons: true
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $('#ProfileDetailsModal').modal('hide');
@@ -441,7 +468,12 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     showCancelButton: true,
                     confirmButtonText: 'YES',
                     cancelButtonText: 'NO',
-                    reverseButtons: true
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
 

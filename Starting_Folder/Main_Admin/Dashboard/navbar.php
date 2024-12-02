@@ -138,7 +138,6 @@
 
     /* ACCESSIBLE CSS FOR MAIN ELEMENTS */
 
-    /* Add margin to main content to prevent navbar overlap */
     body {
         background: url('/tapnlog/image/logo_and_icons/bsu-bg.png') no-repeat center center fixed;
         background-size: cover;
@@ -160,6 +159,7 @@
     }
 
     /* animation */
+
     .up {
         transition: all 0.3s ease;
         text-transform: uppercase;
@@ -216,6 +216,27 @@
         background: rgba(128, 128, 128, 0.1);
         border-radius: 10px;
         margin: 10px 0;
+    }
+
+
+    /* TABLES */
+    .table-responsive {
+        height: calc(100vh - 320px);
+        overflow-y: auto;
+        margin-bottom: 10px;
+        background-color: white;
+    }
+
+    .table thead th {
+        position: sticky;
+        top: 0;
+        background-color: #217AEA;
+        color: white;
+        z-index: 1;
+    }
+
+    table.table tbody tr:hover {
+        background-color: #DBE7FF;
     }
 </style>
 

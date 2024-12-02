@@ -120,7 +120,7 @@ if ($result && $result->num_rows > 0) {
                 <div class='row d-flex justify-content-center align-items-center m-0 p-0'>
                     <div class='col-12 my-1'>
                         <button
-                            class='btn btn-info view-details-btn h-100 w-100'
+                            class='btn btn-info btn-custom view-details-btn h-100 w-100'
                             data-bs-img='$img'
                             data-bs-date-approved='$date_approved'
                             data-bs-name='$full_name'

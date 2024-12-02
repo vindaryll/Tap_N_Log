@@ -42,6 +42,10 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
     <title>Attendance Log - Cash for work | Co-Admin for Record Post</title>
     <style>
+        #main-container {
+            height: calc(100vh - 87);
+        }
+
         /* BACK BUTTON */
         .back-icon {
             color: #1877f2;
@@ -67,6 +71,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
         /* Submit button text */
         #submitButton {
+            -webkit-text-stroke: 1px black;
             font-size: 3rem;
             font-weight: bold;
             background: none;
@@ -109,7 +114,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
 <body>
 
-    <div class="container-fluid vh-100 p-0 m-0">
+    <div id="main-container" class="container-fluid p-0 m-0">
 
         <!-- Nav Bar -->
         <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Record_Post\Dashboard\navbar.php'; ?>
@@ -205,10 +210,10 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
                             <!-- For Edit Buttons -->
                             <div id="cancel_cont" class="col-md-6 col-sm-12 p-1">
-                                <button type="button" class="btn btn-danger w-100" id="cancelBtn">CANCEL</button>
+                                <button type="button" class="btn btn-danger btn-custom w-100" id="cancelBtn">CANCEL</button>
                             </div>
                             <div id="saveBtn_cont" class="col-md-6 col-sm-12 p-1">
-                                <button type="button" class="btn btn-success w-100" id="saveBtn">TIME-OUT</button>
+                                <button type="button" class="btn btn-success btn-custom w-100" id="saveBtn">TIME-OUT</button>
                             </div>
                         </div>
                     </div>
@@ -360,7 +365,12 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     showCancelButton: true,
                     confirmButtonText: 'YES',
                     cancelButtonText: 'NO',
-                    reverseButtons: true
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $('#ProfileDetailsModal').modal('hide');
@@ -378,7 +388,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     day: 'numeric',
                     year: 'numeric'
                 }).format(currentDate);
-                
+
                 Swal.fire({
                     title: `Are you sure?`,
                     text: `Do you want to APPROVE the TIME-OUT attendance of this profile?`,
@@ -386,19 +396,24 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     showCancelButton: true,
                     confirmButtonText: 'YES',
                     cancelButtonText: 'NO',
-                    reverseButtons: true
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
 
                         // Prepare data to send
                         const attendanceData = {
-                            attendance_id: current.attendance_id, 
-                            profile_id: current.profile_id, 
-                            rfid: current.rfid, 
-                            name: current.name, 
+                            attendance_id: current.attendance_id,
+                            profile_id: current.profile_id,
+                            rfid: current.rfid,
+                            name: current.name,
                             date: formattedDate,
                             time_out: timePassing, // Current time for time-out
-                            method: current.method, 
+                            method: current.method,
                         };
 
                         // AJAX request

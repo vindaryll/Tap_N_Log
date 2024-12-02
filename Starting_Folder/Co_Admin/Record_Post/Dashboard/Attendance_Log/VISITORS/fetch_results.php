@@ -72,18 +72,18 @@ if ($result && $result->num_rows > 0) {
                     </div>
                     <div class='card-footer d-flex flex-column'>
                         <button type='button' 
-                                class='row btn btn-primary m-1 w-100 view-details-btn' 
+                                class='row btn btn-primary btn-custom m-1 w-100 view-details-btn' 
                                 data-id='{$row['visitor_id']}'>
                             VIEW DETAILS
                         </button>
                         <button type='button' 
-                                class='row btn btn-success w-100 m-1 time-out-btn' 
+                                class='row btn btn-success btn-custom w-100 m-1 time-out-btn' 
                                 data-id='{$row['visitor_id']}'
                                 data-name='{$row['first_name']} {$row['last_name']}'>
                             TIME OUT
                         </button>
                         <button type='button' 
-                                class='row btn btn-danger w-100 m-1 archive-btn' 
+                                class='row btn btn-danger btn-custom w-100 m-1 archive-btn' 
                                 data-id='{$row['visitor_id']}'
                                 data-name='{$row['first_name']} {$row['last_name']}'>
                             ARCHIVE

@@ -165,10 +165,10 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                         <div class="col-md-6 col-12 m-0 p-0">
                             <div class="w-100 d-flex justify-content-start p-0 m-0">
                                 <div class="col-3 m-1 p-0">
-                                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#filterModal">FILTER</button>
+                                    <button class="btn btn-primary btn-custom w-100" data-bs-toggle="modal" data-bs-target="#filterModal">FILTER</button>
                                 </div>
                                 <div class="col-3 m-1 p-0">
-                                    <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#sortModal">SORT</button>
+                                    <button class="btn btn-secondary btn-custom w-100" data-bs-toggle="modal" data-bs-target="#sortModal">SORT</button>
                                 </div>
                             </div>
                         </div>
@@ -195,8 +195,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
                     <div class="row d-flex justify-content-start mt-2">
                         <div class="col-md-3 col-sm-4 col-12 mb-2">
-                            <!-- Add Guard Button -->
-                            <button type="button" id="goToArchive" class="btn btn-primary w-100 h-100 p-2">ARCHIVED RECORDS</button>
+                            <button type="button" id="goToArchive" class="btn btn-primary btn-custom w-100 h-100 p-2">ARCHIVED RECORDS</button>
                         </div>
                     </div>
 
@@ -212,21 +211,21 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="filterModalLabel">FILTER RECORDS</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="filterModalLabel"><strong>FILTER RECORDS</strong></h5>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="filterForm">
                         <div class="mb-3">
-                            <label for="from_dateInput" class="form-label">FROM</label>
+                            <label for="from_dateInput" class="form-label"><strong>FROM</strong></label>
                             <input type="date" id="from_dateInput" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="to_dateInput" class="form-label">TO</label>
+                            <label for="to_dateInput" class="form-label"><strong>TO</strong></label>
                             <input type="date" id="to_dateInput" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="rfidFilter" class="form-label">RFID Status</label>
+                            <label for="rfidFilter" class="form-label"><strong>RFID STATUS</strong></label>
                             <select id="rfidFilter" class="form-select">
                                 <option value="">BOTH</option>
                                 <option value="with_rfid">WITH RFID</option>
@@ -234,7 +233,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
+                            <label for="status" class="form-label"><strong>STATUS</strong></label>
                             <select id="status" class="form-select">
                                 <option value="">ALL</option>
                                 <option value="ACTIVE">ACTIVE</option>
@@ -244,8 +243,18 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="resetFilters" class="btn btn-danger">RESET</button>
-                    <button type="button" id="applyFilters" class="btn btn-primary">APPLY</button>
+
+                    <div class="w-100 mt-3">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="resetFilters" class="btn btn-danger btn-custom text-uppercase w-100">RESET</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button id="applyFilters" class="btn btn-primary btn-custom text-uppercase w-100">APPLY</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -256,33 +265,33 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="sortModalLabel">SORT RECORDS</h5>
+                    <h5 class="modal-title" id="sortModalLabel"><strong>SORT RECORDS</strong></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-2">
-                        <label class="form-label">SORT BY DATE</label>
+                        <label class="form-label"><strong>SORT BY DATE</strong></label>
                         <div>
                             <input type="radio" name="sortDate" value="asc"> Ascending<br>
                             <input type="radio" name="sortDate" value="desc"> Descending
                         </div>
                     </div>
                     <div class="mb-2">
-                        <label class="form-label">SORT BY TIME-IN</label>
+                        <label class="form-label"><strong>SORT BY TIME-IN</strong></label>
                         <div>
                             <input type="radio" name="sortTimeIn" value="asc"> Earliest<br>
                             <input type="radio" name="sortTimeIn" value="desc"> Latest
                         </div>
                     </div>
                     <div class="mb-2">
-                        <label class="form-label">SORT BY TIME-OUT</label>
+                        <label class="form-label"><strong>SORT BY TIME-OUT</strong></label>
                         <div>
                             <input type="radio" name="sortTimeOut" value="asc"> Earliest<br>
                             <input type="radio" name="sortTimeOut" value="desc"> Latest
                         </div>
                     </div>
                     <div class="mb-2">
-                        <label class="form-label">SORT BY NAME</label>
+                        <label class="form-label"><strong>SORT BY NAME</strong></label>
                         <div>
                             <input type="radio" name="sortName" value="asc"> A-Z<br>
                             <input type="radio" name="sortName" value="desc"> Z-A
@@ -290,8 +299,18 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="resetSort" class="btn btn-danger">RESET</button>
-                    <button type="button" id="applySort" class="btn btn-primary">APPLY</button>
+
+                    <div class="w-100 mt-3">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-6 mb-2">
+                                <button id="resetSort" class="btn btn-danger btn-custom text-uppercase w-100">RESET</button>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <button id="applySort" class="btn btn-primary btn-custom text-uppercase w-100">APPLY</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -303,7 +322,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><strong>CASH FOR WORK DETAILS</strong></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -544,7 +563,12 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                     showCancelButton: true,
                     confirmButtonText: 'YES',
                     cancelButtonText: 'NO',
-                    reverseButtons: true
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                        cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                    },
+                    buttonsStyling: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Show a loading alert while processing

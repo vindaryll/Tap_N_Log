@@ -83,7 +83,7 @@ if ($result->num_rows > 0) {
                         <p class='card-text'><strong>Time In:</strong> $formattedTimeIn</p>
                     </div>
                     <div class='card-footer d-flex'>
-                        <button type='button' class='btn btn-danger mx-1 w-50 archive-btn' 
+                        <button type='button' class='btn btn-danger btn-custom mx-1 w-50 archive-btn' 
                             data-attendance-id='{$row['ojt_attendance_id']}'
                             data-profile-id='{$row['ojt_id']}'
                             data-name='{$row['first_name']} {$row['last_name']}'
@@ -92,7 +92,7 @@ if ($result->num_rows > 0) {
                             data-time-in='$formattedTimeIn'>
                             ARCHIVE
                         </button>
-                        <button type='button' class='btn btn-success w-50 mx-1 time-out-btn' 
+                        <button type='button' class='btn btn-success btn-custom w-50 mx-1 time-out-btn' 
                             data-attendance-id='{$row['ojt_attendance_id']}'
                             data-profile-id='{$row['ojt_id']}'
                             data-name='{$row['first_name']} {$row['last_name']}'

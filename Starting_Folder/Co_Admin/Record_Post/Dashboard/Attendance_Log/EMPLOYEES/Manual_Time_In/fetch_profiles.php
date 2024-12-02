@@ -83,7 +83,7 @@ if ($result->num_rows > 0) {
                         <p class='card-text'><strong>RFID:</strong> $rfid</p>
                     </div>
                     <div class='card-footer'>
-                        <button type='button' class='btn btn-success w-100 time-in-btn'
+                        <button type='button' class='btn btn-success btn-custom w-100 time-in-btn'
                             data-profile-id='{$row['employee_id']}'
                             data-name='{$row['first_name']} {$row['last_name']}'
                             data-rfid='$rfid'
