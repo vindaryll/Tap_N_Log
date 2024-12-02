@@ -95,6 +95,88 @@
             margin-bottom: 0.5rem;
         }
     }
+
+
+
+    body {
+        background: url('/tapnlog/image/logo_and_icons/bsu-bg.png') no-repeat center center fixed;
+        background-size: cover;
+        padding-top: 87px;
+    }
+
+    /* Customized buttons */
+    .btn-custom {
+        border: none;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        text-align: center;
+        box-shadow: 0 4px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-custom:hover {
+        transform: translateY(-2px);
+    }
+
+    /* animation */
+    
+    .up {
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+    }
+
+    .up:hover {
+        transform: translateY(-2px);
+    }
+
+    .swal2-popup .swal2-actions {
+        gap: 1rem;
+        width: 100%;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+        max-width: 18em;
+    }
+
+    /* Responsive design */
+    @media (max-width: 426px) {
+
+        .back-icon {
+            top: 73px;
+            left: 10px;
+        }
+    }
+
+    /* glass css with scroll bar */
+    .glass-scroll {
+        border-radius: 20px !important;
+        background: rgba(255, 255, 255, 0.55);
+        backdrop-filter: blur(2.8px);
+        -webkit-backdrop-filter: blur(2.8px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 5px 10px 1px rgba(128, 128, 128, 0.8);
+        padding-right: 8px;
+    }
+
+    /* Custom Scrollbar Styles */
+    .glass-scroll::-webkit-scrollbar {
+        width: 8px;
+        background: transparent;
+    }
+
+    .glass-scroll::-webkit-scrollbar-thumb {
+        background: rgba(128, 128, 128, 0.4);
+        border-radius: 10px;
+    }
+
+    .glass-scroll::-webkit-scrollbar-thumb:hover {
+        background: rgba(128, 128, 128, 0.6);
+    }
+
+    .glass-scroll::-webkit-scrollbar-track {
+        background: rgba(128, 128, 128, 0.1);
+        border-radius: 10px;
+        margin: 10px 0;
+    }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
@@ -108,8 +190,8 @@
         </div>
 
         <!-- Hamburger Menu (right-aligned on mobile) -->
-        <button class="navbar-toggler border-0 d-lg-none ms-auto" type="button" 
-            data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas" 
+        <button class="navbar-toggler border-0 d-lg-none ms-auto" type="button"
+            data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas"
             aria-controls="navbarOffcanvas">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -166,6 +248,11 @@
                 confirmButtonText: 'YES',
                 cancelButtonText: 'NO',
                 reverseButtons: true,
+                customClass: {
+                    confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                    cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                },
+                buttonsStyling: false,
             }).then((result) => {
                 if (result.isConfirmed) {
                     window.location.href = '/TAPNLOG/Starting_Folder/Co_Admin/Record_Post/Auth/logout.php';
@@ -184,6 +271,11 @@
                 confirmButtonText: 'YES',
                 cancelButtonText: 'NO',
                 reverseButtons: true,
+                customClass: {
+                    confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                    cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                },
+                buttonsStyling: false,
             }).then((result) => {
                 if (result.isConfirmed) {
                     window.location.href = '/TAPNLOG/Starting_Folder/Co_Admin/Record_Post/Dashboard/dashboard_home.php';

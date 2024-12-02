@@ -109,7 +109,6 @@
         }
     }
 
-    /* Add margin to main content to prevent navbar overlap */
     body {
         background: url('/tapnlog/image/logo_and_icons/bsu-bg.png') no-repeat center center fixed;
         background-size: cover;
@@ -142,9 +141,51 @@
 
     .swal2-popup .swal2-actions {
         gap: 1rem;
+        width: 100%;
         margin-top: 1.5rem;
         margin-bottom: 1.5rem;
         max-width: 18em;
+    }
+
+    /* Responsive design */
+    @media (max-width: 426px) {
+
+        .back-icon {
+            top: 73px;
+            left: 10px;
+        }
+    }
+
+    /* glass css with scroll bar */
+    .glass-scroll {
+        border-radius: 20px !important;
+        background: rgba(255, 255, 255, 0.55);
+        backdrop-filter: blur(2.8px);
+        -webkit-backdrop-filter: blur(2.8px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 5px 10px 1px rgba(128, 128, 128, 0.8);
+        padding-right: 8px;
+    }
+
+    /* Custom Scrollbar Styles */
+    .glass-scroll::-webkit-scrollbar {
+        width: 8px;
+        background: transparent;
+    }
+
+    .glass-scroll::-webkit-scrollbar-thumb {
+        background: rgba(128, 128, 128, 0.4);
+        border-radius: 10px;
+    }
+
+    .glass-scroll::-webkit-scrollbar-thumb:hover {
+        background: rgba(128, 128, 128, 0.6);
+    }
+
+    .glass-scroll::-webkit-scrollbar-track {
+        background: rgba(128, 128, 128, 0.1);
+        border-radius: 10px;
+        margin: 10px 0;
     }
 </style>
 

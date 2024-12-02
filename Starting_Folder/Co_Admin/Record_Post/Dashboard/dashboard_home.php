@@ -59,14 +59,14 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
             <div class="container">
                 <div class="row d-flex justify-content-center align-items-center mt-3">
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="Attendance_Log/main_page.php" class="btn btn-primary w-100 p-3">ATTENDANCE LOG</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
+                        <a href="Attendance_Log/main_page.php" class="btn btn-primary btn-custom w-100 p-3">ATTENDANCE LOG</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="Records/main_page.php" class="btn btn-primary w-100 p-3">RECORDS</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
+                        <a href="Records/main_page.php" class="btn btn-primary btn-custom w-100 p-3">RECORDS</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="Activity_Logs/main_page.php" class="btn btn-primary w-100 p-3">ACTIVITY LOGS</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
+                        <a href="Activity_Logs/main_page.php" class="btn btn-primary btn-custom w-100 p-3">ACTIVITY LOGS</a>
                     </div>
                 </div>
             </div>

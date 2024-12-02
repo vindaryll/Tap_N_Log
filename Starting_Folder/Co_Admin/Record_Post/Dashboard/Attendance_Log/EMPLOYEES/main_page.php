@@ -76,17 +76,17 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             <div class="container-fluid col-sm-12 mt-sm-1 mt-5">
                 <h2 class="text-center w-100">EMPLOYEES ATTENDANCE LOG</h2>
                 <div class="row d-flex justify-content-center align-items-center mt-3">
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="Auto_Time_In/main_page.php" class="btn btn-primary w-100 p-3">RFID SCAN FOR TIME-IN</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
+                        <a href="Auto_Time_In/main_page.php" class="btn btn-primary btn-custom w-100 p-3">RFID SCAN FOR TIME-IN</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="Auto_Time_Out/main_page.php" class="btn btn-primary w-100 p-3">RFID SCAN FOR TIME-OUT</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
+                        <a href="Auto_Time_Out/main_page.php" class="btn btn-primary btn-custom w-100 p-3">RFID SCAN FOR TIME-OUT</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="Manual_Time_In/main_page.php" class="btn btn-primary w-100 p-3">MANUAL TIME-IN</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
+                        <a href="Manual_Time_In/main_page.php" class="btn btn-primary btn-custom w-100 p-3">MANUAL TIME-IN</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-3">
-                        <a href="Manual_Time_Out/main_page.php" class="btn btn-primary w-100 p-3">MANUAL TIME-OUT</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
+                        <a href="Manual_Time_Out/main_page.php" class="btn btn-primary btn-custom w-100 p-3">MANUAL TIME-OUT</a>
                     </div>
                 </div>
             </div>

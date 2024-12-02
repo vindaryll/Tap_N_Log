@@ -86,10 +86,6 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             vertical-align: middle;
         }
 
-        table.table tbody tr:hover {
-            background-color: #5abed6;
-        }
-
         .table-responsive {
             height: calc(100vh - 280px);
             overflow-y: auto;
