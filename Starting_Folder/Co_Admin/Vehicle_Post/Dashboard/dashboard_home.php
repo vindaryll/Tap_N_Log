@@ -43,35 +43,53 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
     <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\status_script.php'; ?>
 
     <title>Home | Vehicle Post</title>
+    <style>
+        /* BUTTON CONTAINER */
+        #main-container {
+            height: calc(100vh - 87px);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        #button-cont {
+            position: absolute;
+            top: 30%;
+            width: 70%;
+            border-radius: 20px;
+        }
+
+        @media (max-width: 768px) {
+
+            #button-cont {
+                top: 30%;
+                width: 90%;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
     <!-- Nav Bar -->
     <?php require_once $_SESSION['directory'] . '\Starting_Folder\Co_Admin\Vehicle_Post\Dashboard\navbar_2.php'; ?>
-    
+
     <!-- START OF CONTAINER -->
-    <div class="d-flex justify-content-center">
-
-        <div class="container-fluid row col-sm-12 text-center">
-            <h2>Welcome back, <?php echo $_SESSION['username']?>!</h2>
-
-            <div class="container">
-                <div class="row d-flex justify-content-center align-items-center mt-3">
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center py-2">
-                        <a href="Vehicle_Log/main_page.php" class="btn btn-primary btn-custom w-100 p-3">VEHICLE LOG</a>
-                    </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center py-2">
-                        <a href="Records/main_page.php" class="btn btn-primary btn-custom w-100 p-3">RECORDS</a>
-                    </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center py-2">
-                        <a href="Activity_Logs/main_page.php" class="btn btn-primary btn-custom w-100 p-3">ACTIVITY LOGS</a>
-                    </div>
-                </div>
-            </div>
-
+    <div id="main-container" class="w-100 p-0 m-0">
+        <div class="row w-100 justify-content-center text-center">
+            <h1 class="page-title">Welcome back, <?php echo $_SESSION['username'] ?>!</h1>
         </div>
-
+        <div id="button-cont" class="row d-flex justify-content-center align-items-center glass p-md-5 m-1">
+            <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-md-4 my-2">
+                <a href="Vehicle_Log/main_page.php" class="btn btn-primary btn-custom py-4 w-100 px-2">VEHICLE LOG</a>
+            </div>
+            <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-md-4 my-2">
+                <a href="Records/main_page.php" class="btn btn-primary btn-custom py-4 w-100 px-2">RECORDS</a>
+            </div>
+            <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-md-4 my-2">
+                <a href="Activity_Logs/main_page.php" class="btn btn-primary btn-custom py-4 w-100 px-2">ACTIVITY LOGS</a>
+            </div>
+        </div>
     </div>
 
 

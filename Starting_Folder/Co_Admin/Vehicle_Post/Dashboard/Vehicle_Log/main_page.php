@@ -115,7 +115,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
 
             <div class="container-fluid col-sm-12 mt-sm-0 mt-4 p-0">
                 <div class="container mt-3 p-0">
-                    <h2 class="text-center w-100">VEHICLE LOGS</h2>
+                    <h2 class="page-title text-center w-100">VEHICLE LOGS</h2>
                     <div class="mb-3">
                         <input type="text" id="searchTextbox" class="form-control" placeholder="Search by name">
                     </div>

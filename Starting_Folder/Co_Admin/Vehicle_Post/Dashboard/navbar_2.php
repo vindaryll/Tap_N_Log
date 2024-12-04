@@ -204,13 +204,28 @@
     table.table tbody tr:hover {
         background-color: #DBE7FF;
     }
+
+    .glass {
+        border-radius: 20px !important;
+        background: rgba(255, 255, 255, 0.55);
+        backdrop-filter: blur(2.8px);
+        -webkit-backdrop-filter: blur(2.8px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 5px 10px 1px rgba(128, 128, 128, 0.8);
+    }
+
+    .page-title {
+        color: #1877f2;
+        font-weight: 750;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
     <div class="container-fluid px-lg-5">
         <!-- Mobile Logo (left-aligned) -->
         <div class="d-lg-none">
-            <a href="#" id="dashboard-link2" class="navbar-brand">
+            <a href="#" id="dashboard-link2" class="navbar-brand up">
                 <img src="/TAPNLOG/Image/LOGO_AND_ICONS/logo_icon.png" alt="Logo" width="40" height="40">
                 <span class="ms-2 fw-semibold">TAP-N-LOG</span>
             </a>
@@ -225,7 +240,7 @@
 
         <!-- Desktop Logo -->
         <div class="col-2 d-none d-lg-block">
-            <a href="#" id="dashboard-link" class="navbar-brand">
+            <a href="#" id="dashboard-link" class="navbar-brand up">
                 <img src="/TAPNLOG/Image/LOGO_AND_ICONS/logo_icon.png" alt="Logo" width="40" height="40">
                 <span class="ms-2 fw-semibold">TAP-N-LOG</span>
             </a>
