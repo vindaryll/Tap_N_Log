@@ -57,7 +57,7 @@
 <div class="offcanvas offcanvas-end" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel">
     <div class="offcanvas-header border-bottom">
         <h5 class="offcanvas-title" id="navbarOffcanvasLabel">Menu</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <button type="button" class="btn-close up" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
         <ul class="navbar-nav">
@@ -209,6 +209,39 @@
 
     .up:hover {
         transform: translateY(-2px);
+    }
+
+    .invalid-feedback {
+        display: none;
+        animation: shake 0.3s ease-in-out;
+    }
+
+    .invalid-feedback.active {
+        display: block;
+        color: red;
+        animation: shake 0.3s ease-in-out;
+    }
+
+    @keyframes shake {
+        0% {
+            transform: translateX(0);
+        }
+
+        25% {
+            transform: translateX(-5px);
+        }
+
+        50% {
+            transform: translateX(5px);
+        }
+
+        75% {
+            transform: translateX(-5px);
+        }
+
+        100% {
+            transform: translateX(0);
+        }
     }
 
     .swal2-popup .swal2-actions {

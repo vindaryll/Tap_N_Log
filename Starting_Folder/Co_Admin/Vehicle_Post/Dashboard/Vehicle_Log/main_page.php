@@ -159,7 +159,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="sortModalLabel"><strong>SORT PROFILES</strong></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
@@ -209,7 +209,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addRecordModalLabel"><strong>VEHICLE DETAILS</strong></h5>
-                    <button type="button" class="btn-close" id="modal_1_closeBtn"></button>
+                    <button type="button" class="btn-close up" id="modal_1_closeBtn"></button>
                 </div>
                 <div class="modal-body">
                     <form id="addRecordForm">

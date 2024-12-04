@@ -134,6 +134,40 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
             font-weight: 750;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
+        /* ANIMATION */
+        .invalid-feedback {
+            display: none;
+            animation: shake 0.3s ease-in-out;
+        }
+
+        .invalid-feedback.active {
+            display: block;
+            color: red;
+            animation: shake 0.3s ease-in-out;
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-5px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
     </style>
 
 </head>
@@ -177,14 +211,14 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                         <div class="mb-3">
                             <label for="firstName" class="form-label"><strong>FIRST NAME</strong></label>
                             <input type="text" class="form-control" id="firstName" name="first_name" required>
-                            <div id="firstName-feedback" class="invalid-feedback" style="display: block;"></div>
+                            <div id="firstName-feedback" class="invalid-feedback"></div>
                         </div>
 
                         <!-- Last Name -->
                         <div class="mb-3">
                             <label for="lastName" class="form-label"><strong>LAST NAME</strong></label>
                             <input type="text" class="form-control" id="lastName" name="last_name" required>
-                            <div id="lastName-feedback" class="invalid-feedback" style="display: block;"></div>
+                            <div id="lastName-feedback" class="invalid-feedback"></div>
                         </div>
 
                         <!-- Type of profile -->
@@ -235,7 +269,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="uploadModalLabel">CROP AND UPLOAD IMAGE</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close up" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="file" id="fileInput" accept="image/*" class="form-control mb-3">
