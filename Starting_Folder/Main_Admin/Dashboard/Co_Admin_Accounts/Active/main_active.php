@@ -125,7 +125,7 @@ $stationsResult = $conn->query($stationsSql);
             <div class="container-fluid col-sm-12 mt-sm-0 mt-4 px-2">
 
                 <div class="container-fluid text-center">
-                    <h2 class="text-center w-100">ACTIVE CO-ADMIN ACCOUNTS</h2>
+                    <h2 class="page-title text-center w-100">ACTIVE CO-ADMIN ACCOUNTS</h2>
 
                     <!-- Textbox for search -->
                     <input type="text" id="search" class="form-control mb-3" placeholder="Search by guard name or ID">

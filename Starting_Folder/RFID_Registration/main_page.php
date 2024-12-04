@@ -45,7 +45,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
             width: 100%;
             max-width: 350px;
             aspect-ratio: 1 / 1;
-            border: 1px solid #ddd;
+            border: 3px solid #ddd;
             object-fit: cover;
         }
 
@@ -128,6 +128,12 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
             margin-bottom: 1.5rem;
             max-width: 18em;
         }
+
+        .page-title {
+            color: #1877f2;
+            font-weight: 750;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
     </style>
 
 </head>
@@ -142,7 +148,7 @@ if (!isset($_SESSION['directory']) || !isset($_SESSION['ip_address']) || !isset(
                         <img src="/TAPNLOG/Image/LOGO_AND_ICONS/logo_icon.png" id="img_logo" class="img-fluid" alt="Logo" style="max-width: 60px; height: auto;">
                     </div>
                     <div class="col-lg-10 col-md-10 col-sm-12 d-flex justify-content-center justify-content-md-start align-items-center p-0 m-0">
-                        <h2>RFID REGISTRATION</h2>
+                        <h2 class="page-title">RFID REGISTRATION</h2>
                     </div>
                 </div>
             </div>

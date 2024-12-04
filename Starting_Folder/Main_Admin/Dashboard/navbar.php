@@ -238,6 +238,21 @@
     table.table tbody tr:hover {
         background-color: #DBE7FF;
     }
+
+    .glass {
+        border-radius: 20px !important;
+        background: rgba(255, 255, 255, 0.55);
+        backdrop-filter: blur(2.8px);
+        -webkit-backdrop-filter: blur(2.8px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 5px 10px 1px rgba(128, 128, 128, 0.8);
+    }
+
+    .page-title {
+        color: #1877f2;
+        font-weight: 750;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">

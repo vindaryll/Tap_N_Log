@@ -56,7 +56,28 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
             transform: scale(1.1);
         }
 
-        /* END FOR BACK BUTTON */
+        /* BUTTON CONTAINER */
+        #main-container {
+            height: calc(100vh - 87px);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        #button-cont {
+            position: absolute;
+            top: 25%;
+            width: 70%;
+            border-radius: 20px;
+        }
+
+        @media (max-width: 768px) {
+
+            #button-cont {
+                top: 25%;
+                width: 90%;
+            }
+        }
     </style>
 </head>
 
@@ -73,28 +94,30 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                 <a href="#" class="back-icon" id="backbtn" style="position: absolute;"><i class="bi bi-arrow-left"></i></a>
             </div>
 
-            <div class="container-fluid col-sm-12 mt-sm-1 mt-5">
-                <h2 class="text-center w-100">RECORDS</h2>
-                <div class="row d-flex justify-content-center align-items-center mt-3">
-
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
-                        <a href="VISITORS/main_page.php" class="btn btn-primary btn-custom w-100 p-3">VISITORS</a>
+            <div id="main-container" class="w-100 p-0 m-0">
+                <div class="row w-100 justify-content-center text-center">
+                    <h1 class="page-title">RECORDS</h1>
+                </div>
+                <div id="button-cont" class="row d-flex justify-content-center align-items-center glass p-md-5 m-1">
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-md-4 my-2">
+                        <a href="VISITORS/main_page.php" class="btn btn-primary btn-custom py-4 w-100 px-2">VISITORS</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-3">
-                        <a href="EMPLOYEES/main_page.php" class="btn btn-primary btn-custom w-100 p-3">EMPLOYEES</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-md-4 my-2">
+                        <a href="EMPLOYEES/main_page.php" class="btn btn-primary btn-custom py-4 w-100 px-2">EMPLOYEES</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
-                        <a href="CFW/main_page.php" class="btn btn-primary btn-custom w-100 p-3">CASH FOR WORK</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-md-4 my-2">
+                        <a href="CFW/main_page.php" class="btn btn-primary btn-custom py-4 w-100 px-2">CASH FOR WORK</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
-                        <a href="OJT/main_page.php" class="btn btn-primary btn-custom w-100 p-3">ON THE JOB TRAINEES</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-md-4 my-2">
+                        <a href="OJT/main_page.php" class="btn btn-primary btn-custom py-4 w-100 px-2">ON THE JOB TRAINEES</a>
                     </div>
-
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-2 mt-md-3 mt-5">
-                        <a href="VEHICLES/main_page.php" class="btn btn-primary btn-custom w-100 p-3">VEHICLES</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-md-4 my-2">
+                        <a href="VEHICLES/main_page.php" class="btn btn-primary btn-custom py-4 w-100 px-2">VEHICLES</a>
                     </div>
                 </div>
             </div>
+
+            
 
         </div>
 

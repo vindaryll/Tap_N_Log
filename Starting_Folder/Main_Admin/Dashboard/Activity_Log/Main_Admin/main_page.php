@@ -112,7 +112,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
             <div class="container-fluid col-sm-12 mt-sm-0 mt-4 px-2">
                 <div class="container-fluid text-center">
-                    <h2 class="text-center w-100">MAIN ADMINISTRATOR ACTIVITY LOG</h2>
+                    <h2 class="page-title text-center w-100">MAIN ADMINISTRATOR ACTIVITY LOG</h2>
 
                     <!-- Textbox for search -->
                     <input type="text" id="searchTextbox" class="form-control mb-3" placeholder="Search by details or activity ID">

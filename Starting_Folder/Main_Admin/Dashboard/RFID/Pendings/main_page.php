@@ -146,7 +146,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
             <div class="container-fluid col-sm-12 mt-sm-1 mt-5 p-0">
                 <div class="container-fluid text-center p-0">
-                    <h2 class="text-center w-100">PENDING PROFILES</h2>
+                    <h2 class="page-title text-center w-100">PENDING PROFILES</h2>
                     <div class="mb-3">
                         <input type="text" id="searchTextbox" class="form-control" placeholder="Search by name or ID">
                     </div>

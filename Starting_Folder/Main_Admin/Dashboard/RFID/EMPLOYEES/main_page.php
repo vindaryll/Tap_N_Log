@@ -123,12 +123,11 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
 
             <div class="container col-sm-12">
                 <a href="#" class="back-icon" id="backbtn" style="position: absolute;"><i class="bi bi-arrow-left"></i></a>
-
             </div>
 
             <div class="container-fluid col-sm-12 mt-sm-0 mt-4 p-0">
                 <div class="container mt-3 p-0">
-                    <h2 class="text-center w-100">EMPLOYEES RFID PROFILES</h2>
+                    <h2 class="page-title text-center w-100">EMPLOYEES RFID PROFILES</h2>
                     <div class="mb-3">
                         <input type="text" id="searchTextbox" class="form-control" placeholder="Search by name or RFID">
                     </div>
