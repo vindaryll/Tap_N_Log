@@ -46,7 +46,7 @@
 
         <!-- Right Section -->
         <div class="col-2 d-none d-lg-block text-end">
-            <a href="#" id="logout-link" class="btn btn-link text-decoration-none" style="color: #1877f2; font-weight: 500;">
+            <a href="#" id="logout-link" class="btn btn-link text-decoration-none nav-logout up" style="color: #1877f2; font-weight: 500;">
                 <i class="bi bi-box-arrow-right fs-4 text-primary"></i>
             </a>
         </div>
@@ -77,7 +77,7 @@
                 </a>
             </li>
             <li class="nav-item mt-3 border-top pt-3">
-                <a href="#" id="logout-link2" class="nav-link" style="color: #1877f2; font-weight: 500;">
+                <a href="#" id="logout-link2" class="nav-link nav-logout up" style="color: #1877f2; font-weight: 500;">
                     <i class="bi bi-box-arrow-right me-2"></i>LOGOUT
                 </a>
             </li>
@@ -165,6 +165,16 @@
     .navbar-brand,
     .btn {
         transition: all 0.3s ease;
+    }
+
+    .nav-logout {
+        transition: all 0.3s ease;
+        border-radius: 6px;
+    }
+
+    .nav-logout:hover {
+        color: #1877f2;
+        background-color: rgba(24, 119, 242, 0.1);
     }
 
 
@@ -285,6 +295,11 @@
                 confirmButtonText: 'YES',
                 cancelButtonText: 'NO',
                 reverseButtons: true,
+                customClass: {
+                    confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                    cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                },
+                buttonsStyling: false,
             }).then((result) => {
                 if (result.isConfirmed) {
                     window.location.href = '/TAPNLOG/Starting_Folder/Co_Admin/Vehicle_Post/Auth/logout.php';

@@ -92,6 +92,16 @@
         }
     }
 
+    .nav-logout {
+        transition: all 0.3s ease;
+        border-radius: 6px;
+    }
+
+    .nav-logout:hover {
+        color: #1877f2;
+        background-color: rgba(24, 119, 242, 0.1);
+    }
+
 
     /* ACCESSIBLE CSS FOR MAIN ELEMENTS */
 
@@ -195,6 +205,21 @@
     table.table tbody tr:hover {
         background-color: #DBE7FF;
     }
+
+    .glass {
+        border-radius: 20px !important;
+        background: rgba(255, 255, 255, 0.55);
+        backdrop-filter: blur(2.8px);
+        -webkit-backdrop-filter: blur(2.8px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 5px 10px 1px rgba(128, 128, 128, 0.8);
+    }
+
+    .page-title {
+        color: #1877f2;
+        font-weight: 750;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
@@ -227,7 +252,7 @@
             <ul class="navbar-nav ms-auto">
                 <!-- Logout Button (Visible on Large Screens) -->
                 <li class="nav-item d-none d-lg-block">
-                    <a href="#" id="logout-link" class="nav-link">
+                    <a href="#" id="logout-link" class="nav-link nav-logout up">
                         <i class="bi bi-box-arrow-right"></i>
                     </a>
                 </li>
@@ -245,7 +270,7 @@
     <div class="offcanvas-body">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a href="#" id="logout-link2" class="nav-link" style="color: #1877f2; font-weight: 500;">
+                <a href="#" id="logout-link2" class="nav-link nav-logout up" style="color: #1877f2; font-weight: 500;">
                     <i class="bi bi-box-arrow-right me-2"></i>LOGOUT
                 </a>
             </li>

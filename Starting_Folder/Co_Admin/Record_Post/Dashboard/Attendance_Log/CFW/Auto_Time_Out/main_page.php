@@ -128,7 +128,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 </div>
 
                 <div class="container-fluid col-sm-12 mt-sm-1 mt-5">
-                    <h2 class="text-center w-100">CASH FOR WORK ATTENDANCE LOG</h2>
+                    <h2 class="page-title text-center w-100">CASH FOR WORK ATTENDANCE LOG</h2>
                 </div>
             </div>
         </div>

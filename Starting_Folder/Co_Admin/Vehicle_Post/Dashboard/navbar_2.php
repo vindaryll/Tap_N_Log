@@ -1,5 +1,4 @@
 <style>
-
     .navbar {
         background-color: white;
         position: fixed;
@@ -90,6 +89,16 @@
             padding: 0.75rem 1rem;
             margin-bottom: 0.5rem;
         }
+    }
+
+    .nav-logout {
+        transition: all 0.3s ease;
+        border-radius: 6px;
+    }
+
+    .nav-logout:hover {
+        color: #1877f2;
+        background-color: rgba(24, 119, 242, 0.1);
     }
 
 
@@ -208,8 +217,8 @@
         </div>
 
         <!-- Hamburger Menu (right-aligned on mobile) -->
-        <button class="navbar-toggler border-0 d-lg-none ms-auto" type="button" 
-            data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas" 
+        <button class="navbar-toggler border-0 d-lg-none ms-auto" type="button"
+            data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas"
             aria-controls="navbarOffcanvas">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -227,7 +236,7 @@
             <ul class="navbar-nav ms-auto">
                 <!-- Logout Button (Visible on Large Screens) -->
                 <li class="nav-item d-none d-lg-block">
-                    <a href="#" id="logout-link" class="nav-link">
+                    <a href="#" id="logout-link" class="nav-link nav-logout up">
                         <i class="bi bi-box-arrow-right"></i>
                     </a>
                 </li>
@@ -245,7 +254,7 @@
     <div class="offcanvas-body">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a href="#" id="logout-link2" class="nav-link" style="color: #1877f2; font-weight: 500;">
+                <a href="#" id="logout-link2" class="nav-link nav-logout up" style="color: #1877f2; font-weight: 500;">
                     <i class="bi bi-box-arrow-right me-2"></i>LOGOUT
                 </a>
             </li>
@@ -266,6 +275,11 @@
                 confirmButtonText: 'YES',
                 cancelButtonText: 'NO',
                 reverseButtons: true,
+                customClass: {
+                    confirmButton: 'col-5 btn btn-success btn-custom text-uppercase',
+                    cancelButton: 'col-5 btn btn-danger btn-custom text-uppercase',
+                },
+                buttonsStyling: false,
             }).then((result) => {
                 if (result.isConfirmed) {
                     window.location.href = '/TAPNLOG/Starting_Folder/Co_Admin/Vehicle_Post/Auth/logout.php';

@@ -46,7 +46,7 @@
 
         <!-- Right Section -->
         <div class="col-2 d-none d-lg-block text-end">
-            <a href="#" id="logout-link" class="btn btn-link text-decoration-none up" style="color: #1877f2; font-weight: 500;">
+            <a href="#" id="logout-link" class="btn btn-link text-decoration-none nav-logout up" style="color: #1877f2; font-weight: 500;">
                 <i class="bi bi-box-arrow-right fs-4 text-primary"></i>
             </a>
         </div>
@@ -121,6 +121,16 @@
     }
 
     .nav-link.active {
+        color: #1877f2;
+        background-color: rgba(24, 119, 242, 0.1);
+    }
+
+    .nav-logout {
+        transition: all 0.3s ease;
+        border-radius: 6px;
+    }
+
+    .nav-logout:hover {
         color: #1877f2;
         background-color: rgba(24, 119, 242, 0.1);
     }
@@ -269,6 +279,21 @@
 
     table.table tbody tr:hover {
         background-color: #DBE7FF;
+    }
+
+    .glass {
+        border-radius: 20px !important;
+        background: rgba(255, 255, 255, 0.55);
+        backdrop-filter: blur(2.8px);
+        -webkit-backdrop-filter: blur(2.8px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 5px 10px 1px rgba(128, 128, 128, 0.8);
+    }
+
+    .page-title {
+        color: #1877f2;
+        font-weight: 750;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 </style>
 

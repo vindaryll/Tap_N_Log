@@ -56,7 +56,28 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
             transform: scale(1.1);
         }
 
-        /* END FOR BACK BUTTON */
+        /* BUTTON CONTAINER */
+        #main-container {
+            height: calc(100vh - 87px);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        #button-cont {
+            position: absolute;
+            top: 30%;
+            width: 70%;
+            border-radius: 20px;
+        }
+
+        @media (max-width: 768px) {
+
+            #button-cont {
+                top: 30%;
+                width: 90%;
+            }
+        }
     </style>
 </head>
 
@@ -73,20 +94,22 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
                 <a href="#" class="back-icon" id="backbtn" style="position: absolute;"><i class="bi bi-arrow-left"></i></a>
             </div>
 
-            <div class="container-fluid col-sm-12 mt-sm-1 mt-5">
-                <h2 class="text-center w-100">EMPLOYEES ATTENDANCE LOG</h2>
-                <div class="row d-flex justify-content-center align-items-center mt-3">
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
-                        <a href="Auto_Time_In/main_page.php" class="btn btn-primary btn-custom w-100 p-3">RFID SCAN FOR TIME-IN</a>
+            <div id="main-container" class="w-100 p-0 m-0">
+                <div class="row w-100 justify-content-center text-center">
+                    <h1 class="page-title">EMPLOYEES ATTENDANCE LOG</h1>
+                </div>
+                <div id="button-cont" class="row d-flex justify-content-center align-items-center glass p-md-5 m-1">
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-md-4 my-2">
+                        <a href="Auto_Time_In/main_page.php" class="btn btn-primary btn-custom py-4 w-100 px-2">RFID SCAN FOR TIME-IN</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
-                        <a href="Auto_Time_Out/main_page.php" class="btn btn-primary btn-custom w-100 p-3">RFID SCAN FOR TIME-OUT</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-md-4 my-2">
+                        <a href="Auto_Time_Out/main_page.php" class="btn btn-primary btn-custom py-4 w-100 px-2">RFID SCAN FOR TIME-OUT</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
-                        <a href="Manual_Time_In/main_page.php" class="btn btn-primary btn-custom w-100 p-3">MANUAL TIME-IN</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-md-4 my-2">
+                        <a href="Manual_Time_In/main_page.php" class="btn btn-primary btn-custom py-4 w-100 px-2">MANUAL TIME-IN</a>
                     </div>
-                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-2">
-                        <a href="Manual_Time_Out/main_page.php" class="btn btn-primary btn-custom w-100 p-3">MANUAL TIME-OUT</a>
+                    <div class="col-md-6 col-sm-12 d-flex justify-content-center align-items-center my-md-4 my-2">
+                        <a href="Manual_Time_Out/main_page.php" class="btn btn-primary btn-custom py-4 w-100 px-2">MANUAL TIME-OUT</a>
                     </div>
                 </div>
             </div>
