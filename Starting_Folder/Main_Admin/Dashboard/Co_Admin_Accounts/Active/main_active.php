@@ -403,7 +403,7 @@ $stationsResult = $conn->query($stationsSql);
                                 <button id="changePasswordButton" class="btn btn-primary btn-custom text-uppercase w-100" data-bs-toggle="modal" data-bs-target="#passwordChangeModal">CHANGE PASSWORD</button>
                             </div>
                             <div class="col-6 mb-2">
-                                <button id="editButton" class="btn btn-primary btn-custom text-uppercase w-100">EDIT</button>
+                                <button id="editButton" class="btn btn-warning btn-custom text-uppercase w-100">EDIT</button>
                             </div>
                         </div>
                     </div>
