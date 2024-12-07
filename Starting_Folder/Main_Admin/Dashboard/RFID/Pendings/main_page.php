@@ -344,7 +344,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                                 <button type="button" class="btn btn-danger btn-custom w-100" id="discardBtn">DELETE</button>
                             </div>
                             <div id="editBtn_cont" class="col-md-4 col-sm-12 p-1">
-                                <button type="button" class="btn btn-warning btn-custom w-100" id="editBtn">EDIT</button>
+                                <button type="button" class="btn btn-primary btn-custom w-100" id="editBtn">EDIT</button>
                             </div>
                             <div id="approveBtn_cont" class="col-md-4 col-sm-12 p-1">
                                 <button type="button" class="btn btn-success btn-custom w-100" id="approveBtn">APPROVE</button>

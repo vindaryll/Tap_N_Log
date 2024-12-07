@@ -71,8 +71,8 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
         /* Submit button text */
         #submitButton {
-            -webkit-text-stroke: 1px black;
-            font-size: 3rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 4rem;
             font-weight: bold;
             background: none;
             border: none;

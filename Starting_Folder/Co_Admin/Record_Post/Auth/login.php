@@ -241,6 +241,11 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
             transform: translateY(-2px);
         }
 
+        .btn-outline-primary {
+            border-radius: 50px;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+        }
+
         /* animation */
         .up {
             transition: all 0.3s ease;
@@ -350,7 +355,7 @@ $_SESSION['captcha_answer'] = $captchaAnswer; // Store the answer in the session
                                 <button id="backBtn" class="btn btn-secondary btn-custom text-uppercase w-100">BACK</button>
                             </div>
                             <div class="col-12 col-sm-6 mb-2">
-                                <button id="resendCodeBtn" class="btn btn-warning btn-custom text-uppercase w-100" disabled>RESEND CODE</button>
+                                <button id="resendCodeBtn" class="btn btn-outline-primary btn-custom text-uppercase w-100" disabled>RESEND CODE</button>
                             </div>
                             <div class="col-12 col-sm-3 mb-2">
                                 <button id="submitOtpBtn" class="btn btn-primary btn-custom text-uppercase w-100">SUBMIT</button>

@@ -131,6 +131,11 @@
         transform: translateY(-2px);
     }
 
+    .btn-outline-primary {
+        border-radius: 50px;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+    }
+
     /* animation */
 
     .up {
@@ -386,7 +391,7 @@
                             <button id="nav_backBtn1" class="btn btn-secondary btn-custom text-uppercase w-100">BACK</button>
                         </div>
                         <div class="col-12 col-sm-6 mb-2">
-                            <button id="nav_resendCodeBtn1" class="btn btn-warning btn-custom text-uppercase w-100" disabled>RESEND CODE</button>
+                            <button id="nav_resendCodeBtn1" class="btn btn-outline-primary btn-custom text-uppercase w-100" disabled>RESEND CODE</button>
                         </div>
                         <div class="col-12 col-sm-3 mb-2">
                             <button id="nav_submitOtpBtn1" class="btn btn-primary btn-custom text-uppercase w-100">SUBMIT</button>
@@ -442,7 +447,7 @@
                             <button id="nav_backBtn2" class="btn btn-secondary btn-custom text-uppercase w-100">BACK</button>
                         </div>
                         <div class="col-12 col-sm-6 mb-2">
-                            <button id="nav_resendCodeBtn2" class="btn btn-warning btn-custom text-uppercase w-100" disabled>RESEND CODE</button>
+                            <button id="nav_resendCodeBtn2" class="btn btn-outline-primary btn-custom text-uppercase w-100" disabled>RESEND CODE</button>
                         </div>
                         <div class="col-12 col-sm-3 mb-2">
                             <button id="nav_submitOtpBtn2" class="btn btn-primary btn-custom text-uppercase w-100">SUBMIT</button>

@@ -288,7 +288,7 @@ if (isset($_SESSION['admin_logged']) || isset($_SESSION['record_guard_logged']))
 
                     <div class="w-100 mt-3 btn-cont-1">
                         <div class=" col-12 d-flex justify-content-end">
-                            <button type="button" id="editBtn" class="btn btn-warning btn-custom col-6">EDIT</button>
+                            <button type="button" id="editBtn" class="btn btn-primary btn-custom col-6">EDIT</button>
                         </div>
                     </div>
 

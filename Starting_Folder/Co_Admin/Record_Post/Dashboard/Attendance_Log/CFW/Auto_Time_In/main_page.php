@@ -71,8 +71,8 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
         /* Submit button text */
         #submitButton {
-            -webkit-text-stroke: 1px black;
-            font-size: 3rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 4rem;
             font-weight: bold;
             background: none;
             border: none;
@@ -136,7 +136,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
         <div id="form-container" class="col-12 d-flex align-items-center p-0 m-0">
             <form id="time_in" class="w-100 text-center">
                 <input type="text" id="rfidInput" autofocus>
-                <button type="submit" id="submitButton" class="shadoww text-stroke">PLEASE TAP YOUR RFID FOR <span style="color: green;">TIME-IN</span></button>
+                <button type="submit" id="submitButton" class="shadoww">PLEASE TAP YOUR RFID FOR <span style="color: green;">TIME-IN</span></button>
             </form>
         </div>
 

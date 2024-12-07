@@ -78,7 +78,7 @@ if ($result->num_rows > 0) {
 
         $buttonHtml = $row['status'] === 'ACTIVE' ? "
             <div class='col-6'>
-                <button type='button' class='btn btn-warning btn-custom w-100 edit-btn'
+                <button type='button' class='btn btn-primary btn-custom w-100 edit-btn'
                     data-id='{$row['cfw_id']}'
                     data-first-name='{$row['first_name']}'
                     data-last-name='{$row['last_name']}'
