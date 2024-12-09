@@ -47,7 +47,7 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
     <style>
         /* CARD CONTAINER FOR RESULT */
         #results-container {
-            height: calc(100vh - 340px);
+            height: calc(100vh - 360px);
             width: calc(100% - 16px);
             overflow-y: auto;
             margin-bottom: 10px;
@@ -140,9 +140,9 @@ if (isset($_SESSION['vehicle_guard_logged']) || isset($_SESSION['admin_logged'])
 
                     </div>
 
-                    <div class="row d-flex justify-content-start mt-2">
+                    <div class="row d-flex justify-content-end mt-2">
                         <div class="col-md-3 col-sm-4 col-12 mb-2">
-                            <button type="button" id="addRecord" class="btn btn-primary btn-custom w-100 h-100 p-2">ADD NEW VISITOR</button>
+                            <button type="button" id="addRecord" class="btn btn-success btn-custom w-100 h-100 p-2">ADD NEW VISITOR</button>
                         </div>
                     </div>
 
