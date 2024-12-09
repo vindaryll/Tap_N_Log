@@ -1182,7 +1182,7 @@ if (isset($_SESSION['record_guard_logged']) || isset($_SESSION['vehicle_guard_lo
                     confirmButtonText: 'Reactivate',
                     showCancelButton: false,
                     customClass: {
-                        confirmButton: 'col-12 btn btn-primary btn-success text-uppercase',
+                        confirmButton: 'col-12 btn btn-success btn-custom text-uppercase',
                     },
                     buttonsStyling: false,
                     didOpen: () => {
